@@ -7,15 +7,15 @@ class AppHeader extends React.Component {
         return <header className={styles.header}>
             <nav className={styles.nav}>
                 <Button htmlType="button" type="secondary" size="medium" extraClass={styles.burgerConstructor}>
-                    <BurgerIcon type="primary"/>  Конструктор
+                    <BurgerIcon type="primary"/> Конструктор
                 </Button>
                 <Button htmlType="button" type="secondary" size="medium" extraClass={styles.orders}>
-                    <ListIcon type="primary" />  Лента заказов
+                    <ListIcon type="primary" /> Лента заказов
                 </Button>
             </nav>
             <Logo extraClass={styles.logo}/>
             <Button htmlType="button" type="secondary" size="medium" extraClass={styles.account}>
-                <ProfileIcon type="primary" />  Личный кабинет
+                <ProfileIcon type="primary" /> Личный кабинет
             </Button>
         </header>
     }
