@@ -23,7 +23,8 @@ class BurgerIngredients extends React.Component {
     render() {
         const categories = Object.keys(this.burgerIngredientsByCategory);
 
-        return <>
+        return (
+        <div>
             <p className={styles.title}>Соберите бургер</p>
             <Tabs categories={categories} />
             <div className={styles.ingredientsContainer}>
@@ -36,7 +37,8 @@ class BurgerIngredients extends React.Component {
                 ))
                 }
             </div>
-        </>
+        </div>
+        )
     }
  }
 

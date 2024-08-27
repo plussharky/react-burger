@@ -1,0 +1,24 @@
+.burgerConstructor {
+    padding-top: 100px;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+.price {
+    composes: text text_type_digits-medium from global;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.constructorFooter {
+    margin-top: 40px;
+    margin-right: 16px; 
+    display: flex;
+    justify-content: end;
+}
+
+.button {
+    margin: 16px;
+}
