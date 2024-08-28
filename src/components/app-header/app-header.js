@@ -6,15 +6,15 @@ class AppHeader extends React.Component {
     render(){
         return <header className={styles.header}>
             <nav className={styles.nav}>
-                <Button htmlType="button" type="secondary" size="medium" extraClass={styles.burgerConstructor}>
+                <Button htmlType="button" type="secondary" size="medium" extraClass={styles.button}>
                     <BurgerIcon type="primary"/> Конструктор
                 </Button>
-                <Button htmlType="button" type="secondary" size="medium" extraClass={styles.orders}>
+                <Button htmlType="button" type="secondary" size="medium" extraClass={styles.button}>
                     <ListIcon type="primary" /> Лента заказов
                 </Button>
             </nav>
-            <Logo extraClass={styles.logo}/>
-            <Button htmlType="button" type="secondary" size="medium" extraClass={styles.account}>
+            <Logo/>
+            <Button htmlType="button" type="secondary" size="medium" extraClass={styles.button}>
                 <ProfileIcon type="primary" /> Личный кабинет
             </Button>
         </header>

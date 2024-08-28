@@ -4,44 +4,39 @@ header {
   justify-content: center;
   align-items: center;
   justify-items: center;
-  height: 10%;
+  background-color: #1C1C21;
 }
 
 
 .nav {
-  grid-column-start: 1;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
 }
 
+.button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  white-space: nowrap;
+  gap: 8px;
+  padding: 20px;
+  margin: 16px 4px;
+  color: rgba(255, 255, 255, 0.50);
+}
 
 .logo {
-  grid-column-start: 2;
-  display: flex;
-  justify-self: center;
+
 }
 
 .account {
-  grid-column-start: 3;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
-  white-space: nowrap;
+  composes: button;
 }
 
 .burgerConstructor {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
+  composes: button;
 }
 
 .orders {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
-  white-space: nowrap;
+  composes: button;
 }
