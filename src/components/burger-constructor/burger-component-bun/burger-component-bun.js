@@ -1,6 +1,7 @@
 import React from 'react';
-import styles from './burger-component-bun.module.css'
-import { CurrencyIcon, LockIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import styles from './burger-component-bun.module.css';
+import { CurrencyIcon, LockIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import PropTypes from 'prop-types';
 
 const BurgerComponentBun = (props) => {
     const topBun = {...props.item};
@@ -29,6 +30,14 @@ const BurgerComponentBun = (props) => {
             <BurgerBun bunStyle={styles.bottomBun} item={bottomBun} />
         </>
     );
+}
+
+BurgerComponentBun.propTypes = { 
+    item: PropTypes.exact({
+            image_mobile: PropTypes.string,
+            name: PropTypes.string,
+            price: PropTypes.number
+    })
 }
 
 export default BurgerComponentBun;

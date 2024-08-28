@@ -1,9 +1,8 @@
 import React from 'react';
-import { Tab, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './burger-ingredients.module.css';
 import IngredientCtegory from './ingredient-category/ingredient-category';
 import Tabs from './ingredient-tab/ingredient-tabs';
-import data from '../../utils/data'
+import PropTypes from 'prop-types';
 
 class BurgerIngredients extends React.Component {
     constructor(props) {
@@ -41,5 +40,17 @@ class BurgerIngredients extends React.Component {
         )
     }
  }
+
+BurgerIngredients.propTypes = { 
+    data: PropTypes.arrayOf(
+        PropTypes.exact({
+            _id: PropTypes.string,
+            type: PropTypes.string,
+            image: PropTypes.string,
+            name: PropTypes.string,
+            price: PropTypes.number
+        })
+    )
+}
 
  export default BurgerIngredients;

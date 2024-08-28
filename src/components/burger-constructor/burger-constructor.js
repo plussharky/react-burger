@@ -1,8 +1,9 @@
 import React from 'react';
-import styles from './burger-constructor.module.css'
+import styles from './burger-constructor.module.css';
 import BurgerComponent from './burger-component/burger-component';
 import BurgerComponentBun from './burger-component-bun/burger-component-bun';
-import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
+import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import PropTypes from 'prop-types';
 
 class BurgerConstructor extends React.Component {
     constructor(props) {
@@ -50,6 +51,18 @@ class BurgerConstructor extends React.Component {
             </div>
         )
     }
- }
+}
+
+BurgerConstructor.propTypes = { 
+    data: PropTypes.arrayOf(
+        PropTypes.exact({
+            _id: PropTypes.string,
+            type: PropTypes.string,
+            image_mobile: PropTypes.string,
+            name: PropTypes.string,
+            price: PropTypes.number
+        })
+    )
+}
 
 export default BurgerConstructor;
