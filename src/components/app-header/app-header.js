@@ -2,9 +2,9 @@ import React from 'react';
 import { Button, Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './app-header.module.css';
 
-class AppHeader extends React.Component {
-    render(){
-        return <header className={styles.header}>
+const AppHeader = () => {
+    return (
+         <header className={styles.header}>
             <nav className={styles.nav}>
                 <Button htmlType="button" type="secondary" size="medium" extraClass={styles.button}>
                     <BurgerIcon type="primary"/> Конструктор
@@ -18,7 +18,7 @@ class AppHeader extends React.Component {
                 <ProfileIcon type="primary" /> Личный кабинет
             </Button>
         </header>
-    }
+    )
  }
 
  export default AppHeader;
