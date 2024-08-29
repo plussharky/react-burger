@@ -22,9 +22,9 @@ const BurgerComponent = (props) => {
 
 BurgerComponent.propTypes = { 
     item: PropTypes.exact({
-        image_mobile: PropTypes.string,
-        name: PropTypes.string,
-        price: PropTypes.number
+        image_mobile: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+        price: PropTypes.number.isRequired
     })
 }
 

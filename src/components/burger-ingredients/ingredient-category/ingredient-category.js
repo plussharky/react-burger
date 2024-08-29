@@ -20,13 +20,13 @@ const IngredientCtegory = (props) => {
 IngredientCtegory.propTypes = { 
     items: PropTypes.arrayOf(
         PropTypes.exact({
-            _id: PropTypes.string,
-            image: PropTypes.string,
-            name: PropTypes.string,
-            price: PropTypes.number
+            _id: PropTypes.string.isRequired,
+            image: PropTypes.string.isRequired,
+            name: PropTypes.string.isRequired,
+            price: PropTypes.number.isRequired
         })
-    ),
-    categoryName: PropTypes.string
+    ).isRequired,
+    categoryName: PropTypes.string.isRequired
 }
 
 export default IngredientCtegory;

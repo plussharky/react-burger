@@ -1,6 +1,7 @@
 import React from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import TranslationMap from '../../../utils/translation-map';
+import styles from './ingredient-tabs.module.css'
 import PropTypes from 'prop-types';
 
 const Tabs = (props) => {
@@ -8,7 +9,7 @@ const Tabs = (props) => {
   const [current, setCurrent] = React.useState(translatedCategories[0]);
 
   return (
-    <div style={{ display: 'flex'}}>
+    <div className={styles.tabs}>
       {translatedCategories.map(category => (
         <Tab value={category} active={category === current} onClick={() => setCurrent(category)}>
             {category}
@@ -19,7 +20,7 @@ const Tabs = (props) => {
 };
 
 Tabs.propTypes = { 
-  categories: PropTypes.arrayOf(PropTypes.string)
+  categories: PropTypes.arrayOf(PropTypes.string).isRequired
 }
 
 export default Tabs;

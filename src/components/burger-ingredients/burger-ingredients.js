@@ -44,13 +44,13 @@ class BurgerIngredients extends React.Component {
 BurgerIngredients.propTypes = { 
     data: PropTypes.arrayOf(
         PropTypes.exact({
-            _id: PropTypes.string,
-            type: PropTypes.string,
-            image: PropTypes.string,
-            name: PropTypes.string,
-            price: PropTypes.number
+            _id: PropTypes.string.isRequired,
+            type: PropTypes.string.isRequired,
+            image: PropTypes.string.isRequired,
+            name: PropTypes.string.isRequired,
+            price: PropTypes.number.isRequired
         })
-    )
+    ).isRequired
 }
 
  export default BurgerIngredients;
