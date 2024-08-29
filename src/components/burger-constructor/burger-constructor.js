@@ -1,56 +1,44 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styles from './burger-constructor.module.css';
 import BurgerComponent from './burger-component/burger-component';
 import BurgerComponentBun from './burger-component-bun/burger-component-bun';
 import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
 
-class BurgerConstructor extends React.Component {
-    constructor(props) {
-        super(props);
+const BurgerConstructor = ({data}) => {
+    const bun = data.find(item => item.type === 'bun');
+    const newItems = data.filter(item => item.type !== 'bun');
 
-        this.bun = props.data.find(item => item.type === 'bun');
-        this.newItems = props.data.filter(item => item.type !== 'bun');
-
-        this.getTotalPrice = this.getTotalPrice.bind(this);
-    }
-
-    getTotalPrice() {
-        let sum = 0;
-        this.newItems.forEach(element => {
-            sum += element.price;
-        });
-
-        sum += this.bun.price * 2;
-
+    const getTotalPrice = useMemo(() => {
+        let sum = newItems.reduce((acc, item) => acc + item.price, 0);
+        if (bun) {
+            sum += bun.price * 2;
+        }
         return sum;
-    };
+    }, [bun, newItems]);
 
-    render() {
-
-        return (
-            <div className={styles.burgerConstructor}>
-                <BurgerComponentBun item={this.bun}>
-                {this.newItems.map(item => (           
-                    <BurgerComponent 
-                        key={item._id}
-                        item={item}
-                    />
-                    ))}
-                </BurgerComponentBun>
-                <div className={styles.constructorFooter}>
-                    <div className={styles.price}>
-                        <span>{this.getTotalPrice()}</span>
-                        &nbsp;
-                        <CurrencyIcon type="primary"/>
-                    </div>
-                    <Button htmlType="button" type="primary" size="medium" extraClass={styles.button}>
-                        Оформить заказ
-                    </Button>
+    return (
+        <div className={styles.burgerConstructor}>
+            <BurgerComponentBun item={this.bun}>
+            {this.newItems.map(item => (           
+                <BurgerComponent 
+                    key={item._id}
+                    item={item}
+                />
+                ))}
+            </BurgerComponentBun>
+            <div className={styles.constructorFooter}>
+                <div className={styles.price}>
+                    <span>{getTotalPrice}</span>
+                    &nbsp;
+                    <CurrencyIcon type="primary"/>
                 </div>
+                <Button htmlType="button" type="primary" size="medium" extraClass={styles.button}>
+                    Оформить заказ
+                </Button>
             </div>
-        )
-    }
+        </div>
+    ) 
 }
 
 BurgerConstructor.propTypes = { 
