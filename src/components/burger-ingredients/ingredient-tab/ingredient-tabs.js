@@ -19,7 +19,7 @@ const Tabs = (props) => {
 };
 
 Tabs.propTypes = { 
-  categories: PropTypes.arrayOf(PropTypes.string)
+  categories: PropTypes.arrayOf(PropTypes.string).isRequired
 }
 
 export default Tabs;

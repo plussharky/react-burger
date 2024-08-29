@@ -18,9 +18,9 @@ const IngredientCard = ({ item }) => {
 
 IngredientCard.propTypes = { 
     item: PropTypes.exact({
-        image: PropTypes.string,
-        name: PropTypes.string,
-        price: PropTypes.number
+        image: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+        price: PropTypes.number.isRequired
     })
 }
 
