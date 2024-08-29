@@ -10,10 +10,10 @@ function App() {
   return (
     <div className="App">
       <AppHeader />
-      <div className={styles.burgerAssembly}>
+      <main className={styles.burgerAssembly}>
         <BurgerIngredients data={data}/>
         <BurgerConstructor data={dataBurgerComponents}/>
-      </div>
+      </main>
     </div>
   );
 }
