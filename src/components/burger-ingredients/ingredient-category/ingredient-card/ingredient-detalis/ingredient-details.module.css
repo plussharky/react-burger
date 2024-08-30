@@ -1,0 +1,36 @@
+.ingredientCardModal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.name {
+    composes: text text_type_main-medium from global;
+    margin-top: 16px;
+    margin-bottom: 32px;
+}
+
+.properties {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 60px;
+}
+
+.property {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+    color: #8585AD;
+}
+
+.propertyTitle {
+    composes: text text text_type_main-default  from global;
+    text-wrap:nowrap ;
+}
+
+.propertyDigits {
+    composes: text text_type_digits-default  from global;
+}
