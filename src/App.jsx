@@ -20,7 +20,6 @@ function App() {
             throw new Error(`Сервер вернул ответ не ОК по запросу ${API_URL}`)
           }
 
-
           const data = await response.json();
           setIngredients(data.data)
         } catch (error) {
@@ -32,6 +31,10 @@ function App() {
 
     fetchIngredients();
   }, [])
+
+  if(error) {
+    return <p>🛜Произошла ошибка при загрузке. Проверьте интернет-соединение и перезагрузите страницу</p>
+  }
 
   return (
     <div className="App">
