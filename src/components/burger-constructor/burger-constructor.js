@@ -19,8 +19,8 @@ const BurgerConstructor = ({data}) => {
 
     return (
         <div className={styles.burgerConstructor}>
-            <BurgerComponentBun item={this.bun}>
-            {this.newItems.map(item => (           
+            <BurgerComponentBun item={bun}>
+            {newItems.map(item => (           
                 <BurgerComponent 
                     key={item._id}
                     item={item}
