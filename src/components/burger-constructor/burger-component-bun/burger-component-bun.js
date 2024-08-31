@@ -4,8 +4,8 @@ import { CurrencyIcon, LockIcon } from '@ya.praktikum/react-developer-burger-ui-
 import PropTypes from 'prop-types';
 
 const BurgerComponentBun = ({item, children}) => {
-    const topBun = useMemo(() => ({...item, name: `${item.name} (верх)`}));
-    const bottomBun = useMemo(() => ({...item, name: `${item.name} (низ)`}));
+    const topBun = useMemo(() => ({...item, name: `${item.name} (верх)`}), [item]);
+    const bottomBun = useMemo(() => ({...item, name: `${item.name} (низ)`}), [item]);
 
     const BurgerBun = useMemo(({bunStyle, item}) => (
         <div className={bunStyle}>
