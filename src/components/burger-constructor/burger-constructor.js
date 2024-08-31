@@ -1,8 +1,6 @@
 import React, { useMemo, useState, useCallback } from 'react';
 import styles from './burger-constructor.module.css';
-import BurgerComponent from './burger-component/burger-component';
-import BurgerComponentBun from './burger-component-bun/burger-component-bun';
-import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { CurrencyIcon, Button, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
@@ -26,6 +24,7 @@ const BurgerConstructor = ({data}) => {
         return sum;
     }, [bun, newItems]);
 
+
     return (
         <div className={styles.burgerConstructor}>
             {isShowOrderDetails && (
@@ -33,11 +32,33 @@ const BurgerConstructor = ({data}) => {
                     <OrderDetails order={OrderDetaildsData}/>
                 </Modal>
             )}
-            <BurgerComponentBun item={bun}>
-                {newItems.map(item => (           
-                    <BurgerComponent key={item._id} item={item} />
-                ))}
-            </BurgerComponentBun>
+            {bun && 
+                (<ConstructorElement
+                    type="top"
+                    isLocked={true}
+                    text={bun.name}
+                    price={bun.price}
+                    thumbnail={bun.image}
+                />)
+            }
+            <div className={styles.componentContainer}> 
+            {newItems &&  newItems.map(item => (           
+                <ConstructorElement
+                    text={item.name}
+                    price={item.price}
+                    thumbnail={item.image}
+                />                
+            ))}
+            </div>
+            {bun && 
+                (<ConstructorElement
+                    type="bottom"
+                    isLocked={true}
+                    text={bun.name}
+                    price={bun.price}
+                    thumbnail={bun.image}
+                />)
+            }
             <div className={styles.constructorFooter}>
                 <div className={styles.price}>
                     <span>{getTotalPrice}</span>

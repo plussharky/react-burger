@@ -22,3 +22,24 @@
 .button {
     margin: 16px;
 }
+
+.componentContainer {
+    max-height: 500px; 
+    overflow-y: scroll;
+    display: flex; 
+    flex-direction: column; 
+    gap: 16px;
+    
+}
+
+@media (max-width: 768px) {
+    .ingredientsContainer {
+        max-height: 300px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .ingredientsContainer {
+        max-height: 500px;
+    }
+}
