@@ -1,11 +1,20 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
 import styles from './burger-constructor.module.css';
 import BurgerComponent from './burger-component/burger-component';
 import BurgerComponentBun from './burger-component-bun/burger-component-bun';
 import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
+import Modal from '../modal/modal';
+import OrderDetails from '../order-details/order-details';
+import OrderDetaildsData from '../../utils/odrer-details-data';
 
 const BurgerConstructor = ({data}) => {
+    const [isShowOrderDetails, setShowOrderDetails] = useState(false);
+
+    const handleClick = useCallback(() => {
+        setShowOrderDetails(!isShowOrderDetails);
+    }, [isShowOrderDetails]);
+
     const bun = data.find(item => item.type === 'bun');
     const newItems = data.filter(item => item.type !== 'bun');
 
@@ -19,6 +28,10 @@ const BurgerConstructor = ({data}) => {
 
     return (
         <div className={styles.burgerConstructor}>
+            {isShowOrderDetails && 
+                <Modal onClose={handleClick}>
+                    <OrderDetails order={OrderDetaildsData}/>
+                </Modal>}
             <BurgerComponentBun item={bun}>
             {newItems.map(item => (           
                 <BurgerComponent 
@@ -33,7 +46,12 @@ const BurgerConstructor = ({data}) => {
                     &nbsp;
                     <CurrencyIcon type="primary"/>
                 </div>
-                <Button htmlType="button" type="primary" size="medium" extraClass={styles.button}>
+                <Button 
+                    htmlType="button" 
+                    type="primary" 
+                    size="medium" 
+                    extraClass={styles.button}
+                    onClick={handleClick}>
                     Оформить заказ
                 </Button>
             </div>
@@ -45,10 +63,17 @@ BurgerConstructor.propTypes = {
     data: PropTypes.arrayOf(
         PropTypes.exact({
             _id: PropTypes.string.isRequired,
-            type: PropTypes.string.isRequired,
-            image_mobile: PropTypes.string.isRequired,
             name: PropTypes.string.isRequired,
-            price: PropTypes.number.isRequired
+            type: PropTypes.string.isRequired,
+            proteins: PropTypes.number,
+            fat: PropTypes.number,
+            carbohydrates: PropTypes.number,
+            calories: PropTypes.number,
+            price: PropTypes.number.isRequired,
+            image: PropTypes.string,
+            image_mobile: PropTypes.string.isRequired,
+            image_large: PropTypes.string,
+            __v: PropTypes.number
         })
     ).isRequired
 }
