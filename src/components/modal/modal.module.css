@@ -4,16 +4,19 @@
     left: 50%;
     background-color: #131316;
     transform: translate(-50%, -50%);
-    padding: 40px;
     z-index: 1001;
     border-radius: 40px;
     border-color: #4C4CFF;
+    min-width: 720px;
 }
   
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: 40px;
+    margin-left: 40px;
+    margin-right: 40px;
 }
   
 .title {

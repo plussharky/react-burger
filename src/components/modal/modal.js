@@ -1,16 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './modal.module.css'
 import ModalOverlay from './modal-overlay/modal-overlay';
 
-const Modal = ({ title, children }) => {
+const Modal = ({ title = "", onClose = null, children  }) => {
     const [isOpen, setIsOpen] = useState(true)
 
-    const onClose = () => {
+    const handleClose = useCallback(() => {
         setIsOpen(false);
-    }
+        if (onClose) {
+            onClose();
+        }
+    }, [onClose]);
 
     const onClick = (e) => {
         e.stopPropagation();
@@ -19,7 +22,7 @@ const Modal = ({ title, children }) => {
     useEffect(() => {
         const handleEscClose = (event) => {
             if (event.key === 'Escape') {
-                onClose();
+                handleClose();
             }
         };
 
@@ -28,7 +31,7 @@ const Modal = ({ title, children }) => {
         return () => {
             document.removeEventListener('keydown', handleEscClose);
         };
-    },[]);
+    },[handleClose]);
 
     if (!isOpen) {
         return null;
@@ -41,11 +44,11 @@ const Modal = ({ title, children }) => {
             <div className={styles.modal} onClick={onClick}>
                 <div className={styles.header}>
                     <h2 className={styles.title}>{title}</h2>
-                    <CloseIcon type="primary" onClick={onClose}/>
+                    <CloseIcon type="primary" onClick={handleClose}/>
                 </div>
                 <div className={styles.content}>{children}</div>
             </div>
-            <ModalOverlay onClose={onClose}/>
+            <ModalOverlay onClose={handleClose}/>
         </>
     , modalRoot
   );
