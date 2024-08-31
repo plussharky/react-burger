@@ -1,15 +1,19 @@
-import React from 'react';
+import {useMemo} from 'react';
 import IngredientCard from './ingredient-card/ingredient-card';
 import styles from './ingredient-category.module.css';
 import TranslationMap from '../../../utils/translation-map';
 import PropTypes from 'prop-types';
 
-const IngredientCtegory = (props) => {
+const IngredientCtegory = ({ categoryName, items }) => {
+    const translatedCategoryName = useMemo(() => 
+        TranslationMap[categoryName] || categoryName
+    , [categoryName]);
+
     return (
     <div className={styles.category}>
-        <h2 className={styles.title}>{TranslationMap[props.categoryName] || props.categoryName}</h2>
+        <h2 className={styles.title}>{translatedCategoryName}</h2>
         <div className={styles.cards}>
-            {props.items.map((item) => (
+            {items.map((item) => (
                 <IngredientCard key={item._id} item={item} />
             ))}
         </div>

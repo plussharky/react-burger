@@ -11,12 +11,12 @@ import OrderDetaildsData from '../../utils/odrer-details-data';
 const BurgerConstructor = ({data}) => {
     const [isShowOrderDetails, setShowOrderDetails] = useState(false);
 
-    const handleClick = useCallback(() => {
-        setShowOrderDetails(!isShowOrderDetails);
-    }, [isShowOrderDetails]);
+    const toggleOrderDetails = useCallback(() => {
+        setShowOrderDetails((prev) => !prev);
+    }, []);
 
-    const bun = data.find(item => item.type === 'bun');
-    const newItems = data.filter(item => item.type !== 'bun');
+    const bun = useMemo(() => data.find((item) => item.type === 'bun'), [data]);
+    const newItems = useMemo(() => data.filter((item) => item.type !== 'bun'), [data]);
 
     const getTotalPrice = useMemo(() => {
         let sum = newItems.reduce((acc, item) => acc + item.price, 0);
@@ -28,16 +28,14 @@ const BurgerConstructor = ({data}) => {
 
     return (
         <div className={styles.burgerConstructor}>
-            {isShowOrderDetails && 
-                <Modal onClose={handleClick}>
+            {isShowOrderDetails && (
+                <Modal onClose={toggleOrderDetails}>
                     <OrderDetails order={OrderDetaildsData}/>
-                </Modal>}
+                </Modal>
+            )}
             <BurgerComponentBun item={bun}>
-            {newItems.map(item => (           
-                <BurgerComponent 
-                    key={item._id}
-                    item={item}
-                />
+                {newItems.map(item => (           
+                    <BurgerComponent key={item._id} item={item} />
                 ))}
             </BurgerComponentBun>
             <div className={styles.constructorFooter}>
@@ -51,7 +49,7 @@ const BurgerConstructor = ({data}) => {
                     type="primary" 
                     size="medium" 
                     extraClass={styles.button}
-                    onClick={handleClick}>
+                    onClick={toggleOrderDetails}>
                     Оформить заказ
                 </Button>
             </div>

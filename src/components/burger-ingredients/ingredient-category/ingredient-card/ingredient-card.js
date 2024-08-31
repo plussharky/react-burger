@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import styles from './ingredient-card.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
@@ -6,16 +6,19 @@ import Modal from '../../../modal/modal';
 import IngredientDetails from './ingredient-detalis/ingredient-details';
 
 const IngredientCard = ({ item }) => {
-    const [isShowModal, setIsShowModal] = useState(false);
+    const [isModalVisible, setModalVisible] = useState(false);
 
-    const onClick = () => {
-        setIsShowModal(!isShowModal);
-    }
+    const toggleModal = useCallback(() => {
+        setModalVisible((prev) => !prev);
+    }, []);
 
     return (
-        <div className={styles.card} onClick={onClick}>
-            {isShowModal && 
-                <Modal title="Детали ингредиента">
+        <div className={styles.card} onClick={toggleModal}>
+            {isModalVisible && 
+                <Modal 
+                    title="Детали ингредиента"
+                    onClose={toggleModal}
+                >
                     <IngredientDetails item={item}/>
                 </Modal>}
             <Counter count={1} size="default" extraClass={styles.counter}/>
