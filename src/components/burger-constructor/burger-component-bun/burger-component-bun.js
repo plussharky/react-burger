@@ -34,9 +34,18 @@ const BurgerComponentBun = (props) => {
 
 BurgerComponentBun.propTypes = { 
     item: PropTypes.exact({
-            image_mobile: PropTypes.string.isRequired,
+            _id: PropTypes.string,
             name: PropTypes.string.isRequired,
-            price: PropTypes.number.isRequired
+            type: PropTypes.string,
+            proteins: PropTypes.number,
+            fat: PropTypes.number,
+            carbohydrates: PropTypes.number,
+            calories: PropTypes.number,
+            price: PropTypes.number.isRequired,
+            image: PropTypes.string,
+            image_mobile: PropTypes.string.isRequired,
+            image_large: PropTypes.string,
+            __v: PropTypes.number
     })
 }
 
