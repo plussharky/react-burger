@@ -25,7 +25,7 @@ function App() {
         } catch (error) {
           setError(error)
         } finally {
-          setLoading(true);
+          setLoading(false);
         }
     };
 
@@ -40,14 +40,16 @@ function App() {
     <div className="App">
       <AppHeader />
       {loading ? 
+        (<p>Загрузка...</p>)
+      :
         (
           <main className={styles.burgerAssembly}>
             <BurgerIngredients data={ingredients}/> 
             <BurgerConstructor data={ingredients}/>
           </main>
         )
-      :
-        (<p>Загрузка...</p>)
+      
+        
       }
     </div>
   );
