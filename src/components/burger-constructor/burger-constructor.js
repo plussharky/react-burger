@@ -14,15 +14,37 @@ const BurgerConstructor = ({data}) => {
     }, []);
 
     const bun = useMemo(() => data.find((item) => item.type === 'bun'), [data]);
-    const newItems = useMemo(() => data.filter((item) => item.type !== 'bun'), [data]);
+    const ingredients = useMemo(() => data.filter((item) => item.type !== 'bun'), [data]);
+
+    const BunElement = ({ bunType }) => (
+        bun && (
+          <ConstructorElement
+            type={bunType}
+            isLocked={true}
+            text={bun.name}
+            price={bun.price}
+            thumbnail={bun.image}
+          />
+        )
+      );
+      const IngredientsElement = () => (
+        ingredients.map(item => (
+          <ConstructorElement
+            key={item._id}
+            text={item.name}
+            price={item.price}
+            thumbnail={item.image}
+          />
+        ))
+      );
 
     const getTotalPrice = useMemo(() => {
-        let sum = newItems.reduce((acc, item) => acc + item.price, 0);
+        let sum = ingredients.reduce((acc, item) => acc + item.price, 0);
         if (bun) {
             sum += bun.price * 2;
         }
         return sum;
-    }, [bun, newItems]);
+    }, [bun, ingredients]);
 
 
     return (
@@ -32,33 +54,11 @@ const BurgerConstructor = ({data}) => {
                     <OrderDetails order={OrderDetaildsData}/>
                 </Modal>
             )}
-            {bun && 
-                (<ConstructorElement
-                    type="top"
-                    isLocked={true}
-                    text={bun.name}
-                    price={bun.price}
-                    thumbnail={bun.image}
-                />)
-            }
+            <BunElement bunType="top" />
             <div className={styles.componentContainer}> 
-            {newItems &&  newItems.map(item => (           
-                <ConstructorElement
-                    text={item.name}
-                    price={item.price}
-                    thumbnail={item.image}
-                />                
-            ))}
+                <IngredientsElement />
             </div>
-            {bun && 
-                (<ConstructorElement
-                    type="bottom"
-                    isLocked={true}
-                    text={bun.name}
-                    price={bun.price}
-                    thumbnail={bun.image}
-                />)
-            }
+            <BunElement bunType="bottom" />
             <div className={styles.constructorFooter}>
                 <div className={styles.price}>
                     <span>{getTotalPrice}</span>
