@@ -18,26 +18,15 @@ const BurgerConstructor = ({data}) => {
     const bun = useMemo(() => data.find((item) => item.type === 'bun'), [data]);
     const ingredients = useMemo(() => data.filter((item) => item.type !== 'bun'), [data]);
 
-    const BunElement = ({ bunType }) => (
-        bun && (
-          <ConstructorElement
-            type={bunType}
-            isLocked={true}
-            text={bun.name}
-            price={bun.price}
-            thumbnail={bun.image}
-          />
-        )
-      );
-      const IngredientsElement = () => (
-        ingredients.map(item => (
-          <ConstructorElement
-            key={item._id}
-            text={item.name}
-            price={item.price}
-            thumbnail={item.image}
-          />
-        ))
+    const IngredientsElement = () => (
+    ingredients.map(item => (
+        <ConstructorElement
+        key={item._id}
+        text={item.name}
+        price={item.price}
+        thumbnail={item.image}
+        />
+    ))
       );
 
     const getTotalPrice = useMemo(() => {
@@ -56,11 +45,11 @@ const BurgerConstructor = ({data}) => {
                     <OrderDetails order={OrderDetaildsData}/>
                 </Modal>
             )}
-            <BunElement bunType="top" />
+            <BunElement bunType="top" bun={bun}/>
             <div className={styles.componentContainer}> 
                 <IngredientsElement />
             </div>
-            <BunElement bunType="bottom" />
+            <BunElement bunType="bottom" bun={bun}/>
             <div className={styles.constructorFooter}>
                 <div className={styles.price}>
                     <span>{getTotalPrice}</span>
