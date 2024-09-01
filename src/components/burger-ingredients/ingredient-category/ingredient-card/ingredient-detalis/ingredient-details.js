@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './ingredient-details.module.css';
-import PropTypes from 'prop-types';
+import { ingredientType } from '../../../../../utils/types';
 
 const IngredientDetails = ({item}) => {
     return (
@@ -30,20 +30,7 @@ const IngredientDetails = ({item}) => {
 }
 
 IngredientDetails.propTypes = { 
-    item: PropTypes.exact({
-        _id: PropTypes.string,
-        name: PropTypes.string.isRequired,
-        type: PropTypes.string,
-        proteins: PropTypes.number.isRequired,
-        fat: PropTypes.number.isRequired,
-        carbohydrates: PropTypes.number.isRequired,
-        calories: PropTypes.number.isRequired,
-        price: PropTypes.number,
-        image: PropTypes.string,
-        image_mobile: PropTypes.string,
-        image_large: PropTypes.string.isRequired,
-        __v: PropTypes.number
-    })
+    item: ingredientType
 }
 
 export default IngredientDetails;

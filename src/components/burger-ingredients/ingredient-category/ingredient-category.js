@@ -3,6 +3,7 @@ import IngredientCard from './ingredient-card/ingredient-card';
 import styles from './ingredient-category.module.css';
 import TranslationMap from '../../../utils/translation-map';
 import PropTypes from 'prop-types';
+import { ingredientType } from '../../../utils/types';
 
 const IngredientCtegory = ({ categoryName, items }) => {
     const translatedCategoryName = useMemo(() => 
@@ -22,22 +23,7 @@ const IngredientCtegory = ({ categoryName, items }) => {
 };
 
 IngredientCtegory.propTypes = { 
-    items: PropTypes.arrayOf(
-        PropTypes.exact({
-            _id: PropTypes.string.isRequired,
-            name: PropTypes.string.isRequired,
-            type: PropTypes.string,
-            proteins: PropTypes.number.isRequired,
-            fat: PropTypes.number.isRequired,
-            carbohydrates: PropTypes.number.isRequired,
-            calories: PropTypes.number.isRequired,
-            price: PropTypes.number.isRequired,
-            image: PropTypes.string.isRequired,
-            image_mobile: PropTypes.string,
-            image_large: PropTypes.string.isRequired,
-            __v: PropTypes.number
-        })
-    ).isRequired,
+    items: PropTypes.arrayOf(ingredientType).isRequired,
     categoryName: PropTypes.string.isRequired
 }
 

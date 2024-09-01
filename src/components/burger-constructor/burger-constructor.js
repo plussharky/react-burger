@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import OrderDetaildsData from '../../utils/odrer-details-data';
+import BunElement from './bun-element/bun-element'
+import { contractorElementType } from '../../utils/types';
 
 const BurgerConstructor = ({data}) => {
     const [isShowOrderDetails, setShowOrderDetails] = useState(false);
@@ -79,22 +81,7 @@ const BurgerConstructor = ({data}) => {
 }
 
 BurgerConstructor.propTypes = { 
-    data: PropTypes.arrayOf(
-        PropTypes.exact({
-            _id: PropTypes.string.isRequired,
-            name: PropTypes.string.isRequired,
-            type: PropTypes.string.isRequired,
-            proteins: PropTypes.number,
-            fat: PropTypes.number,
-            carbohydrates: PropTypes.number,
-            calories: PropTypes.number,
-            price: PropTypes.number.isRequired,
-            image: PropTypes.string,
-            image_mobile: PropTypes.string.isRequired,
-            image_large: PropTypes.string,
-            __v: PropTypes.number
-        })
-    ).isRequired
+    data: PropTypes.arrayOf(contractorElementType).isRequired
 }
 
 export default BurgerConstructor;

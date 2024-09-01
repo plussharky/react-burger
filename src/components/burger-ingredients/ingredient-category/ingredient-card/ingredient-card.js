@@ -1,9 +1,9 @@
 import React, { useState, useCallback } from 'react';
 import styles from './ingredient-card.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
-import PropTypes from 'prop-types';
 import Modal from '../../../modal/modal';
 import IngredientDetails from './ingredient-detalis/ingredient-details';
+import { ingredientType } from '../../../../utils/types'
 
 const IngredientCard = ({ item }) => {
     const [isModalVisible, setModalVisible] = useState(false);
@@ -32,20 +32,7 @@ const IngredientCard = ({ item }) => {
 };
 
 IngredientCard.propTypes = { 
-    item: PropTypes.exact({
-        _id: PropTypes.string,
-        name: PropTypes.string.isRequired,
-        type: PropTypes.string,
-        proteins: PropTypes.number.isRequired,
-        fat: PropTypes.number.isRequired,
-        carbohydrates: PropTypes.number.isRequired,
-        calories: PropTypes.number.isRequired,
-        price: PropTypes.number.isRequired,
-        image: PropTypes.string.isRequired,
-        image_mobile: PropTypes.string,
-        image_large: PropTypes.string.isRequired,
-        __v: PropTypes.number
-    })
+    item: ingredientType
 }
 
 export default IngredientCard;
