@@ -1,0 +1,46 @@
+.burgerConstructor {
+    padding-top: 100px;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+.price {
+    composes: text text_type_digits-medium from global;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.constructorFooter {
+    margin-top: 40px;
+    margin-right: 16px; 
+    display: flex;
+    justify-content: end;
+}
+
+.button {
+    margin: 16px;
+}
+
+.componentContainer {
+    max-height: 500px; 
+    overflow-y: scroll;
+    display: flex; 
+    flex-direction: column; 
+    gap: 16px;
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+@media (max-width: 768px) {
+    .ingredientsContainer {
+        max-height: 300px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .ingredientsContainer {
+        max-height: 500px;
+    }
+}

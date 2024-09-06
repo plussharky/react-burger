@@ -1,0 +1,42 @@
+header {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-content: center;
+  align-items: center;
+  justify-items: center;
+  background-color: #1C1C21;
+}
+
+
+.nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  white-space: nowrap;
+  gap: 8px;
+  padding: 20px;
+  margin: 16px 4px;
+  color: rgba(255, 255, 255, 0.50);
+}
+
+.logo {
+
+}
+
+.account {
+  composes: button;
+}
+
+.burgerConstructor {
+  composes: button;
+}
+
+.orders {
+  composes: button;
+}
