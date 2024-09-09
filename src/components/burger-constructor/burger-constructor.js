@@ -7,27 +7,35 @@ import OrderDetails from '../order-details/order-details';
 import OrderDetaildsData from '../../utils/odrer-details-data';
 import BunElement from './bun-element/bun-element'
 import { contractorElementType } from '../../utils/types';
+import { useDispatch, useSelector } from 'react-redux';
+import { createOrder } from '../../services/order-reducer';
 
 const BurgerConstructor = ({data}) => {
+    const dispatch = useDispatch();
+    const { number, loading, error } = useSelector(store => store.order);
+
     const [isShowOrderDetails, setShowOrderDetails] = useState(false);
 
     const toggleOrderDetails = useCallback(() => {
         setShowOrderDetails((prev) => !prev);
+        if (!number && !loading) {
+            dispatch(createOrder([bun, ...ingredients, bun]));
+        }
     }, []);
 
     const bun = useMemo(() => data.find((item) => item.type === 'bun'), [data]);
     const ingredients = useMemo(() => data.filter((item) => item.type !== 'bun'), [data]);
 
     const IngredientsElement = () => (
-    ingredients.map(item => (
-        <ConstructorElement
-        key={item._id}
-        text={item.name}
-        price={item.price}
-        thumbnail={item.image}
-        />
-    ))
-      );
+        ingredients.map(item => (
+            <ConstructorElement
+            key={item._id}
+            text={item.name}
+            price={item.price}
+            thumbnail={item.image}
+            />
+        ))
+    );
 
     const getTotalPrice = useMemo(() => {
         let sum = ingredients.reduce((acc, item) => acc + item.price, 0);
