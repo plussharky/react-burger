@@ -24,6 +24,7 @@
 }
 
 .componentContainer {
+    min-height: 500px; 
     max-height: 500px; 
     overflow-y: scroll;
     display: flex; 
@@ -33,14 +34,19 @@
     margin-bottom: 16px;
 }
 
+.constructorElement {
+    flex-grow: 0;
+}
+
 @media (max-width: 768px) {
     .ingredientsContainer {
-        max-height: 300px;
+        max-height: 700px;
     }
+
 }
 
 @media (min-width: 1024px) {
     .ingredientsContainer {
-        max-height: 500px;
+        min-height: 500px;
     }
 }

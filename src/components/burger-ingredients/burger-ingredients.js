@@ -4,7 +4,7 @@ import IngredientCtegory from './ingredient-category/ingredient-category';
 import Tabs from './ingredient-tab/ingredient-tabs';
 import PropTypes from 'prop-types';
 import { ingredientType } from '../../utils/types';
-import { current } from '@reduxjs/toolkit';
+import { v4 as uuidv4 } from 'uuid';
 
 const BurgerIngredients = ({data}) => {  
     const [activeTab, setActiveTab] = useState("bun");
@@ -48,7 +48,7 @@ const BurgerIngredients = ({data}) => {
             <div className={styles.ingredientsContainer} onScroll={handleScroll}>
                 {categories.map((category) => (
                     <IngredientCtegory 
-                        key={category.name}
+                        key={uuidv4()}
                         categoryName={category.name} 
                         items={category.ingredients}
                         ref={category.ref}

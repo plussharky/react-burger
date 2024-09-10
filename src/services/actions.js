@@ -8,7 +8,6 @@ export const loadIngredients = () => (dispatch) =>{
     dispatch({
         type: INGREDIENTS_LOADING
     });
-    console.log("запрос пошел")
 
     return getIngredients()
         .then(res => {

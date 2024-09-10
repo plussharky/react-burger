@@ -12,9 +12,7 @@ function App() {
   const { ingredients, loading, error } = useSelector(store => store.ingredients)
 
   useEffect(() => {
-    console.log("useEffect вызван");
     dispatch(loadIngredients());
-    console.log("Вызвали диспатч")
   }, []);
 
   if (loading) {
@@ -34,7 +32,7 @@ function App() {
       <AppHeader />
         <main className={styles.burgerAssembly}>
           <BurgerIngredients data={ingredients}/> 
-          <BurgerConstructor data={ingredients}/>
+          <BurgerConstructor/>
         </main>
     </div>
   );

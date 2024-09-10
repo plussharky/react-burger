@@ -4,6 +4,7 @@ import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-c
 import Modal from '../../../modal/modal';
 import IngredientDetails from './ingredient-detalis/ingredient-details';
 import { ingredientType } from '../../../../utils/types'
+import { useDrag } from 'react-dnd';
 
 const IngredientCard = ({ item }) => {
     const [isModalVisible, setModalVisible] = useState(false);
@@ -12,8 +13,20 @@ const IngredientCard = ({ item }) => {
         setModalVisible((prev) => !prev);
     }, []);
 
+    const [{ isDragging }, dragRef] = useDrag({
+        type: 'ingredient',
+        item: { item },
+        collect: (monitor) => ({
+            isDragging: monitor.isDragging(),
+        }),
+    });
+
     return (
-        <div className={styles.card} onClick={toggleModal}>
+        <div 
+            className={styles.card} 
+            onClick={toggleModal}
+            ref={dragRef}
+        >
             {isModalVisible && 
                 <Modal 
                     title="Детали ингредиента"
