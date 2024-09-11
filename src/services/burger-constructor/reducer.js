@@ -1,9 +1,10 @@
-import { ADD_BUN, ADD_INGREDIENT } from "./actions";
+import { ADD_BUN, ADD_INGREDIENT, MOVE_INGREDIENT } from "./actions";
 
 const initialState = {
     bun : null,
     ingredients: []
 }
+
 
 export const burgerConstructorReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -16,6 +17,17 @@ export const burgerConstructorReducer = (state = initialState, action) => {
             return {
                 ...state,
                 bun: action.payload
+            };
+        case MOVE_INGREDIENT:
+            const ingredients = [...state.ingredients];
+            ingredients.splice(
+                action.payload.toIndex, 
+                0, 
+                ingredients.splice(action.payload.fromIndex, 1)[0]
+            );
+            return {
+                ...state,
+                ingredients: ingredients
             };
         default:
             return state;

@@ -26,7 +26,7 @@ export const postOrder = (ingredients) => {
     return fetch(orderApiConfig.baseUrl, {
         method: orderApiConfig.method,
         headers: orderApiConfig.headers,
-        body: JSON.stringify(ingredients)
+        body: JSON.stringify({ingredients})
     })
     .then(getResponse);
 };

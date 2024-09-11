@@ -1,4 +1,4 @@
-import { getIngredients } from "../utils/ingredients-api";
+import { getIngredients } from "../../utils/ingredients-api";
 
 export const INGREDIENTS_LOAD_SUCCESS = "INGREDIENTS_LOAD_SUCCESS";
 export const INGREDIENTS_LOADING = "INGREDIENTS_LOADING";
