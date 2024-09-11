@@ -5,10 +5,11 @@ import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import OrderDetaildsData from '../../utils/odrer-details-data';
 import { useDispatch, useSelector } from 'react-redux';
-import { createOrder } from '../../services/order-reducer';
+import { createOrder } from '../../services/order/actions';
 import { v4 as uuidv4 } from 'uuid';
 import { useDrop } from 'react-dnd';
 import { ADD_BUN, ADD_INGREDIENT } from '../../services/burger-constructor/actions';
+import IngredientElement from './ingredient-element/ingredient-element';
 
 const BurgerConstructor = () => {
     const dispatch = useDispatch();
@@ -20,27 +21,15 @@ const BurgerConstructor = () => {
     const toggleOrderDetails = useCallback(() => {
         setShowOrderDetails((prev) => !prev);
         if (!number && !loading) {
-            dispatch(createOrder([bun, ...ingredients, bun]));
+            dispatch(createOrder([bun._id, ...ingredients.map(i => i._id), bun._id]));
         }
-    }, []);
-
-    const IngredientsElement = () => (
-        ingredients.map(item => (
-            <ConstructorElement
-                key={uuidv4()}
-                text={item.name}
-                price={item.price}
-                thumbnail={item.image}
-                extraClass={styles.constructorElement}
-            />
-        ))
-    );
+    }, [bun, ingredients]);
 
     const [, dropIngredientRef] = useDrop({
         accept: 'ingredient',
         drop: ({item}) => {
             dispatch({
-                type: item.type == "bun" ? ADD_BUN : ADD_INGREDIENT,
+                type: item.type === "bun" ? ADD_BUN : ADD_INGREDIENT,
                 payload: item
             });
         },
@@ -69,6 +58,7 @@ const BurgerConstructor = () => {
                         type='top'
                         price={bun.price}
                         thumbnail={bun.image}
+                        isLocked={true}
                         extraClass={styles.constructorElement}
                         />
                     : <ConstructorElement type='top'/>
@@ -77,7 +67,14 @@ const BurgerConstructor = () => {
             <div className={styles.componentContainer}> 
                 {ingredients.length == 0 
                     ? <p>Перетащите ингредиенты в конструктор</p>
-                    : (<IngredientsElement />)
+                    : ingredients.map((item, index) => (
+                        <IngredientElement
+                            name={item.name}
+                            price={item.price}
+                            image={item.image}
+                            index={index}
+                        />
+                    ))
                 }
             </div>
             <div>
@@ -88,6 +85,7 @@ const BurgerConstructor = () => {
                         type='bottom'
                         price={bun.price}
                         thumbnail={bun.image}
+                        isLocked={true}
                         extraClass={styles.constructorElement}
                         />
                     : <ConstructorElement type='bottom'/>
