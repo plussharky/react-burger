@@ -9,18 +9,28 @@ import { createOrder } from '../../services/order/actions';
 import { v4 as uuidv4 } from 'uuid';
 import { useDrop } from 'react-dnd';
 import { ADD_BUN, ADD_INGREDIENT } from '../../services/burger-constructor/actions';
+import { ORDER_CREATE_ERROR } from '../../services/order/actions'
 import IngredientElement from './ingredient-element/ingredient-element';
 
 const BurgerConstructor = () => {
     const dispatch = useDispatch();
-    const { number, loading } = useSelector(store => store.order);
+    const { number, loading, error } = useSelector(store => store.order);
     const { bun, ingredients } = useSelector(store => store.burgerConstructor);
 
     const [isShowOrderDetails, setShowOrderDetails] = useState(false);
 
     const toggleOrderDetails = useCallback(() => {
         setShowOrderDetails((prev) => !prev);
-        if (!number && !loading) {
+        if (!bun || ingredients.length == 0) {
+            dispatch({
+                type: ORDER_CREATE_ERROR,
+                payload: `Чтобы сделать заказ сделайте следующее: 
+                ${bun ? "" : "\nдобавьте булку"} 
+                ${ingredients.length > 0 ? "" : "\nдобавьте ингредиенты"}`
+            });
+            return;
+        }
+        if (!number && !loading && bun && ingredients.length > 0) {
             dispatch(createOrder([bun._id, ...ingredients.map(i => i._id), bun._id]));
         }
     }, [bun, ingredients]);
@@ -47,7 +57,9 @@ const BurgerConstructor = () => {
         <div className={styles.burgerConstructor} ref={dropIngredientRef}>
             {isShowOrderDetails && (
                 <Modal onClose={toggleOrderDetails}>
-                    <OrderDetails order={OrderDetaildsData}/>
+                    { error 
+                    ? <p>❌Ошибка! {error}</p>
+                    : <OrderDetails order={OrderDetaildsData}/>}
                 </Modal>
             )}
             <div>

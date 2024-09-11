@@ -1,7 +1,7 @@
 import {
     ORDER_CREATE_LOADING, 
     ORDER_CREATE_ERROR, 
-    ORDER_CREATE_SUCCESS} from './actions'
+    ORDER_CREATE_SUCCESS } from './actions'
 
 const initialState = {
     number: null,

@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 import styles from './ingredient-element.module.css'
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDispatch, useSelector } from 'react-redux';
-import { MOVE_INGREDIENT } from '../../../services/burger-constructor/actions'
+import { useDispatch } from 'react-redux';
+import { MOVE_INGREDIENT, DELETE_INGREDIENT } from '../../../services/burger-constructor/actions'
 
 const IngredientElement = ({name, price, image, index}) => {
     const dispatch = useDispatch();
@@ -20,7 +20,7 @@ const IngredientElement = ({name, price, image, index}) => {
         }),
     })
 
-    const [{ hoverID }, drop] = useDrop({
+    const [, drop] = useDrop({
         accept: 'sortableIngredient',
         hover: (item, monitor) => {
             if (!ref.current) {
@@ -54,6 +54,13 @@ const IngredientElement = ({name, price, image, index}) => {
         }
     })
 
+    const handleDelete = () => {
+        dispatch({
+            type: DELETE_INGREDIENT,
+            payload: index
+        })
+    }
+
     drag(drop(ref));
 
     const opacity = isDragging ? 0 : 1;
@@ -67,6 +74,7 @@ const IngredientElement = ({name, price, image, index}) => {
                 thumbnail={image}
                 extraClass={styles.constructorElement}
                 style={{opacity}}
+                handleClose={handleDelete}
                 draggable
             />
         </div>
@@ -77,6 +85,7 @@ IngredientElement.propTypes = {
     name: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
     image: PropTypes.string.isRequired,
+    index: PropTypes.number.isRequired,
 }
 
 export default IngredientElement;

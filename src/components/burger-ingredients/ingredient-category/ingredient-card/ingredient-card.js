@@ -1,14 +1,15 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import styles from './ingredient-card.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../../../modal/modal';
 import IngredientDetails from './ingredient-detalis/ingredient-details';
 import { ingredientType } from '../../../../utils/types'
 import { useDrag } from 'react-dnd';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const IngredientCard = ({ item }) => {
-    const [isModalVisible, setModalVisible] = useState(false);
+    const dispatch = useDispatch();
+    const [ isModalVisible, setModalVisible ] = useState(false);
     const { bun, ingredients } = useSelector(store => store.burgerConstructor);
 
     const toggleModal = useCallback(() => {
