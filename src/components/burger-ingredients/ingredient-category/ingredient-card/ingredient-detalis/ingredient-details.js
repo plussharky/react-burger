@@ -24,7 +24,7 @@ const IngredientDetails = ({item}) => {
                 });
             }
         }
-    }, [item])
+    }, [item, dispatch])
 
     if (!item) {
         return null;

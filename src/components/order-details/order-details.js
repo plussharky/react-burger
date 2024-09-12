@@ -7,11 +7,11 @@ const OrderDetails = () => {
     const { number, loading, error } = useSelector(store => store.order);
 
     if (loading) {
-        <p>⌛Отправляем заказ на сервер...</p>
+        return (<p>⌛Отправляем заказ на сервер...</p>)
     }
 
     if (error) {
-        <p>❌Что-то пошло не так, поробуйте отпарвить запрос еще раз</p>
+        return (<p>❌Что-то пошло не так, поробуйте отпарвить запрос еще раз</p>)
     }
 
     return (

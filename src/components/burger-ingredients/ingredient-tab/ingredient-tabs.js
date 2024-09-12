@@ -1,4 +1,4 @@
-import {useState, useCallback, useMemo, forwardRef} from 'react';
+import { forwardRef } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import TranslationMap from '../../../utils/translation-map';
 import styles from './ingredient-tabs.module.css'

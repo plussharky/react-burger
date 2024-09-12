@@ -3,12 +3,10 @@ import styles from './burger-constructor.module.css';
 import { CurrencyIcon, Button, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
-import OrderDetaildsData from '../../utils/odrer-details-data';
 import { useDispatch, useSelector } from 'react-redux';
 import { createOrder } from '../../services/order/actions';
-import { v4 as uuidv4 } from 'uuid';
 import { useDrop } from 'react-dnd';
-import { ADD_BUN, ADD_INGREDIENT } from '../../services/burger-constructor/actions';
+import { addBun, addIngredient } from '../../services/burger-constructor/actions';
 import { ORDER_CREATE_ERROR } from '../../services/order/actions'
 import IngredientElement from './ingredient-element/ingredient-element';
 
@@ -21,7 +19,7 @@ const BurgerConstructor = () => {
 
     const toggleOrderDetails = useCallback(() => {
         setShowOrderDetails((prev) => !prev);
-        if (!bun || ingredients.length == 0) {
+        if (!bun || ingredients.length === 0) {
             dispatch({
                 type: ORDER_CREATE_ERROR,
                 payload: `Чтобы сделать заказ сделайте следующее: 
@@ -33,15 +31,14 @@ const BurgerConstructor = () => {
         if (!number && !loading && bun && ingredients.length > 0) {
             dispatch(createOrder([bun._id, ...ingredients.map(i => i._id), bun._id]));
         }
-    }, [bun, ingredients]);
+    }, [bun, ingredients, dispatch, loading, number]);
 
     const [, dropIngredientRef] = useDrop({
         accept: 'ingredient',
         drop: ({item}) => {
-            dispatch({
-                type: item.type === "bun" ? ADD_BUN : ADD_INGREDIENT,
-                payload: item
-            });
+            item.type === "bun" 
+            ? dispatch(addBun(item)) 
+            : dispatch(addIngredient(item));
         },
     });
 
@@ -59,13 +56,13 @@ const BurgerConstructor = () => {
                 <Modal onClose={toggleOrderDetails}>
                     { error 
                     ? <p>❌Ошибка! {error}</p>
-                    : <OrderDetails order={OrderDetaildsData}/>}
+                    : <OrderDetails/>}
                 </Modal>
             )}
             <div>
                 {bun 
                     ? <ConstructorElement
-                        key={uuidv4()}
+                        key={bun.uniqueId}
                         text={`${bun.name} (верх)`}
                         type='top'
                         price={bun.price}
@@ -77,10 +74,11 @@ const BurgerConstructor = () => {
                 }
             </div>
             <div className={styles.componentContainer}> 
-                {ingredients.length == 0 
+                {ingredients.length === 0 
                     ? <p>Перетащите ингредиенты в конструктор</p>
                     : ingredients.map((item, index) => (
                         <IngredientElement
+                            key={item.uniqueId}
                             name={item.name}
                             price={item.price}
                             image={item.image}
@@ -92,7 +90,7 @@ const BurgerConstructor = () => {
             <div>
                 {bun 
                     ? <ConstructorElement
-                        key={uuidv4()}
+                        key={bun.uniqueId}
                         text={`${bun.name} (низ)`}
                         type='bottom'
                         price={bun.price}

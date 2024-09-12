@@ -1,26 +1,13 @@
+import { BASE_URL } from './api-config'
+import { getResponse } from "./fetchUtils";
+
 const orderApiConfig = {
-    baseUrl: "https://norma.nomoreparties.space/api/orders",
+    baseUrl: BASE_URL + "/orders",
     method: 'POST',
     headers: {
         'Content-Type': 'application/json',
     },
 }
-
-const getResponse = (res) => {
-    if (res.ok) {
-      return res.json()
-        .then((response) => {
-            if(response.success) {
-                return response;
-            }
-            else {
-                return Promise.reject(`Ошибка сервер вернул ответ с ошибкой`); 
-            }
-        });
-    }
-
-    return Promise.reject(`Ошибка ${res.status}`); 
-};
 
 export const postOrder = (ingredients) => {
     return fetch(orderApiConfig.baseUrl, {
