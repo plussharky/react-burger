@@ -30,9 +30,9 @@ const BurgerIngredients = () => {
         const getfiltredIngredients = (type) => ingredients.filter(item => item.type === type);
 
        return [
-        {name: "bun", ref: bunsRef, ingredients: getfiltredIngredients("bun"), distanceToTabs: getDistanceToTabs(bunsRef)},
-        {name: "main", ref: mainsRef, ingredients: getfiltredIngredients("main"), distanceToTabs: getDistanceToTabs(mainsRef)},
-        {name: "sauce", ref: saucesRef, ingredients: getfiltredIngredients("sauce"), distanceToTabs: getDistanceToTabs(saucesRef)},
+        {id: uuidv4(), name: "bun", ref: bunsRef, ingredients: getfiltredIngredients("bun"), distanceToTabs: getDistanceToTabs(bunsRef)},
+        {id: uuidv4(), name: "main", ref: mainsRef, ingredients: getfiltredIngredients("main"), distanceToTabs: getDistanceToTabs(mainsRef)},
+        {id: uuidv4(), name: "sauce", ref: saucesRef, ingredients: getfiltredIngredients("sauce"), distanceToTabs: getDistanceToTabs(saucesRef)},
        ]
     }, [ingredients, getDistanceToTabs]);
 
@@ -68,7 +68,7 @@ const BurgerIngredients = () => {
             <div className={styles.ingredientsContainer} onScroll={handleScroll}>
                 {categories.map((category) => (
                     <IngredientCtegory 
-                        key={uuidv4()}
+                        key={category.id}
                         categoryName={category.name} 
                         items={category.ingredients}
                         ref={category.ref}
