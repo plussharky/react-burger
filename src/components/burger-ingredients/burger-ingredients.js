@@ -1,4 +1,4 @@
-import React, {useMemo, useState, useRef, useCallback, useEffect} from 'react';
+import React, { useMemo, useState, useRef, useCallback, useEffect } from 'react';
 import styles from './burger-ingredients.module.css';
 import IngredientCtegory from './ingredient-category/ingredient-category';
 import Tabs from './ingredient-tab/ingredient-tabs';
@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useDispatch, useSelector } from "react-redux";
 import { loadIngredients } from '../../services/ingredients/actions'
 
-const BurgerIngredients = () => {  
+const BurgerIngredients = () => {
     const dispatch = useDispatch();
     const [activeTab, setActiveTab] = useState("bun");
     const { ingredients, loading, error } = useSelector(store => store.ingredients)
@@ -16,42 +16,39 @@ const BurgerIngredients = () => {
     const bunsRef = useRef(null);
     const mainsRef = useRef(null);
     const saucesRef = useRef(null);
-  
-    useEffect(() => {
-      dispatch(loadIngredients());
-    }, [dispatch]);
 
-    const getDistanceToTabs = useCallback((categoryRef) => {
-        if (!categoryRef.current || !tabsRef.current) return Infinity;
-        return Math.abs(categoryRef.current.getBoundingClientRect().top - tabsRef.current.getBoundingClientRect().bottom)
-    }, [tabsRef]);
+    useEffect(() => {
+        dispatch(loadIngredients());
+    }, [dispatch]);
 
     const categories = useMemo(() => {
         const getfiltredIngredients = (type) => ingredients.filter(item => item.type === type);
 
-       return [
-        {id: uuidv4(), name: "bun", ref: bunsRef, ingredients: getfiltredIngredients("bun"), distanceToTabs: getDistanceToTabs(bunsRef)},
-        {id: uuidv4(), name: "main", ref: mainsRef, ingredients: getfiltredIngredients("main"), distanceToTabs: getDistanceToTabs(mainsRef)},
-        {id: uuidv4(), name: "sauce", ref: saucesRef, ingredients: getfiltredIngredients("sauce"), distanceToTabs: getDistanceToTabs(saucesRef)},
-       ]
-    }, [ingredients, getDistanceToTabs]);
+        return [
+            { name: "bun", ref: bunsRef, ingredients: getfiltredIngredients("bun") },
+            { name: "main", ref: mainsRef, ingredients: getfiltredIngredients("main") },
+            { name: "sauce", ref: saucesRef, ingredients: getfiltredIngredients("sauce") },
+        ]
+    }, [ingredients]);
 
     const categoryNames = useMemo(() => categories.map(c => c.name), [categories]);
 
-    
     const handleScroll = useCallback(() => {
-        categories.forEach(category => category.distanceToTabs = getDistanceToTabs(category.ref))
+        const distances = categories.map(category => ({
+            name: category.name,
+            distance: Math.abs(category.ref.current.getBoundingClientRect().top - tabsRef.current.getBoundingClientRect().bottom)
+        }));
 
-        const closestCategory = categories.reduce((closest, current) => 
-            current.distanceToTabs < closest.distanceToTabs ? current : closest
+        const closestCategory = distances.reduce((closest, current) =>
+            current.distance < closest.distance ? current : closest
         );
 
         setActiveTab(closestCategory.name);
-    }, [categories, getDistanceToTabs]);
+    }, [categories]);
 
     const handleOnClickTab = (tabName) => {
         const category = categories.find(c => c.name === tabName);
-        if (!category && !category.ref.current) {
+        if (!category || !category.ref.current) {
             return;
         }
         category.ref.current.scrollIntoView({ behavior: 'smooth' });
@@ -62,39 +59,35 @@ const BurgerIngredients = () => {
         return <h2>Загрузка...</h2>
     }
 
-    if(!loading && error) {
+    if (!loading && error) {
         return <p>🛜Произошла ошибка при загрузке. Проверьте интернет-соединение и перезагрузите страницу</p>
     }
-    
-    if (ingredients.length === 0){
+
+    if (ingredients.length === 0) {
         return <p>Список ингредиентов пуст🤔</p>
     }
 
     return (
         <div>
             <p className={styles.title}>Соберите бургер</p>
-            <Tabs 
-                categories={categoryNames} 
-                activeTab={activeTab} 
-                handleOnClickTab={handleOnClickTab} 
+            <Tabs
+                categories={categoryNames}
+                activeTab={activeTab}
+                handleOnClickTab={handleOnClickTab}
                 ref={tabsRef}
             />
             <div className={styles.ingredientsContainer} onScroll={handleScroll}>
                 {categories.map((category) => (
-                    <IngredientCtegory 
-                        key={category.id}
-                        categoryName={category.name} 
+                    <IngredientCtegory
+                        key={category.name}
+                        categoryName={category.name}
                         items={category.ingredients}
                         ref={category.ref}
                     />
                 ))}
             </div>
         </div>
-    )  
-}
-
-BurgerIngredients.propTypes = { 
-    data: PropTypes.arrayOf(ingredientType).isRequired
+    )
 }
 
 export default BurgerIngredients;
