@@ -4,7 +4,7 @@ import TranslationMap from '../../../utils/translation-map';
 import styles from './ingredient-tabs.module.css'
 import PropTypes from 'prop-types';
 
-const Tabs = forwardRef(({categories, activeTab}, ref) => {
+const Tabs = forwardRef(({categories, activeTab, handleOnClickTab}, ref) => {
   return (
     <div className={styles.tabs} ref={ref}>
       {categories.map(category => (
@@ -12,6 +12,7 @@ const Tabs = forwardRef(({categories, activeTab}, ref) => {
           key={category}
           value={category} 
           active={category === activeTab} 
+          onClick={handleOnClickTab}
         >
           {(TranslationMap[category] || category)}
         </Tab>

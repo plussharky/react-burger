@@ -49,6 +49,15 @@ const BurgerIngredients = () => {
         setActiveTab(closestCategory.name);
     }, [categories, getDistanceToTabs]);
 
+    const handleOnClickTab = (tabName) => {
+        const category = categories.find(c => c.name === tabName);
+        if (!category && !category.ref.current) {
+            return;
+        }
+        category.ref.current.scrollIntoView({ behavior: 'smooth' });
+        setActiveTab(tabName);
+    }
+
     if (loading) {
         return <h2>Загрузка...</h2>
     }
@@ -64,7 +73,12 @@ const BurgerIngredients = () => {
     return (
         <div>
             <p className={styles.title}>Соберите бургер</p>
-            <Tabs categories={categoryNames} activeTab={activeTab} ref={tabsRef}/>
+            <Tabs 
+                categories={categoryNames} 
+                activeTab={activeTab} 
+                handleOnClickTab={handleOnClickTab} 
+                ref={tabsRef}
+            />
             <div className={styles.ingredientsContainer} onScroll={handleScroll}>
                 {categories.map((category) => (
                     <IngredientCtegory 
