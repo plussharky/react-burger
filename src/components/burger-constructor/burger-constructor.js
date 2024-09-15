@@ -1,55 +1,126 @@
 import React, { useMemo, useState, useCallback } from 'react';
 import styles from './burger-constructor.module.css';
 import { CurrencyIcon, Button, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
-import PropTypes from 'prop-types';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
-import OrderDetaildsData from '../../utils/odrer-details-data';
-import BunElement from './bun-element/bun-element'
-import { contractorElementType } from '../../utils/types';
+import { useDispatch, useSelector } from 'react-redux';
+import { createOrder } from '../../services/order/actions';
+import { useDrop } from 'react-dnd';
+import { addBun, addIngredient } from '../../services/burger-constructor/actions';
+import { ORDER_CREATE_ERROR } from '../../services/order/actions'
+import IngredientElement from './ingredient-element/ingredient-element';
 
-const BurgerConstructor = ({data}) => {
+const BurgerConstructor = () => {
+    const dispatch = useDispatch();
+    const { number, loading, error } = useSelector(store => store.order);
+    const { bun, ingredients } = useSelector(store => store.burgerConstructor);
+
     const [isShowOrderDetails, setShowOrderDetails] = useState(false);
 
     const toggleOrderDetails = useCallback(() => {
         setShowOrderDetails((prev) => !prev);
-    }, []);
+        if (!bun || ingredients.length === 0) {
+            dispatch({
+                type: ORDER_CREATE_ERROR,
+                payload: `Чтобы сделать заказ сделайте следующее: 
+                ${bun ? "" : "\nдобавьте булку"} 
+                ${ingredients.length > 0 ? "" : "\nдобавьте ингредиенты"}`
+            });
+            return;
+        }
+        if (!number && !loading && bun && ingredients.length > 0) {
+            dispatch(createOrder([bun._id, ...ingredients.map(i => i._id), bun._id]));
+        }
+    }, [bun, ingredients, dispatch, loading, number]);
 
-    const bun = useMemo(() => data.find((item) => item.type === 'bun'), [data]);
-    const ingredients = useMemo(() => data.filter((item) => item.type !== 'bun'), [data]);
-
-    const IngredientsElement = () => (
-    ingredients.map(item => (
-        <ConstructorElement
-        key={item._id}
-        text={item.name}
-        price={item.price}
-        thumbnail={item.image}
-        />
-    ))
-      );
+    const [{isOverIngredients, draggingIgredient}, dropIngredientRef] = useDrop({
+        accept: 'ingredient',
+        drop: ({item}) => {
+            if (!item || !item.type) return;
+            item.type === "bun" ? dispatch(addBun(item)) : dispatch(addIngredient(item));
+        },
+        collect: (monitor) => ({
+            isOverIngredients: monitor.isOver(),
+            draggingIgredient: monitor.getItem()
+        }),
+    });
 
     const getTotalPrice = useMemo(() => {
-        let sum = ingredients.reduce((acc, item) => acc + item.price, 0);
-        if (bun) {
-            sum += bun.price * 2;
-        }
-        return sum;
+        const ingredientsPrice = ingredients.reduce((acc, item) => acc + item.price, 0);
+        const bunPrice = bun ? bun.price * 2 : 0;
+        return ingredientsPrice + bunPrice;
     }, [bun, ingredients]);
 
+    const bunElement = useCallback((type) => {
+        const isDraggingBun = draggingIgredient?.item?.type === 'bun';
+        const bunStyle = `${type === "top" ? styles.topBun : styles.bottomBun} 
+            ${isDraggingBun ? !isOverIngredients ? styles.glow : `${styles.border} ${styles.glow}` : ""}`;
+        return bun ? (
+                    <ConstructorElement
+                        key={bun.uniqueId}
+                        text={`${bun.name} ${type === "top" ? "(верх)" : "(низ)"}`}
+                        type={type}
+                        price={bun.price}
+                        thumbnail={bun.image}
+                        isLocked={true}
+                        extraClass={bunStyle}
+                    />
+                ) : (
+                    <div className={bunStyle}>
+                        <p>Перетащите булку в конструктор</p>
+                    </div>
+                )
+    }, [bun, isOverIngredients, draggingIgredient])
+
+    const ingredientsElement = useCallback(() => {
+        const isDraggingIngredient = draggingIgredient?.item?.type !== 'bun';
+        const ingredientStyle = ` ${isDraggingIngredient ? !isOverIngredients ? styles.glow : `${styles.border} ${styles.glow}` : ""}`;
+        return ingredients.length === 0 ? (
+                    <div className={`${styles.emptyIngredient} ${ingredientStyle}`}>
+                        <p>Перетащите ингредиенты в конструктор</p>
+                    </div>
+                ) : (
+                    <>
+                        {ingredients.map((item, index) => (
+                            <IngredientElement
+                                key={item.uniqueId}
+                                name={item.name}
+                                price={item.price}
+                                image={item.image}
+                                index={index}
+                            />
+                        ))}
+                        {isDraggingIngredient && isOverIngredients && 
+                            <ConstructorElement
+                                text={draggingIgredient.item.name}
+                                price={draggingIgredient.item.price}
+                                thumbnail={draggingIgredient.item.image}
+                                extraClass={`${ingredientStyle}`}
+                                draggable
+                            />
+                        }
+                    </>
+                )
+    }, [ingredients, isOverIngredients, draggingIgredient]);
 
     return (
-        <div className={styles.burgerConstructor}>
+        <div className={styles.burgerConstructor} ref={dropIngredientRef}>
             {isShowOrderDetails && (
                 <Modal onClose={toggleOrderDetails}>
-                    <OrderDetails order={OrderDetaildsData}/>
+                    { error 
+                    ? <p>❌Ошибка! {error}</p>
+                    : <OrderDetails/>}
                 </Modal>
             )}
-            <BunElement bunType="top" bun={bun}/>
-            <div className={styles.componentContainer}> 
-                <IngredientsElement />
+            <div>
+                {bunElement("top")}
             </div>
-            <BunElement bunType="bottom" bun={bun}/>
+            <div className={styles.componentContainer}> 
+                {ingredientsElement()}
+            </div>
+            <div>
+                {bunElement("bottom")}
+            </div>
             <div className={styles.constructorFooter}>
                 <div className={styles.price}>
                     <span>{getTotalPrice}</span>
@@ -67,10 +138,6 @@ const BurgerConstructor = ({data}) => {
             </div>
         </div>
     ) 
-}
-
-BurgerConstructor.propTypes = { 
-    data: PropTypes.arrayOf(contractorElementType).isRequired
 }
 
 export default BurgerConstructor;
