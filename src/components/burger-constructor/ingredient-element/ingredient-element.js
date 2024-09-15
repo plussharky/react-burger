@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react';
+import { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd'
 import PropTypes from 'prop-types';
 import styles from './ingredient-element.module.css'
@@ -10,12 +10,9 @@ const IngredientElement = ({name, price, image, index}) => {
     const dispatch = useDispatch();
     const ref = useRef(null);
 
-    const [{ isDragging }, drag] = useDrag({
+    const [, drag] = useDrag({
         type: 'sortableIngredient',
-        item: { index },
-        collect: (monitor) => ({
-            isDragging: monitor.isDragging(),
-        }),
+        item: { type: 'ingredient', index },
     })
 
     const [, drop] = useDrop({

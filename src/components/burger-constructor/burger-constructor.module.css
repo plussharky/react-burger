@@ -4,6 +4,53 @@
     padding-right: 16px;
 }
 
+.burgerComponent {
+    padding: 16px 24px;
+    display: flex;
+    justify-content: center;
+    border-radius: var(--common-border-radius-s);
+    background: var(--background-element);
+    max-width: 536px;
+    width: 100%;
+    min-width: 536px;
+    min-height: 80px;
+    max-height: 84px;
+    font-family: 'Jet Brains Mono';
+    font-size: 16px;
+    line-height: 24px;
+    color: #F2F2F3;
+    flex-grow: 0;
+    box-sizing: border-box;
+    border: 2px solid rgba(255, 255, 255, 0);
+}
+
+.emptyIngredient {
+    composes: burgerComponent;
+    border-radius: var(--common-border-radius-s);
+    max-width: 530px;
+    max-height: 80px;
+}
+
+.topBun {
+    composes: burgerComponent;
+    border-radius: var(--top-constructor-item-border-radius);
+}
+
+.bottomBun {
+    composes: burgerComponent;
+    border-radius: var(--bottom-constructor-item-border-radius);
+}
+
+.glow {
+    box-shadow: 
+        0px 4px 32px rgba(51, 51, 255, 0.5),
+        0px 0px 8px rgba(51, 51, 255, 0.25);
+}
+
+.border {
+    border: 2px solid rgba(51, 51, 255, 0.5); 
+}
+
 .price {
     composes: text text_type_digits-medium from global;
     display: flex;
@@ -24,8 +71,7 @@
 }
 
 .componentContainer {
-    min-height: 400px; 
-    max-height: 400px; 
+    max-height: 350px; 
     overflow-y: scroll;
     display: flex; 
     flex-direction: column; 
@@ -40,7 +86,7 @@
 
 @media (max-width: 768px) {
     .ingredientsContainer {
-        max-height: 600px;
+        max-height: 700px;
     }
 
 }
