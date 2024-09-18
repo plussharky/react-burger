@@ -15,12 +15,9 @@ const IngredientCard = ({ item }) => {
         setModalVisible((prev) => !prev);
     }, []);
 
-    const [{ isDragging }, dragRef] = useDrag({
+    const [, dragRef] = useDrag({
         type: 'ingredient',
-        item: { item },
-        collect: (monitor) => ({
-            isDragging: monitor.isDragging(),
-        }),
+        item: { item }
     });
 
     const count = useMemo(() => {

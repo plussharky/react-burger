@@ -2,9 +2,6 @@ import React, { useMemo, useState, useRef, useCallback, useEffect } from 'react'
 import styles from './burger-ingredients.module.css';
 import IngredientCtegory from './ingredient-category/ingredient-category';
 import Tabs from './ingredient-tab/ingredient-tabs';
-import PropTypes from 'prop-types';
-import { ingredientType } from '../../utils/types';
-import { v4 as uuidv4 } from 'uuid';
 import { useDispatch, useSelector } from "react-redux";
 import { loadIngredients } from '../../services/ingredients/actions'
 
