@@ -1,9 +1,10 @@
 import { useState } from 'react'
-import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import AppHeader from "../components/app-header/app-header";
 import styles from './login.module.css'
 
-const Login = () => {
+const Register = () => {
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -11,7 +12,14 @@ const Login = () => {
         <>
             <AppHeader />
             <div className={styles.container}>
-                <p className={styles.title}>Вход</p>
+                <p className={styles.title}>Регистрация</p>
+                <Input 
+                    type={'text'}
+                    placeholder={'Имя'}
+                    value={name}
+                    onChange={e => setName(e.target.value)}
+                    name={'name'}
+                />
                 <EmailInput 
                     value={email}
                     name={'email'}
@@ -24,29 +32,18 @@ const Login = () => {
                     onChange={e => setPassword(e.target.value)}
                 />
                 <Button htmlType="button" type="primary" size="large">
-                    Войти
+                    Зарегистрироваться
                 </Button>
                 <div className={styles.questions}>
                     <p className={styles.question}>
-                        Вы — новый пользователь?&nbsp;
+                        Уже зарегистрированы?&nbsp;
                         <Button 
                             htmlType="button"
                             type="secondary"
                             size="large"
                             extraClass={styles.button}
                         >
-                            Зарегистрироваться
-                        </Button>
-                    </p>
-                    <p className={styles.question}>
-                        Забыли пароль?&nbsp;
-                        <Button 
-                            htmlType="button" 
-                            type="secondary" 
-                            size="large"
-                            extraClass={styles.button}
-                        >
-                            Восстановить пароль
+                            Войти
                         </Button>
                     </p>
                 </div>
@@ -55,4 +52,4 @@ const Login = () => {
     );
 }
 
-export default Login;
+export default Register;
