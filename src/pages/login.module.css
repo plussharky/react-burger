@@ -2,7 +2,6 @@ body {
     overflow: hidden;
 }
 
-
 .container{
     min-height: 100vh;
     display: flex;
@@ -39,4 +38,6 @@ body {
 
 .button {
     padding: 0px;
+    text-decoration: none;
+    color: var(--colors-interface-accent);
 }

@@ -2,9 +2,27 @@ import { useState } from 'react'
 import { EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import AppHeader from "../components/app-header/app-header";
 import styles from './login.module.css'
+import { Link, useNavigate } from 'react-router-dom';
+import { forgotPassword } from '../utils/auth-api';
 
-const FogotPassword = () => {
+const ForgotPassword = () => {
+    const navigate = useNavigate();
     const [email, setEmail] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+
+    const onRestore = () => {
+        forgotPassword(email)
+            .then(() => localStorage.setItem("isBeenOnForgotPasswordPage", true))
+            .catch(error => {
+                const errorMsg = error.message || String(error);
+                setErrorMessage(errorMsg);
+            });
+        if (errorMessage)
+        {
+            return;
+        }
+        navigate("/reset-password");
+    }
 
     return (
         <>
@@ -18,20 +36,24 @@ const FogotPassword = () => {
                     isIcon={false}
                     onChange={e => setEmail(e.target.value)}
                 />
-                <Button htmlType="button" type="primary" size="large">
+                {errorMessage && <p>{errorMessage}</p>}
+                <Button 
+                    htmlType="button" 
+                    type="primary" 
+                    size="large"
+                    onClick={onRestore}
+                >
                     Восстановить
                 </Button>
                 <div className={styles.questions}>
                     <p className={styles.question}>
                         Вспомнили пароль?&nbsp;
-                        <Button 
-                            htmlType="button"
-                            type="secondary"
-                            size="large"
-                            extraClass={styles.button}
+                        <Link 
+                            to="/login"
+                            className={styles.button}
                         >
                             Войти
-                        </Button>
+                        </Link>
                     </p>
                 </div>
             </div>
@@ -39,4 +61,4 @@ const FogotPassword = () => {
     );
 }
 
-export default FogotPassword;
+export default ForgotPassword;

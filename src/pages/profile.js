@@ -1,12 +1,39 @@
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Link } from "react-router-dom";
 import AppHeader from "../components/app-header/app-header";
 import styles from './profile.module.css'
+import { useDispatch, useSelector } from "react-redux";
+import { logout, updateUser } from '../services/auth/actions';
 
 const Profile = () => {
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("1");
+    const dispatch = useDispatch();
+
+    const { user } = useSelector(store => store.auth)
+
+    const [name, setName] = useState(user.name);
+    const [email, setEmail] = useState(user.email);
+    const [password, setPassword] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+
+    const onLogout = useCallback(() => {
+        dispatch(logout());
+    }, []);
+
+    const onSave = useCallback(() => {
+        dispatch(updateUser(email, password, name))
+            .catch(error => {
+                const errorMsg = error.message || String(error);
+                setErrorMessage(errorMsg);
+            });
+    }, [dispatch, email, password, name]);
+
+    const onCancel = useCallback(() => {
+        setName(user.name);
+        setEmail(user.email);
+        setPassword("");
+    }, []);
+
 
     return (
         <>
@@ -19,7 +46,10 @@ const Profile = () => {
                     <a className={styles.menuButton}>
                         История заказов
                     </a>
-                    <a className={styles.menuButton}>
+                    <a 
+                        className={styles.menuButton}
+                        onClick={onLogout}
+                    >
                         Выход
                     </a>
                     <p className={styles.tip}>
@@ -48,6 +78,25 @@ const Profile = () => {
                         onChange={e => setPassword(e.target.value)}
                         icon='EditIcon'
                     />
+                <div className={styles.buttons}>
+                    {errorMessage && <p>{errorMessage}</p>}
+                    <Button 
+                        htmlType="button" 
+                        type="secondary" 
+                        size="large"
+                        onClick={onCancel}
+                    >
+                        Отмена
+                    </Button>
+                    <Button 
+                        htmlType="button" 
+                        type="primary" 
+                        size="large"
+                        onClick={onSave}
+                    >
+                        Сохранить
+                    </Button>
+                </div>
                 </div>
             </div>
         </>

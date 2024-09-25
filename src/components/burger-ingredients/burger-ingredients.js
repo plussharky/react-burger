@@ -6,17 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { loadIngredients } from '../../services/ingredients/actions'
 
 const BurgerIngredients = () => {
-    const dispatch = useDispatch();
     const [activeTab, setActiveTab] = useState("bun");
     const { ingredients, loading, error } = useSelector(store => store.ingredients)
     const tabsRef = useRef(null);
     const bunsRef = useRef(null);
     const mainsRef = useRef(null);
     const saucesRef = useRef(null);
-
-    useEffect(() => {
-        dispatch(loadIngredients());
-    }, [dispatch]);
 
     const categories = useMemo(() => {
         const getfiltredIngredients = (type) => ingredients.filter(item => item.type === type);

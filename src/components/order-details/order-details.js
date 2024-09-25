@@ -2,12 +2,13 @@ import React from 'react';
 import styles from './order-details.module.css';
 import check from '../../assets/icons/check.svg'
 import { useSelector } from 'react-redux';
+import Preloader from '../preloader/preloader';
 
 const OrderDetails = () => {
     const { number, loading, error } = useSelector(store => store.order);
 
     if (loading) {
-        return (<p>⌛Отправляем заказ на сервер...</p>)
+        return (<Preloader />)
     }
 
     if (error) {

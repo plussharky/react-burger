@@ -2,10 +2,34 @@ import { useState } from 'react'
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import AppHeader from "../components/app-header/app-header";
 import styles from './login.module.css'
+import { useDispatch } from "react-redux";
+import { login } from '../services/auth/actions'
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+
+    const onLogin = () => {
+        let message = "";
+        if(!email) {
+            message += `\nВведите почту!`;
+        }
+        if(!password) {
+            message += `\nВведите пароль!`;
+        }
+        setErrorMessage(message);
+        if (message) {
+            return;
+        }
+        dispatch(login(email, password))
+            .then(() => navigate("/"))
+            .catch(error => setErrorMessage(error));
+    }
 
     return (
         <>
@@ -23,36 +47,38 @@ const Login = () => {
                     name={'password'}
                     onChange={e => setPassword(e.target.value)}
                 />
-                <Button htmlType="button" type="primary" size="large">
+                {errorMessage && <p>{errorMessage}</p>}
+                <Button 
+                    htmlType="button" 
+                    type="primary" 
+                    size="large"
+                    onClick={onLogin}
+                >
                     Войти
                 </Button>
                 <div className={styles.questions}>
                     <p className={styles.question}>
                         Вы — новый пользователь?&nbsp;
-                        <Button 
-                            htmlType="button"
-                            type="secondary"
-                            size="large"
-                            extraClass={styles.button}
+                        <Link 
+                            to="/register"
+                            className={styles.button}
                         >
                             Зарегистрироваться
-                        </Button>
+                        </Link>
                     </p>
                     <p className={styles.question}>
                         Забыли пароль?&nbsp;
-                        <Button 
-                            htmlType="button" 
-                            type="secondary" 
-                            size="large"
-                            extraClass={styles.button}
+                        <Link 
+                            to="/forgot-password"
+                            className={styles.button}
                         >
                             Восстановить пароль
-                        </Button>
+                        </Link>
                     </p>
                 </div>
             </div>
         </>
     );
-}
+};
 
 export default Login;
