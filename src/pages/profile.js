@@ -37,7 +37,6 @@ const Profile = () => {
 
     return (
         <>
-            <AppHeader />
             <div className={styles.container}>
                 <div className={styles.menu}>
                     <a className={styles.menuButton}>

@@ -6,7 +6,6 @@ import BurgerConstructor from '../components/burger-constructor/burger-construct
 function Home() {
   return (
     <div className="App">
-      <AppHeader />
         <main className={styles.burgerAssembly}>
           <BurgerIngredients /> 
           <BurgerConstructor />

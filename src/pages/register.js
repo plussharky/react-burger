@@ -38,7 +38,6 @@ const Register = () => {
 
     return (
         <>
-            <AppHeader />
             <div className={styles.container}>
                 <p className={styles.title}>Регистрация</p>
                 <Input 

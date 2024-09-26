@@ -33,7 +33,6 @@ const Login = () => {
 
     return (
         <>
-            <AppHeader />
             <div className={styles.container}>
                 <p className={styles.title}>Вход</p>
                 <EmailInput 

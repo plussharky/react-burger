@@ -12,6 +12,7 @@ import { useDispatch } from 'react-redux';
 import { loadIngredients } from './services/ingredients/actions';
 import { OnlyAuth, OnlyUnAuth } from './components/protected-route';
 import { checkUserAuth } from './services/auth/actions';
+import AppHeader from './components/app-header/app-header';
 
 function App() {
   const dispatch = useDispatch();
@@ -30,6 +31,7 @@ function App() {
 
   return (
     <>
+      <AppHeader />
       <Routes location={background || location}>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<OnlyUnAuth component={<Login />} />} />

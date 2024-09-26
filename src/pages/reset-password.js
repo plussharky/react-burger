@@ -33,7 +33,6 @@ const ResetPassword = () => {
 
     return (
         <>
-            <AppHeader />
             <div className={styles.container}>
                 <p className={styles.title}>Восстановление пароля</p>
                 <PasswordInput 
