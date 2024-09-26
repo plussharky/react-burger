@@ -1,87 +1,98 @@
-import { useState } from 'react'
-import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import AppHeader from "../components/app-header/app-header";
-import styles from './login.module.css'
+import { useState } from "react";
+import {
+  Input,
+  EmailInput,
+  PasswordInput,
+  Button,
+} from "@ya.praktikum/react-developer-burger-ui-components";
+import styles from "./login.module.css";
 import { useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
-import { register } from '../services/auth/actions'
+import { register } from "../services/auth/actions";
 
 const Register = () => {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
+  const [name, setName] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [errorServer, setErrorServer] = useState("");
 
+  const onRegister = (e) => {
+    setNameError("");
+    setEmailError("");
+    setPasswordError("");
+    setErrorServer("");
+    e.preventDefault();
 
-    const onRegister = () => {
-        let message = "";
-        if(!name) {
-            message += `\nВведите имя!`;
-        }
-        if(!email) {
-            message += `\nВведите почту!`;
-        }
-        if(!password) {
-            message += `\nВведите пароль!`;
-        }
-        setErrorMessage(message);
-        if (message) {
-            return;
-        }
-        dispatch(register(email, password, name))
-            .then(() => navigate("/"))
-            .catch(error => setErrorMessage(error));
+    if (!email) {
+      setEmailError("Введите почту!");
     }
 
-    return (
-        <>
-            <div className={styles.container}>
-                <p className={styles.title}>Регистрация</p>
-                <Input 
-                    type={'text'}
-                    placeholder={'Имя'}
-                    value={name}
-                    onChange={e => setName(e.target.value)}
-                    name={'name'}
-                />
-                <EmailInput 
-                    value={email}
-                    name={'email'}
-                    isIcon={false}
-                    onChange={e => setEmail(e.target.value)}
-                    checked={false}
-                />
-                <PasswordInput 
-                    value={password}
-                    name={'password'}
-                    onChange={e => setPassword(e.target.value)}
-                />
-                {errorMessage && <p>{errorMessage}</p>}
-                <Button 
-                    htmlType="button" 
-                    type="primary" 
-                    size="large"
-                    onClick={onRegister}
-                >
-                    Зарегистрироваться
-                </Button>
-                <div className={styles.questions}>
-                    <p className={styles.question}>
-                        Уже зарегистрированы?&nbsp;
-                        <Link 
-                            to="/login"
-                            className={styles.button}
-                        >
-                            Войти
-                        </Link>
-                    </p>
-                </div>
-            </div>
-        </>
-    );
-}
+    if (!password) {
+      setPasswordError("Введите пароль!");
+    }
+    if (!name) {
+      setNameError("Введите имя!");
+    }
+    if (nameError || emailError || passwordError) {
+      return;
+    }
+    dispatch(register(email, password, name))
+      .then(() => navigate("/"))
+      .catch((error) => setErrorServer(error));
+  };
+
+  return (
+    <form className={styles.container} onSubmit={onRegister}>
+      <p className={styles.title}>Регистрация</p>
+      <Input
+        type={"text"}
+        placeholder={"Имя"}
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        name={"name"}
+        error={!!nameError}
+        errorText={nameError}
+      />
+      <EmailInput
+        value={email}
+        name={"email"}
+        isIcon={false}
+        onChange={(e) => setEmail(e.target.value)}
+        checked={false}
+        error={!!emailError}
+        errorText={emailError}
+      />
+      <PasswordInput
+        value={password}
+        name={"password"}
+        onChange={(e) => setPassword(e.target.value)}
+        error={!!passwordError}
+        errorText={passwordError}
+      />
+      {errorServer && <p className={styles.error}>{errorServer}</p>}
+      <Button
+        htmlType="submit"
+        type="primary"
+        size="large"
+      >
+        Зарегистрироваться
+      </Button>
+      <div className={styles.questions}>
+        <p className={styles.question}>
+          Уже зарегистрированы?&nbsp;
+          <Link to="/login" className={styles.button}>
+            Войти
+          </Link>
+        </p>
+      </div>
+    </form>
+  );
+};
 
 export default Register;

@@ -1,7 +1,6 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link } from "react-router-dom";
-import AppHeader from "../components/app-header/app-header";
+import { NavLink } from "react-router-dom";
 import styles from './profile.module.css'
 import { useDispatch, useSelector } from "react-redux";
 import { logout, updateUser } from '../services/auth/actions';
@@ -12,19 +11,60 @@ const Profile = () => {
     const { user } = useSelector(store => store.auth)
 
     const [name, setName] = useState(user.name);
+    const [nameError, setNameError] = useState("");
+    const [isNameDisabled, setIsNameDisabled] = useState(true);
     const [email, setEmail] = useState(user.email);
+    const [emailError, setEmailError] = useState("");
+    const [isEmailDisabled, setIsEmailDisabled] = useState(true);
     const [password, setPassword] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
+    const [passwordError, setPasswordError] = useState("");
+    const [isPasswordDisabled, setIsPasswordDisabled] = useState(true);
+    const [errorServer, setErrorServer] = useState("");
 
-    const onLogout = useCallback(() => {
-        dispatch(logout());
-    }, []);
+    const isActiveLink = useCallback((isActive) => 
+        isActive ? styles.activeMenuButton : styles.inactiveMenuButton
+    , []);
 
-    const onSave = useCallback(() => {
+    const handleEmailIconClick = useCallback(() => {
+        setIsEmailDisabled(!isEmailDisabled);
+    }, [isEmailDisabled])
+
+
+    const handleNameIconClick = useCallback(() => {
+        setIsNameDisabled(!isNameDisabled);
+    }, [isNameDisabled])
+
+    const handlePasswordIconClick = useCallback(() => {
+        setIsPasswordDisabled(!isPasswordDisabled);
+    }, [isPasswordDisabled])
+
+
+    const onSave = useCallback((e) => {
+        setNameError("");
+        setEmailError("");
+        setPasswordError("");
+        setErrorServer("");
+        e.preventDefault();
+    
+        if (!email) {
+          setEmailError("Введите почту!");
+        }
+    
+        if (!password) {
+          setPasswordError("Введите пароль!");
+        }
+        if (!name) {
+          setNameError("Введите имя!");
+        }
+
+        if (nameError || emailError || passwordError) {
+          return;
+        }
+
         dispatch(updateUser(email, password, name))
             .catch(error => {
                 const errorMsg = error.message || String(error);
-                setErrorMessage(errorMsg);
+                setErrorServer(errorMsg);
             });
     }, [dispatch, email, password, name]);
 
@@ -32,21 +72,23 @@ const Profile = () => {
         setName(user.name);
         setEmail(user.email);
         setPassword("");
-    }, []);
+    }, [user]);
 
+    const onLogout = useCallback(() => {
+        dispatch(logout());
+    }, [dispatch]);
 
     return (
-        <>
-            <div className={styles.container}>
+            <form className={styles.container} onSubmit={onSave}>
                 <div className={styles.menu}>
-                    <a className={styles.menuButton}>
+                    <NavLink to="/profile" className={({isActive}) => isActiveLink(isActive)}>
                         Профиль
-                    </a>
-                    <a className={styles.menuButton}>
+                    </NavLink>
+                    <NavLink to="/history" className={({isActive}) => isActiveLink(isActive)}>
                         История заказов
-                    </a>
+                    </NavLink>
                     <a 
-                        className={styles.menuButton}
+                        className={styles.inactiveMenuButton}
                         onClick={onLogout}
                     >
                         Выход
@@ -63,6 +105,10 @@ const Profile = () => {
                         onChange={e => setName(e.target.value)}
                         name={'name'}
                         icon='EditIcon'
+                        error={!!nameError}
+                        errorText={nameError}
+                        disabled={isNameDisabled}
+                        onIconClick={handleNameIconClick}
                     />
                     <EmailInput 
                         value={email}
@@ -70,35 +116,41 @@ const Profile = () => {
                         isIcon={false}
                         onChange={e => setEmail(e.target.value)}
                         icon='EditIcon'
+                        error={!!emailError}
+                        errorText={emailError}
+                        disabled={isEmailDisabled}
+                        onIconClick={handleEmailIconClick}
                     />
                     <PasswordInput 
                         value={password}
                         name={'password'}
                         onChange={e => setPassword(e.target.value)}
-                        icon='EditIcon'
+                        icon={isPasswordDisabled ? 'EditIcon' : 'ShowIcon'}
+                        error={!!passwordError}
+                        errorText={passwordError}
+                        disabled={isPasswordDisabled}
+                        onIconClick={handlePasswordIconClick}
                     />
-                <div className={styles.buttons}>
-                    {errorMessage && <p>{errorMessage}</p>}
-                    <Button 
-                        htmlType="button" 
-                        type="secondary" 
-                        size="large"
-                        onClick={onCancel}
-                    >
-                        Отмена
-                    </Button>
-                    <Button 
-                        htmlType="button" 
-                        type="primary" 
-                        size="large"
-                        onClick={onSave}
-                    >
-                        Сохранить
-                    </Button>
+                    <div className={styles.buttons}>
+                        {errorServer && <p className={styles.error}>{errorServer}</p>}
+                        <Button 
+                            htmlType="button" 
+                            type="secondary" 
+                            size="large"
+                            onClick={onCancel}
+                        >
+                            Отмена
+                        </Button>
+                        <Button 
+                            htmlType="submit" 
+                            type="primary" 
+                            size="large"
+                        >
+                            Сохранить
+                        </Button>
+                    </div>
                 </div>
-                </div>
-            </div>
-        </>
+            </form>
     );
 }
 

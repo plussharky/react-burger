@@ -20,9 +20,20 @@ body {
 
 .menuButton {
   composes: text text_type_main-medium from global;
+  text-decoration: none;
   align-items: start;
   margin: 10px;
   cursor: pointer;
+}
+
+.activeMenuButton {
+  composes: menuButton;
+  color: var(--text-primary-color);
+}
+
+.inactiveMenuButton {
+  composes: menuButton;
+  color: var(--text-inactive-color);
 }
 
 .tip {
@@ -45,4 +56,9 @@ body {
   display: flex;
   align-items: end;
   justify-content: end;
+}
+
+.error {
+  composes: text text_type_main-default from global;
+  color: var(--colors-interface-error);
 }
