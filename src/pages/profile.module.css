@@ -1,0 +1,64 @@
+body {
+  overflow: hidden;
+}
+
+.container {
+  padding: 10%;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  color: var(--text-active-color);
+  margin-right: 80px;
+}
+
+.menuButton {
+  composes: text text_type_main-medium from global;
+  text-decoration: none;
+  align-items: start;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.activeMenuButton {
+  composes: menuButton;
+  color: var(--text-primary-color);
+}
+
+.inactiveMenuButton {
+  composes: menuButton;
+  color: var(--text-inactive-color);
+}
+
+.tip {
+  composes: text text_type_main-default text_color_inactive from global;
+  flex-wrap: wrap;
+  margin-top: 80px;
+  max-width: 310px;
+}
+
+.userProperties{
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  gap: 24px;
+}
+
+.buttons {
+  display: flex;
+  align-items: end;
+  justify-content: end;
+}
+
+.error {
+  composes: text text_type_main-default from global;
+  color: var(--colors-interface-error);
+}

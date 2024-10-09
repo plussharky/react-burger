@@ -9,10 +9,13 @@ const orderApiConfig = {
     },
 }
 
-export const postOrder = (ingredients) => {
+export const postOrder = (ingredients, token) => {
     return fetch(orderApiConfig.baseUrl, {
         method: orderApiConfig.method,
-        headers: orderApiConfig.headers,
+        headers: {
+            ...orderApiConfig.headers,
+            authorization: token,
+        },
         body: JSON.stringify({ingredients})
     })
     .then(getResponse);

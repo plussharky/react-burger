@@ -1,12 +1,17 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import styles from './ingredient-details.module.css';
 import { ingredientType } from '../../../../../utils/types';
 import { UPDATE_INGREDIENT_DETAILS } from '../../../../../services/ingredient-details/actions';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from "react-router-dom";
 
+const IngredientDetails = () => {
+    const { id } = useParams();
+    const { ingredients, loading, error } = useSelector(store => store.ingredients)
 
-const IngredientDetails = ({item}) => {
     const dispatch = useDispatch();
+
+    const item = ingredients.filter(i => i._id === id)[0];
 
     useEffect(() => {
         if (item) {
@@ -25,6 +30,14 @@ const IngredientDetails = ({item}) => {
             }
         }
     }, [item, dispatch])
+
+    if (loading) {
+        return <h2>Загрузка...</h2>
+    }
+
+    if (!loading && error) {
+        return <p>🛜Произошла ошибка при загрузке. Проверьте интернет-соединение и перезагрузите страницу</p>
+    }
 
     if (!item) {
         return null;

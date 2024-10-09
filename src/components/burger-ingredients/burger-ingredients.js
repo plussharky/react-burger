@@ -2,24 +2,16 @@ import React, { useMemo, useState, useRef, useCallback, useEffect } from 'react'
 import styles from './burger-ingredients.module.css';
 import IngredientCtegory from './ingredient-category/ingredient-category';
 import Tabs from './ingredient-tab/ingredient-tabs';
-import PropTypes from 'prop-types';
-import { ingredientType } from '../../utils/types';
-import { v4 as uuidv4 } from 'uuid';
 import { useDispatch, useSelector } from "react-redux";
 import { loadIngredients } from '../../services/ingredients/actions'
 
 const BurgerIngredients = () => {
-    const dispatch = useDispatch();
     const [activeTab, setActiveTab] = useState("bun");
     const { ingredients, loading, error } = useSelector(store => store.ingredients)
     const tabsRef = useRef(null);
     const bunsRef = useRef(null);
     const mainsRef = useRef(null);
     const saucesRef = useRef(null);
-
-    useEffect(() => {
-        dispatch(loadIngredients());
-    }, [dispatch]);
 
     const categories = useMemo(() => {
         const getfiltredIngredients = (type) => ingredients.filter(item => item.type === type);

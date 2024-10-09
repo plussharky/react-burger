@@ -7,7 +7,6 @@ header {
   background-color: #1C1C21;
 }
 
-
 .nav {
   display: flex;
   justify-content: center;
@@ -15,6 +14,8 @@ header {
 }
 
 .button {
+  composes: text text_type_main-default from global;
+  text-decoration: none;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -22,7 +23,16 @@ header {
   gap: 8px;
   padding: 20px;
   margin: 16px 4px;
-  color: rgba(255, 255, 255, 0.50);
+}
+
+.activeButton {
+  composes: button;
+  color: var(--text-primary-color);
+}
+
+.inactiveButton {
+  composes: button;
+  color: var(--text-inactive-color);
 }
 
 .logo {

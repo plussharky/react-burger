@@ -9,8 +9,10 @@ import { useDrop } from 'react-dnd';
 import { addBun, addIngredient } from '../../services/burger-constructor/actions';
 import { ORDER_CREATE_ERROR } from '../../services/order/actions'
 import IngredientElement from './ingredient-element/ingredient-element';
+import { useNavigate } from 'react-router-dom';
 
 const BurgerConstructor = () => {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const { number, loading, error } = useSelector(store => store.order);
     const { bun, ingredients } = useSelector(store => store.burgerConstructor);
@@ -28,8 +30,14 @@ const BurgerConstructor = () => {
             });
             return;
         }
-        if (!number && !loading && bun && ingredients.length > 0) {
-            dispatch(createOrder([bun._id, ...ingredients.map(i => i._id), bun._id]));
+        if (!loading && bun && ingredients.length > 0) {
+            const token = localStorage.getItem("accessToken");
+            if (!token) {
+                navigate("/login");
+            }
+            const orderIngredients = [bun._id, ...ingredients.map(i => i._id), bun._id];
+            console.log(token);
+            dispatch(createOrder(orderIngredients, token));
         }
     }, [bun, ingredients, dispatch, loading, number]);
 
