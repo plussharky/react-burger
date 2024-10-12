@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import {
   EmailInput,
   Button,
@@ -7,16 +7,16 @@ import styles from "./forgot-password.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { forgotPassword } from "../utils/auth-api";
 
-const ForgotPassword = () => {
+function ForgotPassword() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [errorServer, setErrorServer] = useState("");
+  const [email, setEmail] = useState<string>("");
+  const [emailError, setEmailError] = useState<string>("");
+  const [errorServer, setErrorServer] = useState<string>("");
 
-  const onRestore = (e) => {
+  const onRestore = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setEmailError("");
     setErrorServer("");
-    e.preventDefault();
 
     if (!email) {
       setEmailError("Введите почту!");
@@ -25,10 +25,10 @@ const ForgotPassword = () => {
 
     forgotPassword(email)
       .then(() => {
-        localStorage.setItem("isBeenOnForgotPasswordPage", true);
+        localStorage.setItem("isBeenOnForgotPasswordPage", "true");
         navigate("/reset-password");
       })
-      .catch((error) => {
+      .catch((error: Error) => {
         const errorMsg = error.message || String(error);
         setErrorServer(errorMsg);
       });
@@ -43,9 +43,8 @@ const ForgotPassword = () => {
         name={"email"}
         isIcon={false}
         onChange={(e) => setEmail(e.target.value)}
-        error={!!emailError}
-        errorText={emailError}
       />
+      {emailError && <p className={styles.error}>{emailError}</p>}
       {errorServer && <p className={styles.error}>{errorServer}</p>}
       <Button htmlType="submit" type="primary" size="large">
         Восстановить

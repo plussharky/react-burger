@@ -1,34 +1,29 @@
-import { useCallback, useState } from 'react'
+import { FormEvent, useCallback, useState } from 'react'
 import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { NavLink } from "react-router-dom";
 import styles from './profile.module.css'
 import { useDispatch, useSelector } from "react-redux";
 import { logout, updateUser } from '../services/auth/actions';
 
-const Profile = () => {
+function Profile() {
     const dispatch = useDispatch();
-
+    //@ts-ignore
     const { user } = useSelector(store => store.auth)
 
-    const [name, setName] = useState(user.name);
-    const [nameError, setNameError] = useState("");
-    const [isNameDisabled, setIsNameDisabled] = useState(true);
-    const [email, setEmail] = useState(user.email);
-    const [emailError, setEmailError] = useState("");
-    const [isEmailDisabled, setIsEmailDisabled] = useState(true);
-    const [password, setPassword] = useState("");
-    const [passwordError, setPasswordError] = useState("");
-    const [isPasswordDisabled, setIsPasswordDisabled] = useState(true);
-    const [errorServer, setErrorServer] = useState("");
+    const [name, setName] = useState<string>(user.name);
+    const [nameError, setNameError] = useState<string>("");
+    const [isNameDisabled, setIsNameDisabled] = useState<boolean>(true);
+    const [email, setEmail] = useState<string>(user.email);
+    const [emailError, setEmailError] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [passwordError, setPasswordError] = useState<string>("");
+    const [isPasswordDisabled, setIsPasswordDisabled] = useState<boolean>(true);
+    const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
+    const [errorServer, setErrorServer] = useState<string>("");
 
-    const isActiveLink = useCallback((isActive) => 
+    const isActiveLink = useCallback((isActive: boolean) => 
         isActive ? styles.activeMenuButton : styles.inactiveMenuButton
     , []);
-
-    const handleEmailIconClick = useCallback(() => {
-        setIsEmailDisabled(!isEmailDisabled);
-    }, [isEmailDisabled])
-
 
     const handleNameIconClick = useCallback(() => {
         setIsNameDisabled(!isNameDisabled);
@@ -38,8 +33,12 @@ const Profile = () => {
         setIsPasswordDisabled(!isPasswordDisabled);
     }, [isPasswordDisabled])
 
+    const togglePasswordVisibility = useCallback(() => {
+        setIsPasswordVisible(!isPasswordVisible);
+    }, [isPasswordVisible]);
 
-    const onSave = useCallback((e) => {
+
+    const onSave = useCallback((e: FormEvent<HTMLFormElement>) => {
         setNameError("");
         setEmailError("");
         setPasswordError("");
@@ -60,13 +59,13 @@ const Profile = () => {
         if (nameError || emailError || passwordError) {
           return;
         }
-
+        //@ts-ignore
         dispatch(updateUser(email, password, name))
-            .catch(error => {
+            .catch((error: Error) => {
                 const errorMsg = error.message || String(error);
                 setErrorServer(errorMsg);
             });
-    }, [dispatch, email, password, name]);
+    }, [dispatch, email, password, name, nameError, emailError, passwordError]);
 
     const onCancel = useCallback(() => {
         setName(user.name);
@@ -75,6 +74,7 @@ const Profile = () => {
     }, [user]);
 
     const onLogout = useCallback(() => {
+        //@ts-ignore
         dispatch(logout());
     }, [dispatch]);
 
@@ -87,49 +87,43 @@ const Profile = () => {
                     <NavLink to="/history" className={({isActive}) => isActiveLink(isActive)}>
                         История заказов
                     </NavLink>
-                    <a 
+                    <p
                         className={styles.inactiveMenuButton}
                         onClick={onLogout}
                     >
                         Выход
-                    </a>
+                    </p>
                     <p className={styles.tip}>
                         В этом разделе вы можете изменить свои персональные данные
                     </p>
                 </div>
                 <div className={styles.userProperties}>
                     <Input 
-                        type={'text'}
-                        placeholder={'Имя'}
                         value={name}
-                        onChange={e => setName(e.target.value)}
-                        name={'name'}
-                        icon='EditIcon'
-                        error={!!nameError}
-                        errorText={nameError}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)} 
+                        onPointerEnterCapture={undefined} 
+                        onPointerLeaveCapture={undefined}                        
+                        type="text"
+                        placeholder={"Имя"}
+                        name={"name"}
+                        icon={"EditIcon"}
                         disabled={isNameDisabled}
                         onIconClick={handleNameIconClick}
                     />
                     <EmailInput 
                         value={email}
                         name={'email'}
-                        isIcon={false}
+                        isIcon={true}
                         onChange={e => setEmail(e.target.value)}
-                        icon='EditIcon'
-                        error={!!emailError}
-                        errorText={emailError}
-                        disabled={isEmailDisabled}
-                        onIconClick={handleEmailIconClick}
                     />
                     <PasswordInput 
+                        placeholder={'Пароль'}
                         value={password}
-                        name={'password'}
                         onChange={e => setPassword(e.target.value)}
-                        icon={isPasswordDisabled ? 'EditIcon' : 'ShowIcon'}
-                        error={!!passwordError}
-                        errorText={passwordError}
+                        name={'password'}
+                        icon={isPasswordDisabled ? 'EditIcon' : (isPasswordVisible ? 'HideIcon' : 'ShowIcon')}
                         disabled={isPasswordDisabled}
-                        onIconClick={handlePasswordIconClick}
+                        onClick={isPasswordDisabled ? handlePasswordIconClick : togglePasswordVisibility}
                     />
                     <div className={styles.buttons}>
                         {errorServer && <p className={styles.error}>{errorServer}</p>}

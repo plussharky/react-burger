@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import styles from './preloader.module.css';
+import { func } from "prop-types";
 
 const spinTransition = {
   repeat: Infinity,
@@ -8,7 +9,7 @@ const spinTransition = {
   duration: 1,
 };
 
-const Preloader = () => {
+function Preloader() {
   return (
     <div className={styles.styleContainer}>
       <motion.span

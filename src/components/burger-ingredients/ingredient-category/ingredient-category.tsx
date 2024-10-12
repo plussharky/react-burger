@@ -2,13 +2,18 @@ import {useMemo, forwardRef} from 'react';
 import IngredientCard from './ingredient-card/ingredient-card';
 import styles from './ingredient-category.module.css';
 import TranslationMap from '../../../utils/translation-map';
-import PropTypes from 'prop-types';
-import { ingredientType } from '../../../utils/types';
+import { TIngredient } from '../../../utils/types';
 
-const IngredientCtegory = forwardRef(({ categoryName, items}, ref ) => {
-    const translatedCategoryName = useMemo(() => 
-        TranslationMap[categoryName] || categoryName
-    , [categoryName]);
+type TIngredientCtegoryProps = {
+    categoryName: string;
+    items: TIngredient[];
+}
+
+const IngredientCtegory = forwardRef<HTMLDivElement, TIngredientCtegoryProps>(({ categoryName, items}, ref ) => {
+    const translatedCategoryName: string = useMemo(
+        () => TranslationMap[categoryName] || categoryName, 
+        [categoryName]
+    );
 
     return (
     <div className={styles.category} ref={ref}>
@@ -21,10 +26,5 @@ const IngredientCtegory = forwardRef(({ categoryName, items}, ref ) => {
     </div>
     );
 });
-
-IngredientCtegory.propTypes = { 
-    items: PropTypes.arrayOf(ingredientType).isRequired,
-    categoryName: PropTypes.string.isRequired
-}
 
 export default IngredientCtegory;

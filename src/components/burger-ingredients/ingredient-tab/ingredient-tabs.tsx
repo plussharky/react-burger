@@ -2,9 +2,14 @@ import { forwardRef } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import TranslationMap from '../../../utils/translation-map';
 import styles from './ingredient-tabs.module.css'
-import PropTypes from 'prop-types';
 
-const Tabs = forwardRef(({ categories, activeTab, handleOnClickTab }, ref) => {
+type TTabsProps = {
+  categories: string[];
+  activeTab: string;
+  handleOnClickTab: (value: string) => void;
+}
+
+const Tabs = forwardRef<HTMLDivElement, TTabsProps>(({ categories, activeTab, handleOnClickTab }, ref) => {
   return (
     <div className={styles.tabs} ref={ref}>
       {categories.map(category => (
@@ -20,11 +25,5 @@ const Tabs = forwardRef(({ categories, activeTab, handleOnClickTab }, ref) => {
     </div>
   );
 });
-
-Tabs.propTypes = {
-  categories: PropTypes.arrayOf(PropTypes.string).isRequired,
-  activeTab: PropTypes.string.isRequired,
-  handleOnClickTab: PropTypes.func
-}
 
 export default Tabs;

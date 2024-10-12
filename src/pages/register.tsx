@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, FormEvent } from "react";
 import {
   Input,
   EmailInput,
@@ -14,15 +14,15 @@ const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [name, setName] = useState("");
-  const [nameError, setNameError] = useState("");
-  const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [errorServer, setErrorServer] = useState("");
+  const [name, setName] = useState<string>("");
+  const [nameError, setNameError] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [emailError, setEmailError] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [passwordError, setPasswordError] = useState<string>("");
+  const [errorServer, setErrorServer] = useState<string>("");
 
-  const onRegister = (e) => {
+  const onRegister = (e: FormEvent<HTMLFormElement>) => {
     setNameError("");
     setEmailError("");
     setPasswordError("");
@@ -42,22 +42,25 @@ const Register = () => {
     if (nameError || emailError || passwordError) {
       return;
     }
+    //@ts-ignore
     dispatch(register(email, password, name))
       .then(() => navigate("/"))
-      .catch((error) => setErrorServer(error));
+      .catch((error: Error) => setErrorServer(error.message));
   };
 
   return (
     <form className={styles.container} onSubmit={onRegister}>
       <p className={styles.title}>Регистрация</p>
       <Input
+        value={name}
         type={"text"}
         placeholder={"Имя"}
-        value={name}
-        onChange={(e) => setName(e.target.value)}
         name={"name"}
+        onChange={(e) => setName(e.target.value)}
         error={!!nameError}
         errorText={nameError}
+        onPointerEnterCapture={undefined} 
+        onPointerLeaveCapture={undefined}  
       />
       <EmailInput
         value={email}
@@ -65,16 +68,14 @@ const Register = () => {
         isIcon={false}
         onChange={(e) => setEmail(e.target.value)}
         checked={false}
-        error={!!emailError}
-        errorText={emailError}
       />
       <PasswordInput
         value={password}
         name={"password"}
         onChange={(e) => setPassword(e.target.value)}
-        error={!!passwordError}
-        errorText={passwordError}
       />
+      {emailError && <p className={styles.error}>{emailError}</p>}
+      {passwordError && <p className={styles.error}>{passwordError}</p>}
       {errorServer && <p className={styles.error}>{errorServer}</p>}
       <Button
         htmlType="submit"

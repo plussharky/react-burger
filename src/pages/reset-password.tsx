@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import {
   Input,
   PasswordInput,
@@ -11,17 +11,17 @@ import { resetPassword } from "../utils/auth-api";
 const ResetPassword = () => {
   const navigate = useNavigate();
 
-  const [password, setPassword] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [code, setCode] = useState("");
-  const [codeError, setCodeError] = useState("");
-  const [errorServer, setErrorServer] = useState("");
+  const [password, setPassword] = useState<string>("");
+  const [passwordError, setPasswordError] = useState<string>("");
+  const [code, setCode] = useState<string>("");
+  const [codeError, setCodeError] = useState<string>("");
+  const [errorServer, setErrorServer] = useState<string>("");
   const isBeenOnForgotPasswordPage = useMemo(
     () => localStorage.getItem("isBeenOnForgotPasswordPage"),
     []
   );
 
-  const onSave = (e) => {
+  const onSave = (e: FormEvent<HTMLFormElement>) => {
     setCodeError("");
     setPasswordError("");
     setErrorServer("");
@@ -60,14 +60,6 @@ const ResetPassword = () => {
     <>
       <form className={styles.container} onSubmit={onSave}>
         <p className={styles.title}>Восстановление пароля</p>
-        <PasswordInput
-          value={password}
-          placeholder={"Введите новый пароль"}
-          name={"password"}
-          onChange={(e) => setPassword(e.target.value)}
-          error={!!passwordError}
-          errorText={passwordError}
-        />
         <Input
           type={"text"}
           placeholder={"Введите код из письма"}
@@ -76,7 +68,15 @@ const ResetPassword = () => {
           name={"name"}
           error={!!codeError}
           errorText={codeError}
+          onPointerEnterCapture={undefined} 
+          onPointerLeaveCapture={undefined}  
         />
+        <PasswordInput
+          value={password}
+          name={"password"}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        {passwordError && <p className={styles.error}>{passwordError}</p>}
         {errorServer && <p className={styles.error}>{errorServer}</p>}
         <Button htmlType="submit" type="primary" size="large">
           Сохранить

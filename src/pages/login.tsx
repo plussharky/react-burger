@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import {
   EmailInput,
   PasswordInput,
@@ -13,17 +13,17 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [errorServer, setErrorServer] = useState("");
+  const [email, setEmail] = useState<string>("");
+  const [emailError, setEmailError] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [passwordError, setPasswordError] = useState<string>("");
+  const [errorServer, setErrorServer] = useState<string>("");
 
-  const onLogin = (e) => {
+  const onLogin = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setEmailError("");
     setPasswordError("");
     setErrorServer("");
-    e.preventDefault();
 
     if (!email) {
       setEmailError("Введите почту!");
@@ -36,10 +36,10 @@ const Login = () => {
     if (emailError || passwordError) {
       return;
     }
-
+    //@ts-ignore
     dispatch(login(email, password))
       .then(() => navigate("/"))
-      .catch((error) => setErrorServer(error));
+      .catch((error: string) => setErrorServer(error));
   };
 
   return (
@@ -50,16 +50,14 @@ const Login = () => {
         name={"email"}
         isIcon={false}
         onChange={(e) => setEmail(e.target.value)}
-        error={!!emailError}
-        errorText={emailError}
       />
       <PasswordInput
         value={password}
         name={"password"}
         onChange={(e) => setPassword(e.target.value)}
-        error={!!passwordError}
-        errorText={passwordError}
       />
+      {emailError && <p className={styles.error}>{emailError}</p>}
+      {passwordError && <p className={styles.error}>{passwordError}</p>}
       {errorServer && <p className={styles.error}>{errorServer}</p>}
       <Button htmlType="submit" type="primary" size="large">
         Войти

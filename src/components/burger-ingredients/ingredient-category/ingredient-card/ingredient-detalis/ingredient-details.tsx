@@ -1,42 +1,36 @@
 import React, { useEffect } from 'react';
 import styles from './ingredient-details.module.css';
-import { ingredientType } from '../../../../../utils/types';
-import { UPDATE_INGREDIENT_DETAILS } from '../../../../../services/ingredient-details/actions';
+import { updateIngredientDetails } from '../../../../../services/ingredient-details/actions'
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from "react-router-dom";
 
-const IngredientDetails = () => {
+function IngredientDetails() {
     const { id } = useParams();
+    //@ts-ignore
     const { ingredients, loading, error } = useSelector(store => store.ingredients)
 
     const dispatch = useDispatch();
-
+    //@ts-ignore
     const item = ingredients.filter(i => i._id === id)[0];
 
     useEffect(() => {
         if (item) {
-            dispatch({
-                type: UPDATE_INGREDIENT_DETAILS,
-                payload: item
-            });
+            dispatch(updateIngredientDetails(item));
         }
         
         return () => {
             if (item) { 
-                dispatch({
-                    type: UPDATE_INGREDIENT_DETAILS,
-                    payload: null
-                });
+                dispatch(updateIngredientDetails(null));
             }
         }
     }, [item, dispatch])
 
     if (loading) {
-        return <h2>Загрузка...</h2>
+        return (<h2>Загрузка...</h2>);
     }
 
     if (!loading && error) {
-        return <p>🛜Произошла ошибка при загрузке. Проверьте интернет-соединение и перезагрузите страницу</p>
+        return (<p>🛜Произошла ошибка при загрузке. Проверьте интернет-соединение и перезагрузите страницу</p>);
     }
 
     if (!item) {
@@ -66,11 +60,7 @@ const IngredientDetails = () => {
                 </div> 
             </div>
         </div>
-    )
-}
-
-IngredientDetails.propTypes = { 
-    item: ingredientType
+    );
 }
 
 export default IngredientDetails;

@@ -1,10 +1,10 @@
-import React from 'react';
 import styles from './order-details.module.css';
 import check from '../../assets/icons/check.svg'
 import { useSelector } from 'react-redux';
 import Preloader from '../preloader/preloader';
 
-const OrderDetails = () => {
+function OrderDetails() {
+    //@ts-ignore
     const { number, loading, error } = useSelector(store => store.order);
 
     if (loading) {
