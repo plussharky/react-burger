@@ -72,7 +72,7 @@
 
 .componentContainer {
     max-height: 350px; 
-    overflow-y: scroll;
+    overflow-y: auto;
     display: flex; 
     flex-direction: column; 
     gap: 16px;

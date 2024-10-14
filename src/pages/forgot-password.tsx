@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import {
   EmailInput,
   Button,
@@ -7,30 +7,28 @@ import styles from "./forgot-password.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { forgotPassword } from "../utils/auth-api";
 
-const ForgotPassword = () => {
+function ForgotPassword() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [errorServer, setErrorServer] = useState("");
+  const [email, setEmail] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
-  const onRestore = (e) => {
-    setEmailError("");
-    setErrorServer("");
+  const onRestore = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError("");
 
     if (!email) {
-      setEmailError("Введите почту!");
+      setError(prev => prev + "Введите почту!");
       return;
     }
 
     forgotPassword(email)
       .then(() => {
-        localStorage.setItem("isBeenOnForgotPasswordPage", true);
+        localStorage.setItem("isBeenOnForgotPasswordPage", "true");
         navigate("/reset-password");
       })
-      .catch((error) => {
+      .catch((error: Error) => {
         const errorMsg = error.message || String(error);
-        setErrorServer(errorMsg);
+        setError(prev => prev + errorMsg);
       });
   };
 
@@ -43,10 +41,8 @@ const ForgotPassword = () => {
         name={"email"}
         isIcon={false}
         onChange={(e) => setEmail(e.target.value)}
-        error={!!emailError}
-        errorText={emailError}
       />
-      {errorServer && <p className={styles.error}>{errorServer}</p>}
+      {error && <p className={styles.error}>{error}</p>}
       <Button htmlType="submit" type="primary" size="large">
         Восстановить
       </Button>

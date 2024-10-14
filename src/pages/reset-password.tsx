@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import {
   Input,
   PasswordInput,
@@ -7,46 +7,45 @@ import {
 import styles from "./reset-password.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { resetPassword } from "../utils/auth-api";
+import { useForm } from "../hooks/use-form";
 
 const ResetPassword = () => {
   const navigate = useNavigate();
 
-  const [password, setPassword] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [code, setCode] = useState("");
-  const [codeError, setCodeError] = useState("");
-  const [errorServer, setErrorServer] = useState("");
+  const { values, handleChange, setValues } = useForm({
+    password: "",
+    code: ""
+  });
+  const [error, setError] = useState<string>("");
   const isBeenOnForgotPasswordPage = useMemo(
     () => localStorage.getItem("isBeenOnForgotPasswordPage"),
     []
   );
 
-  const onSave = (e) => {
-    setCodeError("");
-    setPasswordError("");
-    setErrorServer("");
+  const onSave = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError("");
 
-    if (!code) {
-      setCodeError("Введите код!");
+    if (!values.code) {
+      setError("Введите код!");
     }
 
-    if (!password) {
-      setPasswordError("Введите пароль!");
+    if (!values.password) {
+      setError("Введите пароль!");
     }
 
-    if (codeError || passwordError) {
+    if (error) {
       return;
     }
 
-    resetPassword(password, code)
+    resetPassword(values.password, values.code)
       .then(() => {
         localStorage.removeItem("isBeenOnForgotPasswordPage");
         navigate("/login");
       })
-      .catch((error) => {
+      .catch((error: Error) => {
         const errorMsg = error.message || String(error);
-        setErrorServer(errorMsg);
+        setError(errorMsg);
       });
   };
 
@@ -60,24 +59,21 @@ const ResetPassword = () => {
     <>
       <form className={styles.container} onSubmit={onSave}>
         <p className={styles.title}>Восстановление пароля</p>
-        <PasswordInput
-          value={password}
-          placeholder={"Введите новый пароль"}
-          name={"password"}
-          onChange={(e) => setPassword(e.target.value)}
-          error={!!passwordError}
-          errorText={passwordError}
-        />
         <Input
           type={"text"}
           placeholder={"Введите код из письма"}
-          value={code}
-          onChange={(e) => setCode(e.target.value)}
+          value={values.code}
+          onChange={handleChange}
           name={"name"}
-          error={!!codeError}
-          errorText={codeError}
+          onPointerEnterCapture={undefined} 
+          onPointerLeaveCapture={undefined}  
         />
-        {errorServer && <p className={styles.error}>{errorServer}</p>}
+        <PasswordInput
+          value={values.password}
+          name={"password"}
+          onChange={handleChange}
+        />
+        {error && <p className={styles.error}>{error}</p>}
         <Button htmlType="submit" type="primary" size="large">
           Сохранить
         </Button>

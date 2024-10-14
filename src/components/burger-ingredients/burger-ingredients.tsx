@@ -1,20 +1,21 @@
-import React, { useMemo, useState, useRef, useCallback, useEffect } from 'react';
+import React, { useMemo, useState, useRef, useCallback } from 'react';
 import styles from './burger-ingredients.module.css';
 import IngredientCtegory from './ingredient-category/ingredient-category';
 import Tabs from './ingredient-tab/ingredient-tabs';
-import { useDispatch, useSelector } from "react-redux";
-import { loadIngredients } from '../../services/ingredients/actions'
+import { useSelector } from "react-redux";
 
-const BurgerIngredients = () => {
-    const [activeTab, setActiveTab] = useState("bun");
+function BurgerIngredients() {
+    const [activeTab, setActiveTab] = useState<string>("bun");
+    //@ts-ignore
     const { ingredients, loading, error } = useSelector(store => store.ingredients)
-    const tabsRef = useRef(null);
-    const bunsRef = useRef(null);
-    const mainsRef = useRef(null);
-    const saucesRef = useRef(null);
+    const tabsRef = useRef<HTMLDivElement>(null);
+    const bunsRef = useRef<HTMLDivElement>(null);
+    const mainsRef = useRef<HTMLDivElement>(null);
+    const saucesRef = useRef<HTMLDivElement>(null);
 
     const categories = useMemo(() => {
-        const getfiltredIngredients = (type) => ingredients.filter(item => item.type === type);
+        //@ts-ignore
+        const getfiltredIngredients = (type: string) => ingredients.filter(item => item.type === type);
 
         return [
             { name: "bun", ref: bunsRef, ingredients: getfiltredIngredients("bun") },
@@ -28,7 +29,7 @@ const BurgerIngredients = () => {
     const handleScroll = useCallback(() => {
         const distances = categories.map(category => ({
             name: category.name,
-            distance: Math.abs(category.ref.current.getBoundingClientRect().top - tabsRef.current.getBoundingClientRect().bottom)
+            distance: Math.abs(category.ref.current!.getBoundingClientRect().top - tabsRef.current!.getBoundingClientRect().bottom)
         }));
 
         const closestCategory = distances.reduce((closest, current) =>
@@ -38,7 +39,7 @@ const BurgerIngredients = () => {
         setActiveTab(closestCategory.name);
     }, [categories]);
 
-    const handleOnClickTab = (tabName) => {
+    const handleOnClickTab = (tabName: string) => {
         const category = categories.find(c => c.name === tabName);
         if (!category || !category.ref.current) {
             return;
@@ -48,15 +49,15 @@ const BurgerIngredients = () => {
     }
 
     if (loading) {
-        return <h2>Загрузка...</h2>
+        return (<h2>Загрузка...</h2>)
     }
 
     if (!loading && error) {
-        return <p>🛜Произошла ошибка при загрузке. Проверьте интернет-соединение и перезагрузите страницу</p>
+        return (<p>🛜Произошла ошибка при загрузке. Проверьте интернет-соединение и перезагрузите страницу</p>)
     }
 
     if (ingredients.length === 0) {
-        return <p>Список ингредиентов пуст🤔</p>
+        return (<p>Список ингредиентов пуст🤔</p>)
     }
 
     return (

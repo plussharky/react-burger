@@ -1,8 +1,16 @@
+import { ReactElement } from "react";
 import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
 
-const Protected = ({ onlyUnAuth = false, component }) => {
+type ProtectedProps = {
+  onlyUnAuth?: boolean;
+  component: ReactElement;
+}
+
+function Protected({ onlyUnAuth = false, component }: ProtectedProps) {
+  //@ts-ignore
   const isAuthChecked = useSelector((store) => store.auth.isAuthChecked);
+  //@ts-ignore
   const user = useSelector((store) => store.auth.user);
   const location = useLocation();
 
@@ -23,6 +31,6 @@ const Protected = ({ onlyUnAuth = false, component }) => {
 };
 
 export const OnlyAuth = Protected;
-export const OnlyUnAuth = ({ component }) => (
+export const OnlyUnAuth = ({ component }: {component: ReactElement}) => (
   <Protected onlyUnAuth={true} component={component} />
 );

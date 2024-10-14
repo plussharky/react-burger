@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useCallback } from 'react';
+import React, { useMemo, useState, useCallback, FC } from 'react';
 import styles from './burger-constructor.module.css';
 import { CurrencyIcon, Button, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
@@ -10,14 +10,17 @@ import { addBun, addIngredient } from '../../services/burger-constructor/actions
 import { ORDER_CREATE_ERROR } from '../../services/order/actions'
 import IngredientElement from './ingredient-element/ingredient-element';
 import { useNavigate } from 'react-router-dom';
+import { TIngredient } from '../../utils/types';
 
-const BurgerConstructor = () => {
+function BurgerConstructor() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    //@ts-ignore
     const { number, loading, error } = useSelector(store => store.order);
+    //@ts-ignore
     const { bun, ingredients } = useSelector(store => store.burgerConstructor);
 
-    const [isShowOrderDetails, setShowOrderDetails] = useState(false);
+    const [isShowOrderDetails, setShowOrderDetails] = useState<boolean>(false);
 
     const toggleOrderDetails = useCallback(() => {
         setShowOrderDetails((prev) => !prev);
@@ -35,15 +38,16 @@ const BurgerConstructor = () => {
             if (!token) {
                 navigate("/login");
             }
+            //@ts-ignore
             const orderIngredients = [bun._id, ...ingredients.map(i => i._id), bun._id];
-            console.log(token);
+            //@ts-ignore
             dispatch(createOrder(orderIngredients, token));
         }
     }, [bun, ingredients, dispatch, loading, number]);
 
     const [{isOverIngredients, draggingIgredient}, dropIngredientRef] = useDrop({
         accept: 'ingredient',
-        drop: ({item}) => {
+        drop: ({item}: {item: TIngredient}) => {
             if (!item || !item.type) return;
             item.type === "bun" ? dispatch(addBun(item)) : dispatch(addIngredient(item));
         },
@@ -54,12 +58,13 @@ const BurgerConstructor = () => {
     });
 
     const getTotalPrice = useMemo(() => {
+        //@ts-ignore
         const ingredientsPrice = ingredients.reduce((acc, item) => acc + item.price, 0);
         const bunPrice = bun ? bun.price * 2 : 0;
         return ingredientsPrice + bunPrice;
     }, [bun, ingredients]);
 
-    const bunElement = useCallback((type) => {
+    const bunElement = useCallback((type: "top" | "bottom") => {
         const isDraggingBun = draggingIgredient?.item?.type === 'bun';
         const bunStyle = `${type === "top" ? styles.topBun : styles.bottomBun} 
             ${isDraggingBun ? !isOverIngredients ? styles.glow : `${styles.border} ${styles.glow}` : ""}`;
@@ -81,15 +86,21 @@ const BurgerConstructor = () => {
     }, [bun, isOverIngredients, draggingIgredient])
 
     const ingredientsElement = useCallback(() => {
-        const isDraggingIngredient = draggingIgredient?.item?.type !== 'bun';
-        const ingredientStyle = ` ${isDraggingIngredient ? !isOverIngredients ? styles.glow : `${styles.border} ${styles.glow}` : ""}`;
+        const isDraggingIngredient = draggingIgredient ? draggingIgredient.item?.type !== 'bun' : false;
+        const ingredientStyle = ` ${isDraggingIngredient 
+            ? !isOverIngredients 
+                ? styles.glow 
+                : `${styles.border} ${styles.glow}` 
+            : ""}`;
         return ingredients.length === 0 ? (
                     <div className={`${styles.emptyIngredient} ${ingredientStyle}`}>
                         <p>Перетащите ингредиенты в конструктор</p>
                     </div>
                 ) : (
                     <>
-                        {ingredients.map((item, index) => (
+                        {
+                        //@ts-ignore
+                        ingredients.map((item, index) => (
                             <IngredientElement
                                 key={item.uniqueId}
                                 name={item.name}
@@ -104,7 +115,7 @@ const BurgerConstructor = () => {
                                 price={draggingIgredient.item.price}
                                 thumbnail={draggingIgredient.item.image}
                                 extraClass={`${ingredientStyle}`}
-                                draggable
+                                //draggable
                             />
                         }
                     </>

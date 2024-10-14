@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FormEvent, useState} from "react";
 import {
   EmailInput,
   PasswordInput,
@@ -8,59 +8,61 @@ import styles from "./login.module.css";
 import { useDispatch } from "react-redux";
 import { login } from "../services/auth/actions";
 import { Link, useNavigate } from "react-router-dom";
+import { useForm } from "../hooks/use-form";
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [errorServer, setErrorServer] = useState("");
+  const { values, handleChange, setValues } = useForm({
+    email: "",
+    password: "",
+  });
+  const [error, setError] = useState<string>("");
 
-  const onLogin = (e) => {
-    setEmailError("");
-    setPasswordError("");
-    setErrorServer("");
-    e.preventDefault();
+  const onLogin = (e?: FormEvent<HTMLFormElement>) => {
+    if (e) 
+      e.preventDefault();
+    setError("");
 
-    if (!email) {
-      setEmailError("Введите почту!");
+    if (!values.email) {
+      setError(prev => prev + `Введите почту! `);
     }
 
-    if (!password) {
-      setPasswordError("Введите пароль!");
+    if (!values.password) {
+      setError(prev => prev + `Введите пароль! `);
     }
 
-    if (emailError || passwordError) {
+    if (error) {
       return;
     }
-
-    dispatch(login(email, password))
+    //@ts-ignore
+    dispatch(login(values.email, values.password))
       .then(() => navigate("/"))
-      .catch((error) => setErrorServer(error));
+      .catch((error: string) => setError(prev => prev + error));
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
+    if (e.key === "Enter") {
+      onLogin(); 
+    }
   };
 
   return (
-    <form onSubmit={onLogin} className={styles.container}>
+    <form onSubmit={onLogin} onKeyDown={handleKeyDown} className={styles.container}>
       <p className={styles.title}>Вход</p>
       <EmailInput
-        value={email}
+        value={values.email}
         name={"email"}
         isIcon={false}
-        onChange={(e) => setEmail(e.target.value)}
-        error={!!emailError}
-        errorText={emailError}
+        onChange={handleChange}
       />
       <PasswordInput
-        value={password}
+        value={values.password}
         name={"password"}
-        onChange={(e) => setPassword(e.target.value)}
-        error={!!passwordError}
-        errorText={passwordError}
-      />
-      {errorServer && <p className={styles.error}>{errorServer}</p>}
+        onChange={handleChange}
+      />   
+      {error && <p className={styles.error}>{error}</p>}
       <Button htmlType="submit" type="primary" size="large">
         Войти
       </Button>

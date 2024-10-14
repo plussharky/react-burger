@@ -1,24 +1,29 @@
 import { BASE_URL } from "./api-config";
+import { TOptions, TTokenResponse } from "./types";
 
-export const getResponse = (res) => {
+type TBaseResponse = {
+    success: boolean;
+    message?: string;
+};
+
+export const getResponse = <T>(res: Response): Promise<T> => {
     return res.json()
-    .then((response) => {
-        console.log(response);
+    .then((response: T & TBaseResponse ) => {
         if(response.success) {
             return response;
-        }
-        else {
-            console.log(response.message)
+        } else {
             return Promise.reject(response.message || `Ошибка сервер вернул ответ с ошибкой ${res.status}`); 
         }
     });
 };
 
-const checkReponse = (res) => {
-    return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
+const checkReponse = <T>(res: Response): Promise<T>  => {
+    return res.ok 
+    ? res.json() 
+    : res.json().then((err) => Promise.reject(err));
 };
 
-export const refreshToken = () => {
+export const refreshToken = (): Promise<TTokenResponse> => {
     return fetch(`${BASE_URL}/auth/token`, {
         method: "POST",
         headers: {
@@ -28,8 +33,8 @@ export const refreshToken = () => {
         token: localStorage.getItem("refreshToken"),
         }),
     })
-    .then(checkReponse)
-    .then((refreshData) => {
+    .then(checkReponse<TTokenResponse>)
+    .then((refreshData: TTokenResponse) => {
         if (!refreshData.success) {
             return Promise.reject(refreshData);
         }
@@ -39,10 +44,10 @@ export const refreshToken = () => {
     });
 };
 
-export const fetchWithRefresh = async (url, options) => {
+export const fetchWithRefresh = async (url: string, options: TOptions) => {
     try {
         return await fetch(url, options);
-    } catch (err) {
+    } catch (err: any) {
         if (err.message === "jwt expired") {
             const refreshData = await refreshToken(); 
             options.headers = options.headers || {};

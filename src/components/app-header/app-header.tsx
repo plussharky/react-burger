@@ -3,8 +3,8 @@ import { Button, Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/r
 import { NavLink } from "react-router-dom";
 import styles from './app-header.module.css';
 
-const AppHeader = () => {
-    const isActiveLink = useCallback((isActive) => 
+function AppHeader() {
+    const isActiveLink = useCallback((isActive: boolean): string => 
         isActive ? styles.activeButton : styles.inactiveButton
     , [])
 
@@ -26,4 +26,4 @@ const AppHeader = () => {
     )
 }
 
- export default AppHeader;
+export default AppHeader;
