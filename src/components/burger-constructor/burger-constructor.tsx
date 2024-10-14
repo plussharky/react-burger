@@ -86,8 +86,12 @@ function BurgerConstructor() {
     }, [bun, isOverIngredients, draggingIgredient])
 
     const ingredientsElement = useCallback(() => {
-        const isDraggingIngredient = draggingIgredient?.item?.type !== 'bun';
-        const ingredientStyle = ` ${isDraggingIngredient ? !isOverIngredients ? styles.glow : `${styles.border} ${styles.glow}` : ""}`;
+        const isDraggingIngredient = draggingIgredient ? draggingIgredient.item?.type !== 'bun' : false;
+        const ingredientStyle = ` ${isDraggingIngredient 
+            ? !isOverIngredients 
+                ? styles.glow 
+                : `${styles.border} ${styles.glow}` 
+            : ""}`;
         return ingredients.length === 0 ? (
                     <div className={`${styles.emptyIngredient} ${ingredientStyle}`}>
                         <p>Перетащите ингредиенты в конструктор</p>

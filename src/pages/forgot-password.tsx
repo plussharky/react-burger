@@ -10,16 +10,14 @@ import { forgotPassword } from "../utils/auth-api";
 function ForgotPassword() {
   const navigate = useNavigate();
   const [email, setEmail] = useState<string>("");
-  const [emailError, setEmailError] = useState<string>("");
-  const [errorServer, setErrorServer] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
   const onRestore = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setEmailError("");
-    setErrorServer("");
+    setError("");
 
     if (!email) {
-      setEmailError("Введите почту!");
+      setError(prev => prev + "Введите почту!");
       return;
     }
 
@@ -30,7 +28,7 @@ function ForgotPassword() {
       })
       .catch((error: Error) => {
         const errorMsg = error.message || String(error);
-        setErrorServer(errorMsg);
+        setError(prev => prev + errorMsg);
       });
   };
 
@@ -44,8 +42,7 @@ function ForgotPassword() {
         isIcon={false}
         onChange={(e) => setEmail(e.target.value)}
       />
-      {emailError && <p className={styles.error}>{emailError}</p>}
-      {errorServer && <p className={styles.error}>{errorServer}</p>}
+      {error && <p className={styles.error}>{error}</p>}
       <Button htmlType="submit" type="primary" size="large">
         Восстановить
       </Button>

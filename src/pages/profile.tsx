@@ -4,22 +4,22 @@ import { NavLink } from "react-router-dom";
 import styles from './profile.module.css'
 import { useDispatch, useSelector } from "react-redux";
 import { logout, updateUser } from '../services/auth/actions';
+import { useForm } from '../hooks/use-form';
 
 function Profile() {
     const dispatch = useDispatch();
     //@ts-ignore
     const { user } = useSelector(store => store.auth)
+    const initialForm = {
+        name: user.name,
+        email: user.email,
+        password: "",
+    };
 
-    const [name, setName] = useState<string>(user.name);
-    const [nameError, setNameError] = useState<string>("");
+    const { values, handleChange, setValues } = useForm(initialForm);
     const [isNameDisabled, setIsNameDisabled] = useState<boolean>(true);
-    const [email, setEmail] = useState<string>(user.email);
-    const [emailError, setEmailError] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
-    const [passwordError, setPasswordError] = useState<string>("");
-    const [isPasswordDisabled, setIsPasswordDisabled] = useState<boolean>(true);
     const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
-    const [errorServer, setErrorServer] = useState<string>("");
+    const [error, setError] = useState<string>("");
 
     const isActiveLink = useCallback((isActive: boolean) => 
         isActive ? styles.activeMenuButton : styles.inactiveMenuButton
@@ -29,48 +29,40 @@ function Profile() {
         setIsNameDisabled(!isNameDisabled);
     }, [isNameDisabled])
 
-    const handlePasswordIconClick = useCallback(() => {
-        setIsPasswordDisabled(!isPasswordDisabled);
-    }, [isPasswordDisabled])
-
     const togglePasswordVisibility = useCallback(() => {
         setIsPasswordVisible(!isPasswordVisible);
     }, [isPasswordVisible]);
 
 
     const onSave = useCallback((e: FormEvent<HTMLFormElement>) => {
-        setNameError("");
-        setEmailError("");
-        setPasswordError("");
-        setErrorServer("");
         e.preventDefault();
+        setError("");
     
-        if (!email) {
-          setEmailError("Введите почту!");
+        if (!values.email) {
+          setError(prev => prev + "Введите почту! ");
         }
     
-        if (!password) {
-          setPasswordError("Введите пароль!");
+        if (!values.password) {
+            setError(prev => prev + "Введите пароль! ");
         }
-        if (!name) {
-          setNameError("Введите имя!");
+        if (!values.name) {
+            setError(prev => prev + "Введите имя! ");
         }
 
-        if (nameError || emailError || passwordError) {
+        if (error) {
           return;
         }
+
         //@ts-ignore
-        dispatch(updateUser(email, password, name))
+        dispatch(updateUser(values.email, values.password, values.name))
             .catch((error: Error) => {
                 const errorMsg = error.message || String(error);
-                setErrorServer(errorMsg);
+                setError(prev => prev + errorMsg);
             });
-    }, [dispatch, email, password, name, nameError, emailError, passwordError]);
+    }, [dispatch, values]);
 
     const onCancel = useCallback(() => {
-        setName(user.name);
-        setEmail(user.email);
-        setPassword("");
+        setValues(initialForm);
     }, [user]);
 
     const onLogout = useCallback(() => {
@@ -99,8 +91,8 @@ function Profile() {
                 </div>
                 <div className={styles.userProperties}>
                     <Input 
-                        value={name}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)} 
+                        value={values.name}
+                        onChange={handleChange} 
                         onPointerEnterCapture={undefined} 
                         onPointerLeaveCapture={undefined}                        
                         type="text"
@@ -111,22 +103,35 @@ function Profile() {
                         onIconClick={handleNameIconClick}
                     />
                     <EmailInput 
-                        value={email}
+                        value={values.email}
                         name={'email'}
                         isIcon={true}
-                        onChange={e => setEmail(e.target.value)}
+                        onChange={handleChange}
                     />
-                    <PasswordInput 
-                        placeholder={'Пароль'}
-                        value={password}
-                        onChange={e => setPassword(e.target.value)}
-                        name={'password'}
-                        icon={isPasswordDisabled ? 'EditIcon' : (isPasswordVisible ? 'HideIcon' : 'ShowIcon')}
-                        disabled={isPasswordDisabled}
-                        onClick={isPasswordDisabled ? handlePasswordIconClick : togglePasswordVisibility}
-                    />
+                    {
+                        isPasswordVisible 
+                        ? <Input 
+                            value={values.password}
+                            onChange={handleChange}                         
+                            onPointerEnterCapture={undefined} 
+                            onPointerLeaveCapture={undefined}    
+                            type="password"
+                            placeholder={"Пароль"}
+                            name={"password"}
+                            icon={"EditIcon"}
+                            disabled={true}
+                            onIconClick={togglePasswordVisibility}
+                            />
+                        : <PasswordInput 
+                            placeholder={'Пароль'}
+                            value={values.password}
+                            onChange={handleChange}
+                            name={'password'}
+                            onBlur={togglePasswordVisibility}
+                        />
+                    }
                     <div className={styles.buttons}>
-                        {errorServer && <p className={styles.error}>{errorServer}</p>}
+                        {error && <p className={styles.error}>{error}</p>}
                         <Button 
                             htmlType="button" 
                             type="secondary" 
