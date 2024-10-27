@@ -1,0 +1,20 @@
+.main {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+.title {
+  composes: text text_type_main-large from global;
+  align-self: center;
+  position: relative;
+}
+
+.feedAssembly {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 60px;
+}

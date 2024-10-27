@@ -1,0 +1,33 @@
+.ingredientIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 66px;
+    width: 66px;
+    border-radius: 50%;
+    background: linear-gradient(63.18deg, #801AB3 0%, #4C4CFF 100%);
+    overflow: hidden;
+    padding: 2px;
+}
+
+.iconGradient {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-color: var(--background-alt); 
+    border-radius: 50%;
+    box-shadow: none;
+}
+
+.iconGradient::before {
+    border-radius: 100%;
+    content: '';
+    background-image: linear-gradient(to bottom, #3acfd5 0%, #3a4ed5 100%);
+    top: -10px;
+    left: -10px;
+    bottom: -10px;
+    right: -10px;
+    z-index: -1;
+}

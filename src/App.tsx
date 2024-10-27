@@ -1,4 +1,6 @@
 import Home from "./pages/home";
+import Feed from "./pages/feed";
+import { OrderInfo } from "./pages/order-info";
 import { useEffect } from "react";
 import Login from "./pages/login";
 import { Profile } from "./pages/profile";
@@ -49,6 +51,8 @@ function App() {
         />
         <Route path="/profile" element={<OnlyAuth component={<Profile />} />} />
         <Route path="/ingredients/:id" element={<IngredientDetails />} />
+        <Route path="/feed" element={<Feed />} />
+        <Route path="/feed/:id" element={<OrderInfo />} />
       </Routes>
 
       {background && (

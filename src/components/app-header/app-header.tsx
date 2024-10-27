@@ -1,5 +1,5 @@
-import React, { useCallback } from 'react';
-import { Button, Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import { useCallback } from 'react';
+import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { NavLink } from "react-router-dom";
 import styles from './app-header.module.css';
 
@@ -14,7 +14,7 @@ function AppHeader() {
                 <NavLink to="/" className={({isActive}) => isActiveLink(isActive)}>
                         <BurgerIcon type="primary"/> Конструктор
                 </NavLink>
-                <NavLink to="/list" className={({isActive}) => isActiveLink(isActive)}>
+                <NavLink to="/feed" className={({isActive}) => isActiveLink(isActive)}>
                     <ListIcon type="primary" /> Лента заказов
                 </NavLink>
             </nav>

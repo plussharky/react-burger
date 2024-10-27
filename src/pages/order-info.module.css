@@ -1,0 +1,75 @@
+.main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5%;
+}
+
+.info {
+    display: flex;
+    justify-content: stretch;
+    align-items: stretch;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.id {
+    composes: text text_type_digits-default from global;
+    text-align: center;
+}
+
+.name {
+    composes: text text_type_main-medium from global;
+    text-align: left;
+}
+
+.status {
+    composes: text text_type_main-small from global;
+    color: var(--colors-interface-success)
+}
+
+.compound {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 16px;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+}
+
+.ingredientName {
+    composes: text text_type_main-default from global;
+    justify-self: center;
+}
+
+.price {
+    composes: text text_type_digits-default from global;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+.ingredientImg {
+    width: 80%;
+    height: 80%;
+    object-fit: cover; 
+    border-radius: 50%; 
+}
+
+.timestamp {
+    composes: text text_type_main-small from global;
+    color: var(--text-inactive-color)
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
