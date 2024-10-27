@@ -6,12 +6,12 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./register.module.css";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../hooks/react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { register } from "../services/auth/actions";
 import { useForm } from "../hooks/use-form";
 
-const Register = () => {
+export const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -41,7 +41,6 @@ const Register = () => {
       return;
     }
 
-    //@ts-ignore
     dispatch(register(values.email, values.password, values.name))
       .then(() => navigate("/"))
       .catch((error: Error) => setError(prev => prev + error.message));
@@ -90,5 +89,3 @@ const Register = () => {
     </form>
   );
 };
-
-export default Register;

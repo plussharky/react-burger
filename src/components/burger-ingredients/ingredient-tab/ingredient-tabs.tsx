@@ -9,7 +9,7 @@ type TTabsProps = {
   handleOnClickTab: (value: string) => void;
 }
 
-const Tabs = forwardRef<HTMLDivElement, TTabsProps>(({ categories, activeTab, handleOnClickTab }, ref) => {
+export const Tabs = forwardRef<HTMLDivElement, TTabsProps>(({ categories, activeTab, handleOnClickTab }, ref) => {
   return (
     <div className={styles.tabs} ref={ref}>
       {categories.map(category => (
@@ -25,5 +25,3 @@ const Tabs = forwardRef<HTMLDivElement, TTabsProps>(({ categories, activeTab, ha
     </div>
   );
 });
-
-export default Tabs;

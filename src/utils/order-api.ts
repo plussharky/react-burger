@@ -10,7 +10,7 @@ const orderApiConfig = {
     },
 }
 
-export const postOrder = (ingredients: TIngredient[], token: string): Promise<TOrderData> => {
+export const postOrder = (ingredients: string[], token: string): Promise<TOrderData> => {
     return fetch(orderApiConfig.baseUrl, {
         method: orderApiConfig.method,
         headers: {

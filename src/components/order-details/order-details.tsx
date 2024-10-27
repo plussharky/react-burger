@@ -1,10 +1,9 @@
 import styles from './order-details.module.css';
 import check from '../../assets/icons/check.svg'
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../hooks/react-redux';
 import Preloader from '../preloader/preloader';
 
-function OrderDetails() {
-    //@ts-ignore
+export function OrderDetails() {
     const { number, loading, error } = useSelector(store => store.order);
 
     if (loading) {
@@ -25,5 +24,3 @@ function OrderDetails() {
         </div>
     )
 }
-
-export default OrderDetails;

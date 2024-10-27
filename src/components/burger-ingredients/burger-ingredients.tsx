@@ -1,12 +1,11 @@
 import React, { useMemo, useState, useRef, useCallback } from 'react';
 import styles from './burger-ingredients.module.css';
-import IngredientCtegory from './ingredient-category/ingredient-category';
-import Tabs from './ingredient-tab/ingredient-tabs';
-import { useSelector } from "react-redux";
+import { IngredientCtegory } from './ingredient-category/ingredient-category';
+import { Tabs } from './ingredient-tab/ingredient-tabs';
+import { useSelector } from "../../hooks/react-redux";
 
-function BurgerIngredients() {
+export function BurgerIngredients() {
     const [activeTab, setActiveTab] = useState<string>("bun");
-    //@ts-ignore
     const { ingredients, loading, error } = useSelector(store => store.ingredients)
     const tabsRef = useRef<HTMLDivElement>(null);
     const bunsRef = useRef<HTMLDivElement>(null);
@@ -14,7 +13,6 @@ function BurgerIngredients() {
     const saucesRef = useRef<HTMLDivElement>(null);
 
     const categories = useMemo(() => {
-        //@ts-ignore
         const getfiltredIngredients = (type: string) => ingredients.filter(item => item.type === type);
 
         return [
@@ -82,5 +80,3 @@ function BurgerIngredients() {
         </div>
     )
 }
-
-export default BurgerIngredients;

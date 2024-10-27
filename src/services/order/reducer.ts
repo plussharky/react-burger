@@ -1,16 +1,24 @@
 import {
     ORDER_CREATE_LOADING, 
     ORDER_CREATE_ERROR, 
-    ORDER_CREATE_SUCCESS } from './actions'
+    ORDER_CREATE_SUCCESS, 
+    TOrderActions} from './actions'
 
-const initialState = {
+type TOrderState = {
+    number: number | null,
+    name: string | null,
+    loading: boolean,
+    error: string | null
+}
+
+const initialState: TOrderState = {
     number: null,
     name: null,
     loading: false,
     error: null
 }
 
-export const orderReducer = (state = initialState, action) => {
+export const orderReducer = (state = initialState, action: TOrderActions): TOrderState => {
     switch (action.type) {
         case ORDER_CREATE_LOADING:
             return {
@@ -22,15 +30,15 @@ export const orderReducer = (state = initialState, action) => {
             return {
                 ...state,
                 loading: false,
-                error: action.payload,
+                error: action.error,
             }
         case ORDER_CREATE_SUCCESS:
             return {
                 ...state,
                 loading: false,
                 error: null,
-                number: action.payload.order.number,
-                name: action.payload.name, 
+                number: action.data.order.number,
+                name: action.data.name, 
             };
         default:
             return state;

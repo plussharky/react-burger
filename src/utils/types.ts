@@ -58,6 +58,7 @@ export type TIngredient = {
     image_mobile: string;
     image_large: string;
     __v: number;
+    uniqueId?: string
 }
 
 export type TOrder = { 

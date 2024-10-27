@@ -1,10 +1,9 @@
 import { useRef } from 'react';
 import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd'
-import PropTypes from 'prop-types';
 import styles from './ingredient-element.module.css'
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDispatch } from 'react-redux';
-import { MOVE_INGREDIENT, DELETE_INGREDIENT } from '../../../services/burger-constructor/actions';
+import { useDispatch } from '../../../hooks/react-redux';
+import { moveIngredient, deleteIngredient } from '../../../services/burger-constructor/actions';
 
 type TIngredientElementProps = {
     name: string;
@@ -18,7 +17,7 @@ type DragItem = {
     index: number;
 };
 
-function IngredientElement({name, price, image, index}: TIngredientElementProps) {
+export function IngredientElement({name, price, image, index}: TIngredientElementProps) {
     const dispatch = useDispatch();
     const ref = useRef<HTMLDivElement>(null);
 
@@ -49,23 +48,14 @@ function IngredientElement({name, price, image, index}: TIngredientElementProps)
             if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
                 return;
             }
-            dispatch({
-                type: MOVE_INGREDIENT,
-                payload: {
-                    fromIndex: item.index,
-                    toIndex: index
-                }
-            });
+            dispatch(moveIngredient(item.index, index));
 
             item.index = hoverIndex;
         }
     });
 
     const handleDelete = () => {
-        dispatch({
-            type: DELETE_INGREDIENT,
-            payload: index
-        });
+        dispatch(deleteIngredient(index));
     };
 
     drag(drop(ref));
@@ -82,5 +72,3 @@ function IngredientElement({name, price, image, index}: TIngredientElementProps)
         </div>
     );
 }
-
-export default IngredientElement;

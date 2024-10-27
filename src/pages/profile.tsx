@@ -2,17 +2,16 @@ import { FormEvent, useCallback, useState } from 'react'
 import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { NavLink } from "react-router-dom";
 import styles from './profile.module.css'
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "../hooks/react-redux";
 import { logout, updateUser } from '../services/auth/actions';
 import { useForm } from '../hooks/use-form';
 
-function Profile() {
+export function Profile() {
     const dispatch = useDispatch();
-    //@ts-ignore
     const { user } = useSelector(store => store.auth)
     const initialForm = {
-        name: user.name,
-        email: user.email,
+        name: user!.name,
+        email: user!.email,
         password: "",
     };
 
@@ -53,7 +52,6 @@ function Profile() {
           return;
         }
 
-        //@ts-ignore
         dispatch(updateUser(values.email, values.password, values.name))
             .catch((error: Error) => {
                 const errorMsg = error.message || String(error);
@@ -66,7 +64,6 @@ function Profile() {
     }, [user]);
 
     const onLogout = useCallback(() => {
-        //@ts-ignore
         dispatch(logout());
     }, [dispatch]);
 
@@ -152,5 +149,3 @@ function Profile() {
             </form>
     );
 }
-
-export default Profile;

@@ -5,7 +5,7 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./login.module.css";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../hooks/react-redux";
 import { login } from "../services/auth/actions";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "../hooks/use-form";
@@ -36,7 +36,6 @@ const Login = () => {
     if (error) {
       return;
     }
-    //@ts-ignore
     dispatch(login(values.email, values.password))
       .then(() => navigate("/"))
       .catch((error: string) => setError(prev => prev + error));

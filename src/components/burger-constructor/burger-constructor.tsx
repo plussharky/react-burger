@@ -1,23 +1,20 @@
-import React, { useMemo, useState, useCallback, FC } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 import styles from './burger-constructor.module.css';
 import { CurrencyIcon, Button, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
-import Modal from '../modal/modal';
-import OrderDetails from '../order-details/order-details';
-import { useDispatch, useSelector } from 'react-redux';
-import { createOrder } from '../../services/order/actions';
+import { Modal } from '../modal/modal';
+import { OrderDetails } from '../order-details/order-details';
+import { useDispatch, useSelector } from '../../hooks/react-redux';
+import { createOrder, orderCreateError } from '../../services/order/actions';
 import { useDrop } from 'react-dnd';
 import { addBun, addIngredient } from '../../services/burger-constructor/actions';
-import { ORDER_CREATE_ERROR } from '../../services/order/actions'
-import IngredientElement from './ingredient-element/ingredient-element';
+import { IngredientElement } from './ingredient-element/ingredient-element';
 import { useNavigate } from 'react-router-dom';
 import { TIngredient } from '../../utils/types';
 
-function BurgerConstructor() {
+export function BurgerConstructor() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    //@ts-ignore
     const { number, loading, error } = useSelector(store => store.order);
-    //@ts-ignore
     const { bun, ingredients } = useSelector(store => store.burgerConstructor);
 
     const [isShowOrderDetails, setShowOrderDetails] = useState<boolean>(false);
@@ -25,12 +22,10 @@ function BurgerConstructor() {
     const toggleOrderDetails = useCallback(() => {
         setShowOrderDetails((prev) => !prev);
         if (!bun || ingredients.length === 0) {
-            dispatch({
-                type: ORDER_CREATE_ERROR,
-                payload: `Чтобы сделать заказ сделайте следующее: 
+            const orderError: string = `Чтобы сделать заказ сделайте следующее: 
                 ${bun ? "" : "\nдобавьте булку"} 
                 ${ingredients.length > 0 ? "" : "\nдобавьте ингредиенты"}`
-            });
+            dispatch(orderCreateError(orderError));
             return;
         }
         if (!loading && bun && ingredients.length > 0) {
@@ -38,10 +33,8 @@ function BurgerConstructor() {
             if (!token) {
                 navigate("/login");
             }
-            //@ts-ignore
             const orderIngredients = [bun._id, ...ingredients.map(i => i._id), bun._id];
-            //@ts-ignore
-            dispatch(createOrder(orderIngredients, token));
+            dispatch(createOrder(orderIngredients, token!));
         }
     }, [bun, ingredients, dispatch, loading, number]);
 
@@ -58,7 +51,6 @@ function BurgerConstructor() {
     });
 
     const getTotalPrice = useMemo(() => {
-        //@ts-ignore
         const ingredientsPrice = ingredients.reduce((acc, item) => acc + item.price, 0);
         const bunPrice = bun ? bun.price * 2 : 0;
         return ingredientsPrice + bunPrice;
@@ -99,7 +91,6 @@ function BurgerConstructor() {
                 ) : (
                     <>
                         {
-                        //@ts-ignore
                         ingredients.map((item, index) => (
                             <IngredientElement
                                 key={item.uniqueId}
@@ -115,7 +106,6 @@ function BurgerConstructor() {
                                 price={draggingIgredient.item.price}
                                 thumbnail={draggingIgredient.item.image}
                                 extraClass={`${ingredientStyle}`}
-                                //draggable
                             />
                         }
                     </>
@@ -158,5 +148,3 @@ function BurgerConstructor() {
         </div>
     ) 
 }
-
-export default BurgerConstructor;

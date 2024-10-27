@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { useSelector } from "react-redux";
+import { useSelector } from "../hooks/react-redux";
 import { Navigate, useLocation } from "react-router-dom";
 
 type ProtectedProps = {
@@ -8,9 +8,7 @@ type ProtectedProps = {
 }
 
 function Protected({ onlyUnAuth = false, component }: ProtectedProps) {
-  //@ts-ignore
   const isAuthChecked = useSelector((store) => store.auth.isAuthChecked);
-  //@ts-ignore
   const user = useSelector((store) => store.auth.user);
   const location = useLocation();
 

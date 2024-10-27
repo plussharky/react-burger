@@ -1,16 +1,13 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import styles from './ingredient-details.module.css';
 import { updateIngredientDetails } from '../../../../../services/ingredient-details/actions'
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../../../../hooks/react-redux';
 import { useParams } from "react-router-dom";
 
-function IngredientDetails() {
+export function IngredientDetails() {
     const { id } = useParams();
-    //@ts-ignore
-    const { ingredients, loading, error } = useSelector(store => store.ingredients)
-
     const dispatch = useDispatch();
-    //@ts-ignore
+    const { ingredients, loading, error } = useSelector(store => store.ingredients);
     const item = ingredients.filter(i => i._id === id)[0];
 
     useEffect(() => {
@@ -62,5 +59,3 @@ function IngredientDetails() {
         </div>
     );
 }
-
-export default IngredientDetails;

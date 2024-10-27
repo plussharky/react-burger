@@ -1,32 +1,39 @@
+import { TIngredient } from "../../utils/types";
 import { 
     ADD_BUN, 
     ADD_INGREDIENT, 
     MOVE_INGREDIENT,
-    DELETE_INGREDIENT } from "./actions";
+    DELETE_INGREDIENT, 
+    TBurgerConstructorActions} from "./actions";
 
-const initialState = {
+type TBurgerConstructor = {
+    bun: TIngredient | null;
+    ingredients: TIngredient[];
+};
+
+const initialState: TBurgerConstructor = {
     bun : null,
     ingredients: []
 }
 
-export const burgerConstructorReducer = (state = initialState, action) => {
+export const burgerConstructorReducer = (state = initialState, action: TBurgerConstructorActions) => {
     switch (action.type) {
         case ADD_INGREDIENT:
             return {
                 ...state,
-                ingredients: [...state.ingredients, action.payload]
+                ingredients: [...state.ingredients, action.ingredient]
             };
         case ADD_BUN:
             return {
                 ...state,
-                bun: action.payload
+                bun: action.bun
             };
         case MOVE_INGREDIENT:
             const movedIngredients = [...state.ingredients];
             movedIngredients.splice(
-                action.payload.toIndex, 
+                action.index.to, 
                 0, 
-                movedIngredients.splice(action.payload.fromIndex, 1)[0]
+                movedIngredients.splice(action.index.from, 1)[0]
             );
             return {
                 ...state,
@@ -34,7 +41,7 @@ export const burgerConstructorReducer = (state = initialState, action) => {
             };
         case DELETE_INGREDIENT:
             const remainingIngredients = [...state.ingredients];
-            remainingIngredients.splice(action.payload, 1)
+            remainingIngredients.splice(action.index, 1)
             return {
                 ...state,
                 ingredients: remainingIngredients

@@ -1,15 +1,23 @@
 import { 
     INGREDIENTS_LOAD_SUCCESS, 
     INGREDIENTS_LOADING, 
-    INGREDIENTS_ERROR } from "./actions";
+    INGREDIENTS_ERROR, 
+    TIngredientsActions} from "./actions";
+import { TIngredient } from '../../utils/types'
 
-const initialState = {
+type TIngredientsState = {
+    ingredients: TIngredient[];
+    loading: boolean;
+    error: string | null;
+}
+
+const initialState: TIngredientsState = {
     ingredients: [],
     loading: false,
     error: null
 }
 
-export const ingredientsReducer = (state = initialState, action) => {
+export const ingredientsReducer = (state = initialState, action: TIngredientsActions) => {
     switch (action.type) {
         case INGREDIENTS_LOADING:
             return {
@@ -21,14 +29,14 @@ export const ingredientsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 loading: false,
-                error: action.payload,
+                error: action.error,
             }
         case INGREDIENTS_LOAD_SUCCESS:
             return {
                 ...state,
                 loading: false,
                 error: null,
-                ingredients: action.payload,
+                ingredients: action.ingredients,
             };
         default:
             return state;
