@@ -1,12 +1,11 @@
-import styles from './order-info.module.css';
-import { useSelector } from '../hooks/react-redux';
 import { useParams } from "react-router-dom";
-import { GradientIcon } from '../components/gradient-icon/gradient-icon';
-import { TIngredient } from '../utils/types';
-import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { formatDate } from '../utils/date-formatter';
-import { useMemo } from 'react';
-
+import { useSelector } from "../../hooks/react-redux";
+import { TIngredient } from "../../utils/types";
+import { useMemo } from "react";
+import styles from "./order-info.module.css"
+import { GradientIcon } from "../gradient-icon/gradient-icon";
+import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { formatDate } from "../../utils/date-formatter";
 
 export function OrderInfo() {
     const { id } = useParams();

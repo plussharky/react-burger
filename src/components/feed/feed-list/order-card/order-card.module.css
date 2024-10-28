@@ -8,6 +8,8 @@
     background-color: var(--background-element);
     border-radius: 48px;
     min-width: 500px;
+    text-decoration: none;
+    color: var(--text-primary-color);
 }
 
 .header {

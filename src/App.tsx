@@ -1,6 +1,6 @@
 import Home from "./pages/home";
 import Feed from "./pages/feed";
-import { OrderInfo } from "./pages/order-info";
+import { Order } from "./pages/order";
 import { useEffect } from "react";
 import Login from "./pages/login";
 import { Profile } from "./pages/profile";
@@ -15,6 +15,7 @@ import { loadIngredients } from "./services/ingredients/actions";
 import { OnlyAuth, OnlyUnAuth } from "./components/protected-route";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { IngredientDetails } from "./components/burger-ingredients/ingredient-category/ingredient-card/ingredient-detalis/ingredient-details";
+import { OrderInfo } from "./components/order-info/order-info";
 
 function App() {
   const dispatch = useDispatch();
@@ -52,7 +53,7 @@ function App() {
         <Route path="/profile" element={<OnlyAuth component={<Profile />} />} />
         <Route path="/ingredients/:id" element={<IngredientDetails />} />
         <Route path="/feed" element={<Feed />} />
-        <Route path="/feed/:id" element={<OrderInfo />} />
+        <Route path="/feed/:id" element={<Order />} />
       </Routes>
 
       {background && (
@@ -62,6 +63,14 @@ function App() {
             element={
               <Modal title="Детали ингредиента" onClose={handleModalClose}>
                 <IngredientDetails />
+              </Modal>
+            }
+          />
+          <Route
+            path="/feed/:number"
+            element={
+              <Modal onClose={handleModalClose}>
+                <OrderInfo />
               </Modal>
             }
           />

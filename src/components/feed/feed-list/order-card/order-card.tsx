@@ -2,6 +2,7 @@ import { TIngredient } from '../../../../utils/types';
 import styles from './order-card.module.css'
 import { formatDate } from '../../../../utils/date-formatter';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Link, useLocation } from 'react-router-dom';
 
 type TOrderCard = {
     id: number;
@@ -12,12 +13,17 @@ type TOrderCard = {
 };
 
 export function OrderCard({id, timestamp, name, ingredients, price}: TOrderCard) {
-
+    const location = useLocation();
     const ingredientsToShow = ingredients.slice(0, 5);
     const ingredientsToHide = ingredients.slice(5);
 
     return (
-        <div className={styles.card}>
+        <Link 
+            key={id}
+            to={`/feed/${id}`}
+            state={{background: location}}
+            className={styles.card}
+        >
             <div className={styles.header}>
                 <p className={styles.id}>
                     #{id}
@@ -66,6 +72,6 @@ export function OrderCard({id, timestamp, name, ingredients, price}: TOrderCard)
                     <span>{price} </span>&nbsp;<CurrencyIcon type="primary" />
                 </div>
             </div>
-        </div>
+        </Link>
     )
 }
