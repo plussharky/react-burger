@@ -1,44 +1,65 @@
 import { TWsOrderResponse } from "../../utils/types";
+import { createAction } from '@reduxjs/toolkit';
 
-export const WS_CONNECTION_START: 'WS_CONNECTION_START' = 'WS_CONNECTION_START';
-export const WS_CONNECTION_SUCCESS: 'WS_CONNECTION_SUCCESS' = 'WS_CONNECTION_SUCCESS';
-export const WS_CONNECTION_ERROR: 'WS_CONNECTION_ERROR' = 'WS_CONNECTION_ERROR';
-export const WS_CONNECTION_CLOSED: 'WS_CONNECTION_CLOSED' = 'WS_CONNECTION_CLOSED';
-export const WS_GET_MESSAGE: 'WS_GET_MESSAGE' = 'WS_GET_MESSAGE';
-export const WS_SEND_MESSAGE: 'WS_SEND_MESSAGE' = 'WS_SEND_MESSAGE';
+export const WS_CONNECT: "WS_CONNECT" = "WS_CONNECT";
+export const WS_DISCONNECT: "WS_DISCONNECT" = "WS_DISCONNECT";
+export const WS_CONNECTING: "WS_CONNECTING" = "WS_CONNECTING";
+export const WS_OPEN: "WS_OPEN" = "WS_OPEN";
+export const WS_CLOSE: "WS_CLOSE" = "WS_CLOSE";
+export const WS_ERROR: "WS_ERROR" = "WS_ERROR";
+export const WS_GET_MESSAGE: "WS_GET_MESSAGE" = "WS_GET_MESSAGE";
+export const WS_SEND_MESSAGE: "WS_SEND_MESSAGE" = "WS_SEND_MESSAGE";
 
-export type TWsConnectionStartAction = {
-    readonly type: typeof WS_CONNECTION_START;
-}
+export type TWsConnectAction = {
+    readonly type: typeof WS_CONNECT;
+    readonly payload: string; 
+};
 
-export type TWsConnectionSuccessAction = {
-    readonly type: typeof WS_CONNECTION_SUCCESS;
-}
+export type TWsConnectingAction = {
+    readonly type: typeof WS_CONNECTING;
+};
 
-export type TWsConnectionErrorAction = {
-    readonly type: typeof WS_CONNECTION_ERROR;
-    readonly payload: string; // Можно добавить payload для ошибки
-}
+export type TWsOpenAction = {
+    readonly type: typeof WS_OPEN;
+};
 
-export type TWsConnectionClosedAction = {
-    readonly type: typeof WS_CONNECTION_CLOSED;
-}
+export type TWsCloseAction = {
+    readonly type: typeof WS_CLOSE;
+};
+
+export type TWsErrorAction = {
+    readonly type: typeof WS_ERROR;
+    readonly payload: string; 
+};
 
 export type TWsGetMessageAction = {
     readonly type: typeof WS_GET_MESSAGE;
-    readonly payload: TWsOrderResponse; // Определите тип для сообщений, если это возможно
-}
+    readonly payload: TWsOrderResponse;
+};
 
 export type TWsSendMessageAction = {
     readonly type: typeof WS_SEND_MESSAGE;
-    readonly payload: any; // Определите тип для сообщений, если это возможно
-}
+    readonly payload: any;
+};
 
-// Типизация для всех возможных действий feed
+export type TWsDisconnectAction = {
+    readonly type: typeof WS_DISCONNECT;
+};
+
 export type TFeedActions = 
-    | TWsConnectionStartAction
-    | TWsConnectionSuccessAction
-    | TWsConnectionErrorAction
-    | TWsConnectionClosedAction
+    | TWsConnectAction
+    | TWsConnectingAction
+    | TWsOpenAction
+    | TWsCloseAction
+    | TWsErrorAction
     | TWsGetMessageAction
-    | TWsSendMessageAction;
+    | TWsSendMessageAction
+    | TWsDisconnectAction;
+
+export const wsConnect = createAction<string, "WS_CONNECT">(WS_CONNECT);
+export const wsDisconnect = createAction(WS_DISCONNECT);
+export const wsConnecting = createAction(WS_CONNECTING);
+export const wsOpen = createAction(WS_OPEN);
+export const wsClose = createAction(WS_CLOSE);
+export const wsError = createAction<string>(WS_ERROR);
+export const wsGetMessage = createAction<TWsOrderResponse>(WS_GET_MESSAGE);

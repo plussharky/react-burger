@@ -61,13 +61,18 @@ export type TIngredient = {
     uniqueId?: string
 }
 
+export type TNewOrder = {
+    number: number;
+}
+
 export type TOrder = { 
     number: number;
-    ingredients?: string[];
-    _id?: string;
-    status?: string;
-    createdAt?: Date;
-    updatedAt?: Date;
+    ingredients: string[];
+    name: string;
+    _id: string;
+    status: string;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 export type TOrderData = {

@@ -1,3 +1,5 @@
+import { string } from "prop-types";
+
 const MILLISECONDS_IN_MINUTE = 1000 * 60;
 const MILLISECONDS_IN_HOUR = MILLISECONDS_IN_MINUTE * 60;
 const MILLISECONDS_IN_DAY = MILLISECONDS_IN_HOUR * 24;
@@ -8,7 +10,10 @@ const MONTH_NAMES: string[] = [
     'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'
 ];
 
-export function formatDate(date: Date): string {
+export function formatDate(date: Date | string): string {
+    if (typeof date == "string") {
+        date = new Date(date);
+    }
     const now = new Date();
     const diffMiliseconds = now.getTime() - date.getTime(); 
     const diffInDays = Math.floor(diffMiliseconds / MILLISECONDS_IN_DAY);

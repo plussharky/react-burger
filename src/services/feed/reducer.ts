@@ -1,7 +1,5 @@
 import { TOrder } from "../../utils/types"
-import { TFeedActions, WS_CONNECTION_ERROR, WS_CONNECTION_SUCCESS, WS_GET_MESSAGE } from './actions'
-
-//type TOrder
+import { TFeedActions, WS_ERROR, WS_CONNECT, WS_GET_MESSAGE } from './actions'
 
 type TFeedState = {
     orders: TOrder[];
@@ -19,16 +17,6 @@ const initialState: TFeedState = {
 
 export const feedReducer = (state = initialState, action: TFeedActions): TFeedState => {
   switch(action.type) {
-    case WS_CONNECTION_SUCCESS: 
-        return {
-            ...state,
-            connectionError: null
-        }
-    case WS_CONNECTION_ERROR:
-        return {
-            ...state,
-            connectionError: action.payload
-        };
     case WS_GET_MESSAGE: 
         return {
             ...state,
@@ -36,6 +24,8 @@ export const feedReducer = (state = initialState, action: TFeedActions): TFeedSt
             total: action.payload.total,
             totalToday: action.payload.totalToday,
             connectionError: null
-        }
+        };
+    default: 
+        return state;
   }
 }

@@ -3,19 +3,22 @@ import styles from './order-card.module.css'
 import { formatDate } from '../../../../utils/date-formatter';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useLocation } from 'react-router-dom';
+import { useSelector } from '../../../../hooks/react-redux';
 
 type TOrderCard = {
     id: number;
     timestamp: Date;
     name: string;
-    ingredients: TIngredient[];
-    price: number;
+    ingredientIds: string[];
 };
 
-export function OrderCard({id, timestamp, name, ingredients, price}: TOrderCard) {
+export function OrderCard({id, timestamp, name, ingredientIds}: TOrderCard) {
     const location = useLocation();
-    const ingredientsToShow = ingredients.slice(0, 5);
-    const ingredientsToHide = ingredients.slice(5);
+    const { ingredients } = useSelector(store => store.ingredients)
+    const ingredientObjs = ingredientIds.map(id => ingredients.find(i => i._id === id));
+    const price = ingredientObjs.reduce((acc, ingredient) => acc + (ingredient?.price || 0), 0); 
+    const ingredientsToShow = ingredientObjs.slice(0, 5);
+    const ingredientsToHide = ingredientObjs.slice(5);
 
     return (
         <Link 
@@ -36,7 +39,7 @@ export function OrderCard({id, timestamp, name, ingredients, price}: TOrderCard)
             <div className={styles.componentsAndPrice}>
                 <div className={styles.components}>
                 {ingredientsToShow.map((ingredient, index) => (
-                    <div 
+                    ingredient && (<div 
                         className={styles.ingredientIcon}
                         style={{ left: `${48 * index}px`,
                                 zIndex: `${10-index}`}}
@@ -47,11 +50,11 @@ export function OrderCard({id, timestamp, name, ingredients, price}: TOrderCard)
                                 src={ingredient.image_mobile} 
                             />
                         </div>
-                    </div>))
+                    </div>)))
                 }
                 {
                     ingredientsToHide.length > 0 
-                    &&   <div 
+                    &&  ingredientsToHide[0] && <div 
                             className={styles.ingredientIcon}
                             style={{ left: `${48 * ingredientsToShow.length}px`,
                                      zIndex: `${10-ingredientsToShow.length}`}}

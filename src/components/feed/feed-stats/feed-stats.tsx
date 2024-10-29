@@ -2,7 +2,7 @@ import { TOrder } from '../../../utils/types';
 import styles from './feed-stats.module.css';
 
 type TFeedStats = {
-    orders: {number: number, status: string}[];
+    orders: TOrder[];
     totalOrders: number;
      totalTodayOrders: number;
 }
