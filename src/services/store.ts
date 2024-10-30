@@ -12,7 +12,7 @@ const wsMiddleware = socketMiddleware<unknown, TWsOrderResponse>({
     onClose: wsClose,
     onError: wsError,
     onMessage: wsGetMessage
-});
+}, true);
 
 export const store = configureStore({
     reducer: rootReducer,

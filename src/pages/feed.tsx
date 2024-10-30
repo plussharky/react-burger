@@ -1,10 +1,9 @@
 import styles from './feed.module.css';
 import { FeedList } from '../components/feed/feed-list/feed-list';
 import { FeedStats } from '../components/feed/feed-stats/feed-stats';
-import { number } from 'prop-types';
 import { useDispatch, useSelector } from '../hooks/react-redux';
 import { useEffect } from 'react';
-import { wsConnect } from '../services/feed/actions';
+import { wsConnect, wsDisconnect } from '../services/feed/actions';
 import { WS_ORDERS_ALL_URL } from '../utils/api-config';
 
 function Feed() {
@@ -14,7 +13,11 @@ function Feed() {
 
   useEffect(() => {
     dispatch(wsConnect(WS_ORDERS_ALL_URL));
-  })
+
+    return () => {
+      dispatch(wsDisconnect());
+    }
+  }, [])
 
   return (
     <main className={styles.main}>

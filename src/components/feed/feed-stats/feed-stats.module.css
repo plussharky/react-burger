@@ -14,20 +14,23 @@
     align-items: flex-start;
 }
 
-.ordersDone {
+.orders {
     display: flex;
     flex-direction: column;
     row-gap: 8px;
-}
-
-.ordersInWork {
-    display: flex;
-    flex-direction: column;
-    row-gap: 8px;
+    min-width: 20vh;
 }
 
 .columnName {
     composes: text text_type_main-medium from global;
+}
+
+.orderNumbers {
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+    max-height: 30vh;
+    overflow-y: auto;
 }
 
 .idOrderDone {

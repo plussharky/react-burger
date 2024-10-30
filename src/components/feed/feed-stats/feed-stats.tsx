@@ -12,21 +12,31 @@ export function FeedStats({orders, totalOrders, totalTodayOrders}: TFeedStats) {
     return (
         <div className={styles.statsContainer}>
             <div className={styles.orderBoard}>
-                <div className={styles.ordersDone}>
+                <div className={styles.orders}>
                     <p className={styles.columnName}>Готовы:</p>
-                    {
-                        orders
-                            .filter(o => o.status == "done")
-                            .map(o => (<p className={styles.idOrderDone}>{o.number}</p>))
-                    }  
+                    <div className={styles.orderNumbers}>
+                        {
+                            orders
+                                .filter(o => o.status === "done")
+                                .map((o, i) => (
+                                    <p 
+                                        key={i}
+                                        className={styles.idOrderDone}
+                                    >
+                                        {o.number}
+                                    </p>))
+                        }  
+                    </div>
                 </div> 
-                <div className={styles.ordersInWork}>
+                <div className={styles.orders}>
                     <p className={styles.columnName}>В работе:</p>
-                    {
-                        orders
-                            .filter(o => o.status == "inWork")
-                            .map(o => (<p className={styles.idOrderInWork}>{o.number}</p>))
-                    }  
+                    <div className={styles.orderNumbers}>
+                        {
+                            orders
+                                .filter(o => o.status !== "done")
+                                .map(o => (<p className={styles.idOrderInWork}>{o.number}</p>))
+                        }  
+                    </div>
                 </div> 
             </div>
             <div className={styles.completed}>

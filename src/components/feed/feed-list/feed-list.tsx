@@ -15,6 +15,7 @@ export function FeedList({ orders }: TFeedList) {
         {
             orders.map(order => (
                 <OrderCard 
+                    key={order._id}
                     id={order.number}
                     timestamp={order.createdAt}
                     name={order.name}

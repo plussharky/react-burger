@@ -40,6 +40,7 @@ export function OrderCard({id, timestamp, name, ingredientIds}: TOrderCard) {
                 <div className={styles.components}>
                 {ingredientsToShow.map((ingredient, index) => (
                     ingredient && (<div 
+                        key={index}
                         className={styles.ingredientIcon}
                         style={{ left: `${48 * index}px`,
                                 zIndex: `${10-index}`}}

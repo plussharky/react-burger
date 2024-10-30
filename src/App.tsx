@@ -16,6 +16,7 @@ import { OnlyAuth, OnlyUnAuth } from "./components/protected-route";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { IngredientDetails } from "./components/burger-ingredients/ingredient-category/ingredient-card/ingredient-detalis/ingredient-details";
 import { OrderInfo } from "./components/order-info/order-info";
+import { ProfileOrders } from "./pages/profile-orders";
 
 function App() {
   const dispatch = useDispatch();
@@ -51,6 +52,7 @@ function App() {
           element={<OnlyUnAuth component={<ResetPassword />} />}
         />
         <Route path="/profile" element={<OnlyAuth component={<Profile />} />} />
+        <Route path="/profile/orders" element={<OnlyAuth component={<ProfileOrders />} />} />
         <Route path="/ingredients/:id" element={<IngredientDetails />} />
         <Route path="/feed" element={<Feed />} />
         <Route path="/feed/:id" element={<Order />} />
