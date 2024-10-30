@@ -32,6 +32,11 @@
     composes: text text_type_main-medium from global;
 }
 
+.status {
+    composes: text text_type_main-small from global;
+    color: var(--colors-interface-success)
+}
+
 .componentsAndPrice {
     display: flex;
     position: relative;

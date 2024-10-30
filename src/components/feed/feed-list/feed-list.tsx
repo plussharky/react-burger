@@ -8,7 +8,6 @@ type TFeedList = {
 }
 
 export function FeedList({ orders }: TFeedList) {
-    const { ingredients, loading, error } = useSelector(store => store.ingredients)
 
     return (
         <div className={styles.ordersContainer}>

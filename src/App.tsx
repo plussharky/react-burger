@@ -53,9 +53,10 @@ function App() {
         />
         <Route path="/profile" element={<OnlyAuth component={<Profile />} />} />
         <Route path="/profile/orders" element={<OnlyAuth component={<ProfileOrders />} />} />
+        <Route path="/profile/orders/:number" element={<OnlyAuth component={<Order />} />}/>
         <Route path="/ingredients/:id" element={<IngredientDetails />} />
         <Route path="/feed" element={<Feed />} />
-        <Route path="/feed/:id" element={<Order />} />
+        <Route path="/feed/:number" element={<Order />} />
       </Routes>
 
       {background && (
@@ -70,6 +71,14 @@ function App() {
           />
           <Route
             path="/feed/:number"
+            element={
+              <Modal onClose={handleModalClose}>
+                <OrderInfo />
+              </Modal>
+            }
+          />
+          <Route
+            path="/profile/orders/:number"
             element={
               <Modal onClose={handleModalClose}>
                 <OrderInfo />
