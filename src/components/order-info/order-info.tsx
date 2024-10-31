@@ -17,7 +17,11 @@ export function OrderInfo() {
     const dispatch = useDispatch();
     const location = useLocation();
 
+    const { ingredients, loading, error } = useSelector(store => store.ingredients);
+    const { orders, isConnected } = useSelector(state => state.feed);
+
     useEffect(() => {
+        console.log(isConnected);
         if (isConnected) {
             return;
         }
@@ -28,25 +32,24 @@ export function OrderInfo() {
                 "token",
                 localStorage.getItem("accessToken") ?? ""
             )
-            dispatch(wsConnect(WS_ORDERS_USER_URL));
+            dispatch(wsConnect(wssUrl.toString()));
+            console.log(wssUrl.toString());
         } else if (location.pathname.startsWith("/feed")) {
             dispatch(wsConnect(WS_ORDERS_ALL_URL));
+            console.log(WS_ORDERS_ALL_URL);
         }
     
         return () => {
           dispatch(wsDisconnect());
         }
-      }, [])
-
-    const { ingredients, loading, error } = useSelector(store => store.ingredients);
-    const { orders, isConnected } = useSelector(state => state.feed);
+      }, [isConnected, dispatch, location]) 
 
     const order = useMemo(() => 
         orders.find(o => o.number.toString() === number)
     , [orders, number])
 
     const translatedStatusName = useMemo(
-        () => order && TranslationMap[order.status] || order?.status, 
+        () => order && (TranslationMap[order.status] || order?.status), 
         [order]
     );
     const ingredientsObj: TIngredient[] | undefined = order && ingredients.filter(a => order.ingredients.findIndex(b => b === a._id) > -1);
@@ -54,7 +57,7 @@ export function OrderInfo() {
         [ingredientsObj]);
 
 
-    if (loading || !isConnected || (isConnected && !order)) {
+    if (loading || !isConnected) {
         return (<Preloader />);
     }
 
@@ -82,7 +85,8 @@ export function OrderInfo() {
                                 <GradientIcon>
                                     <img 
                                         className={styles.ingredientImg}
-                                        src={i.image_mobile} 
+                                        src={i.image_mobile}
+                                        alt={i.name} 
                                     />
                                 </GradientIcon>
                                 <p className={styles.ingredientName}>{i.name}</p>

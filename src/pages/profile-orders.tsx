@@ -1,13 +1,11 @@
-import { FormEvent, useCallback, useEffect, useState } from 'react'
-import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import styles from './profile-orders.module.css';
+import { useCallback, useEffect } from 'react';
 import { NavLink } from "react-router-dom";
-import styles from './profile.module.css'
 import { useDispatch, useSelector } from "../hooks/react-redux";
-import { logout, updateUser } from '../services/auth/actions';
-import { useForm } from '../hooks/use-form';
 import { FeedList } from '../components/feed/feed-list/feed-list';
 import { wsConnect } from '../services/feed/actions';
 import { WS_ORDERS_USER_URL } from '../utils/api-config';
+import { logout } from '../services/auth/actions';
 
 export function ProfileOrders() {
     const dispatch = useDispatch();
@@ -20,8 +18,8 @@ export function ProfileOrders() {
             "token",
             localStorage.getItem("accessToken") ?? ""
         )
-        dispatch(wsConnect(WS_ORDERS_USER_URL));
-    })
+        dispatch(wsConnect(wssUrl.toString()));
+    }, [dispatch])
 
     const isActiveLink = useCallback((isActive: boolean) => 
         isActive ? styles.activeMenuButton : styles.inactiveMenuButton
@@ -34,7 +32,7 @@ export function ProfileOrders() {
     return (
             <form className={styles.container}>
                 <div className={styles.menu}>
-                    <NavLink to="/profile" className={({isActive}) => isActiveLink(isActive)}>
+                    <NavLink to="/profile" end className={({isActive}) => isActiveLink(isActive)}>
                         Профиль
                     </NavLink>
                     <NavLink to="/profile/orders" className={({isActive}) => isActiveLink(isActive)}>
@@ -47,7 +45,7 @@ export function ProfileOrders() {
                         Выход
                     </p>
                     <p className={styles.tip}>
-                        В этом разделе вы можете изменить свои персональные данные
+                        В этом разделе вы можете посмотреть свою историю заказов
                     </p>
                 </div>
                 <div className={styles.userProperties}>
