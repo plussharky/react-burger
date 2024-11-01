@@ -1,6 +1,7 @@
 import { postOrder } from '../../utils/order-api'
 import { TIngredient, TOrderData } from '../../utils/types';
 import { AppDispatch } from '../../types';
+import { clearBurgerConstructor } from '../burger-constructor/actions';
 
 export const ORDER_CREATE_LOADING = "ORDER_CREATE_LOADING";
 export const ORDER_CREATE_SUCCESS = "ORDER_CREATE_SUCCESS";
@@ -49,6 +50,9 @@ export const createOrder = (ingredients: string[], token: string) =>
         dispatch(orderCreateLoading());
 
         return postOrder(ingredients, token)
-        .then((data) => dispatch(orderCreateSuccess(data)))
+        .then((data) => {
+            dispatch(orderCreateSuccess(data));
+            dispatch(clearBurgerConstructor());
+        })
         .catch((error) => dispatch(orderCreateError(error)));
     };
