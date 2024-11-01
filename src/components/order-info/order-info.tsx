@@ -21,11 +21,9 @@ export function OrderInfo() {
     const { orders, isConnected } = useSelector(state => state.feed);
 
     useEffect(() => {
-        console.log(isConnected);
-        if (isConnected) {
+        if (location.state?.background) {
             return;
         }
-
         if (location.pathname.startsWith("/profile/orders")) {
             const wssUrl = new URL(WS_ORDERS_USER_URL);
             wssUrl.searchParams.set(
@@ -33,16 +31,14 @@ export function OrderInfo() {
                 localStorage.getItem("accessToken") ?? ""
             )
             dispatch(wsConnect(wssUrl.toString()));
-            console.log(wssUrl.toString());
         } else if (location.pathname.startsWith("/feed")) {
             dispatch(wsConnect(WS_ORDERS_ALL_URL));
-            console.log(WS_ORDERS_ALL_URL);
         }
     
         return () => {
           dispatch(wsDisconnect());
         }
-      }, [isConnected, dispatch, location]) 
+      }, [dispatch, location.pathname, location.state?.background]) 
 
     const order = useMemo(() => 
         orders.find(o => o.number.toString() === number)
@@ -56,8 +52,7 @@ export function OrderInfo() {
     const totalPrice = useMemo(() => ingredientsObj && ingredientsObj.reduce((acc, item) => acc + item.price, 0),
         [ingredientsObj]);
 
-
-    if (loading || !isConnected) {
+    if (loading || !isConnected || !orders) {
         return (<Preloader />);
     }
 
@@ -81,7 +76,10 @@ export function OrderInfo() {
                     <p className={styles.name}>Состав:</p>
                     {
                         ingredientsObj && ingredientsObj.map(i => (
-                            <div className={styles.row}>
+                            <div 
+                                key={i._id}
+                                className={styles.row}
+                            >
                                 <GradientIcon>
                                     <img 
                                         className={styles.ingredientImg}

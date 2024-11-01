@@ -26,8 +26,8 @@ export function OrderCard({id, timestamp, name, ingredientIds, status}: TOrderCa
 
     return (
         <Link 
+            to={`${window.location.origin}${location.pathname}/${id}`}
             key={id}
-            to={`/feed/${id}`}
             state={{background: location}}
             className={styles.card}
         >
