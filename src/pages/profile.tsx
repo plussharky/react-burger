@@ -73,7 +73,7 @@ export function Profile() {
                     <NavLink to="/profile" className={({isActive}) => isActiveLink(isActive)}>
                         Профиль
                     </NavLink>
-                    <NavLink to="/history" className={({isActive}) => isActiveLink(isActive)}>
+                    <NavLink to="/profile/orders" className={({isActive}) => isActiveLink(isActive)}>
                         История заказов
                     </NavLink>
                     <p

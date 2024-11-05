@@ -41,14 +41,8 @@ const Login = () => {
       .catch((error: string) => setError(prev => prev + error));
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
-    if (e.key === "Enter") {
-      onLogin(); 
-    }
-  };
-
   return (
-    <form onSubmit={onLogin} onKeyDown={handleKeyDown} className={styles.container}>
+    <form onSubmit={onLogin} className={styles.container}>
       <p className={styles.title}>Вход</p>
       <EmailInput
         value={values.email}

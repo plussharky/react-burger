@@ -3,7 +3,7 @@ body {
 }
 
 .container {
-  padding: 10%;
+  padding: 10vh;
   display: flex;
   justify-content: center;
   align-content: center;

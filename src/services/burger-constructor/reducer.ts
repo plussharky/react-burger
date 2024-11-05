@@ -4,7 +4,8 @@ import {
     ADD_INGREDIENT, 
     MOVE_INGREDIENT,
     DELETE_INGREDIENT, 
-    TBurgerConstructorActions} from "./actions";
+    TBurgerConstructorActions,
+    CLEAR_BURGER_CONSTRUCTOR} from "./actions";
 
 type TBurgerConstructor = {
     bun: TIngredient | null;
@@ -45,7 +46,9 @@ export const burgerConstructorReducer = (state = initialState, action: TBurgerCo
             return {
                 ...state,
                 ingredients: remainingIngredients
-            }
+            };
+        case CLEAR_BURGER_CONSTRUCTOR:
+            return initialState;
         default:
             return state;
     }

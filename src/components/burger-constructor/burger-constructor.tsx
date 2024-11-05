@@ -19,9 +19,11 @@ export function BurgerConstructor() {
 
     const [isShowOrderDetails, setShowOrderDetails] = useState<boolean>(false);
 
+    const isCanOrder = useMemo(() => bun && ingredients.length > 0, [bun, ingredients]);
+
     const toggleOrderDetails = useCallback(() => {
         setShowOrderDetails((prev) => !prev);
-        if (!bun || ingredients.length === 0) {
+        if (!isCanOrder) {
             const orderError: string = `Чтобы сделать заказ сделайте следующее: 
                 ${bun ? "" : "\nдобавьте булку"} 
                 ${ingredients.length > 0 ? "" : "\nдобавьте ингредиенты"}`
@@ -136,14 +138,16 @@ export function BurgerConstructor() {
                     &nbsp;
                     <CurrencyIcon type="primary"/>
                 </div>
-                <Button 
-                    htmlType="button" 
-                    type="primary" 
-                    size="medium" 
-                    extraClass={styles.button}
-                    onClick={toggleOrderDetails}>
-                    Оформить заказ
-                </Button>
+                { 
+                    isCanOrder && <Button 
+                        htmlType="button" 
+                        type="primary" 
+                        size="medium" 
+                        extraClass={styles.button}
+                        onClick={toggleOrderDetails}>
+                        Оформить заказ
+                    </Button>
+                }
             </div>
         </div>
     ) 

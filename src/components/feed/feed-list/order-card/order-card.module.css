@@ -1,0 +1,126 @@
+.card {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+    gap: 24px;
+    padding: 24px;
+    background-color: var(--background-element);
+    border-radius: 48px;
+    min-width: 500px;
+    text-decoration: none;
+    color: var(--text-primary-color);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.id {
+    composes: text text_type_digits-default from global;
+}
+
+.timestamp {
+    composes: text text_type_main-small from global;
+    color: var(--text-inactive-color)
+}
+
+.name {
+    composes: text text_type_main-medium from global;
+}
+
+.status {
+    composes: text text_type_main-small from global;
+    color: var(--colors-interface-success)
+}
+
+.componentsAndPrice {
+    display: flex;
+    position: relative;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.components {
+    display: flex;
+    justify-content: start;
+    position: relative;
+    height: 66px;
+}
+
+.ingredientIcon {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 66px;
+    width: 66px;
+    border-radius: 50%;
+    background: linear-gradient(63.18deg, #801AB3 0%, #4C4CFF 100%);
+    overflow: hidden;
+    padding: 2px;
+}
+
+.iconGradient {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-color: var(--background-alt); 
+    border-radius: 50%;
+    box-shadow: none;
+}
+
+.iconGradient::before {
+    border-radius: 100%;
+    content: '';
+    background-image: linear-gradient(to bottom, #3acfd5 0%, #3a4ed5 100%);
+    top: -10px;
+    left: -10px;
+    bottom: -10px;
+    right: -10px;
+    position: relative;
+    z-index: -1;
+}
+
+.ingredientImg {
+    width: 80%;
+    height: 80%;
+    object-fit: cover; 
+    border-radius: 50%; 
+}
+
+.ingredientImgBlur {
+    width: 80%;
+    height: 80%;
+    object-fit: cover; 
+    border-radius: 50%; 
+    filter: blur(3px);
+}
+
+.ingredientsCount {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    composes: text text_type_digits-default from global;
+    border-radius: 50%; 
+}
+
+.price {
+    composes: text text_type_digits-default from global;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}

@@ -1,0 +1,11 @@
+.ordersContainer {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    gap: 16px;
+    align-items: stretch;
+    max-height: 80vh; 
+    padding-right: 8px;
+    flex: 1;
+    max-width: 70vh;
+}
