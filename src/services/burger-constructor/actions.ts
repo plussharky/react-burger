@@ -44,8 +44,7 @@ export const addIngredient = (item: TIngredient): TAddIngredientAction => {
     return { 
         type: ADD_INGREDIENT,
         ingredient: {
-            ...item,
-            uniqueId: uuidv4()
+            ...item
         }
     }
 }
@@ -54,8 +53,7 @@ export const addBun = (item: TIngredient): TAddBunAction => {
     return { 
         type: ADD_BUN,
         bun: {
-            ...item,
-            uniqueId: uuidv4()
+            ...item
         }
     }
 }

@@ -10,6 +10,7 @@ import { addBun, addIngredient } from '../../services/burger-constructor/actions
 import { IngredientElement } from './ingredient-element/ingredient-element';
 import { useNavigate } from 'react-router-dom';
 import { TIngredient } from '../../utils/types';
+import { v4 as uuidv4 } from 'uuid';
 
 export function BurgerConstructor() {
     const navigate = useNavigate();
@@ -44,7 +45,9 @@ export function BurgerConstructor() {
         accept: 'ingredient',
         drop: ({item}: {item: TIngredient}) => {
             if (!item || !item.type) return;
-            item.type === "bun" ? dispatch(addBun(item)) : dispatch(addIngredient(item));
+            item.type === "bun" 
+                ? dispatch(addBun({...item, uniqueId: uuidv4()})) 
+                : dispatch(addIngredient({...item, uniqueId: uuidv4()}));
         },
         collect: (monitor) => ({
             isOverIngredients: monitor.isOver(),
