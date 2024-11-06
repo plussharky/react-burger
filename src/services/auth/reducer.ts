@@ -1,7 +1,7 @@
 import { TUser } from '../../utils/types';
 import { SET_AUTH_CHECKED, SET_USER, TAuthActions } from './actions';
 
-type TAuthReducerState = {
+export type TAuthReducerState = {
   user: TUser | null;
   isAuthChecked: boolean;
 }
