@@ -1,4 +1,4 @@
-import { orderReducer } from './reducer';
+import { orderReducer, initialState } from './reducer';
 import {
     ORDER_CREATE_LOADING,
     ORDER_CREATE_ERROR,
@@ -11,12 +11,6 @@ import {
 import { TOrder } from '../../utils/types';
 
 describe('order reducer', () => {
-    const initialState = {
-        number: null,
-        name: null,
-        loading: false,
-        error: null
-    };
 
     it('should return the initial state', () => {
         expect(orderReducer(undefined, {} as TOrderActions))

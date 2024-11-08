@@ -1,11 +1,8 @@
-import { ingredientDetailsReducer } from './reducer';
+import { ingredientDetailsReducer, initialState } from './reducer';
 import { UPDATE_INGREDIENT_DETAILS, TIngredientDetailsActions } from './actions';
 import { testIngredient } from '../../utils/constants';
 
 describe('ingredient details Reducer', () => {
-    const initialState = {
-        item: null
-    };
 
     it('should return the initial state', () => {
         expect(ingredientDetailsReducer(undefined, {} as TIngredientDetailsActions))

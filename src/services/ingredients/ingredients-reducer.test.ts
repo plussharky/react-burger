@@ -1,4 +1,4 @@
-import { ingredientsReducer } from './reducer';
+import { ingredientsReducer, initialState } from './reducer';
 import {
     TIngredientsActions,
     ingredientsLoading,
@@ -9,11 +9,6 @@ import { TIngredient } from '../../utils/types';
 import { testIngredient, testSauce } from '../../utils/constants';
 
 describe('ingredients reducer', () => {
-    const initialState = {
-        ingredients: [],
-        loading: false,
-        error: null
-    };
 
     it('should return the initial state', () => {
         expect(ingredientsReducer(undefined, {} as TIngredientsActions))

@@ -1,4 +1,4 @@
-import { feedReducer } from './reducer';
+import { feedReducer, initialState } from './reducer';
 import {
     WS_ERROR,
     WS_GET_MESSAGE,
@@ -7,14 +7,6 @@ import {
     wsClose
 } from './actions';
 import { TOrder } from '../../utils/types';
-
-const initialState = {
-    orders: [],
-    total: 0,
-    totalToday: 0,
-    connectionError: null,
-    isConnected: false
-};
 
 describe('feed reducer', () => {
     it('should return the initial state', () => {
