@@ -1,43 +1,87 @@
-function dragBunToContainer(bunType) {
-  cy.get('[class^=ingredient-card_card]')
-      .contains('булка')
-      .should('be.visible')
-      .first()
-      .as('bun');
+import { BASE_URL } from '../../src/utils/api-config'
 
-  cy.get('@bun')
-      .invoke('text')
-      .then((bunName) => {
-          cy.get('@bun').trigger('dragstart');
-          
-          const targetContainer = bunType === 'top'
-              ? '[class*=burger-constructor_topBun]'
-              : '[class*=burger-constructor_bottomBun]';
+function dragBunToContainer(bunType = "top") {
+  cy.get("[data-testId=category-bun]").as("bunCategory");
 
-          cy.get(targetContainer)
-              .should('be.visible')
-              .trigger('drop');
+  cy.get("@bunCategory")
+    .find("[data-testId=ingredient-card]")
+    .last()
+    .should("be.visible")
+    .as("bun");
 
-          cy.get(targetContainer).should('contain', bunName);
-      });
+  cy.get("@bun")
+    .find("[data-testId=ingredient-card-name]")
+    .invoke("text")
+    .then((bunName) => {
+      cy.get("@bun").trigger("dragstart");
+
+      cy.get(`[data-testId=container-bun-${bunType}-empty]`).trigger("drop");
+
+      cy.get(`[data-testId=container-bun-${bunType}-full]`).should("contain", bunName);
+    });
 }
 
-describe('openning modals is correctly', function() {
-  beforeEach(function() {
-    cy.visit('http://localhost:3001');
-  });
-  
-  it('should open modal with ingedient details', function() {
-    cy.get('[class^=ingredient-card_card]').first().as('product')
-    cy.get('@product').click();
-    cy.contains('Детали ингредиента')
+function dragIngredientToContainer() {
+  cy.get("[data-testId=category-main]").as("mainCategory");
+
+  cy.get("@mainCategory")
+    .find("[data-testId=ingredient-card]")
+    .last()
+    .as("main");
+
+  cy.get("@main")
+    .find("[data-testId=ingredient-card-name]")
+    .invoke("text")
+    .then((mainName) => {
+      cy.get("@main").trigger("dragstart");
+      cy.get("[data-testId=container-ingredient-empty]")
+        .should("be.visible")
+        .trigger("drop");
+
+      cy.get("[data-testId=container-ingredient-full]").should(
+        "contain",
+        mainName
+      );
+    });
+}
+
+describe("openning modals is correctly", function () {
+  beforeEach(function () {
+    cy.intercept("GET", `${BASE_URL}/auth/user`, { fixture: "user.json"});
+    cy.intercept("POST", `${BASE_URL}/orders`, { fixture: "order.json"});
+
+    window.localStorage.setItem(
+      "accessToken",
+      JSON.stringify("test-accessToken")
+    );
+
+    cy.visit("http://localhost:3000");
   });
 
-  it('should drag a bun to the top bun container', function() {
-      dragBunToContainer('top');
+  it("should open modal with ingedient details", function () {
+    cy.get("[class^=ingredient-card_card]").first().as("product");
+    cy.get("@product").click();
+    cy.contains("Детали ингредиента");
   });
 
-  it('should drag a bun to the bottom bun container', function() {
-      dragBunToContainer('bottom');
+  it("should drag a bun to the top bun container", function () {
+    dragBunToContainer("top");
   });
-}); 
+
+  it("should drag a bun to the bottom bun container", function () {
+    dragBunToContainer("bottom");
+  });
+
+  it("should drag a ingredient to the ingredient container", function () {
+    dragIngredientToContainer();
+  });
+
+  it("should redirect to login if user is unknown", function () {
+    dragBunToContainer();
+    dragIngredientToContainer();
+
+    cy.get("[class*=burger-constructor_button]").click();
+
+    cy.contains("Ваш заказ начали готовить");
+  });
+});

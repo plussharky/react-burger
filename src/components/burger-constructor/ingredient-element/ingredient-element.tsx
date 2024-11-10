@@ -61,7 +61,10 @@ export function IngredientElement({name, price, image, index}: TIngredientElemen
     drag(drop(ref));
 
     return (
-        <div ref={ref}>
+        <div 
+            ref={ref}
+            data-testId={`container-ingredient-full`}
+        >
             <ConstructorElement
                 text={name}
                 price={price}

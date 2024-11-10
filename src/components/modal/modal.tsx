@@ -47,7 +47,12 @@ export function Modal ({ title = "", onClose = () => {}, children }: TModalPorop
             <div className={styles.modal} onClick={onClick}>
                 <div className={styles.header}>
                     <h2 className={styles.title}>{title}</h2>
-                    <CloseIcon type="primary" onClick={handleClose}/>
+                    <div 
+                        className={styles.close}
+                        data-testId="modal-close-button"
+                    >
+                        <CloseIcon type="primary" onClick={handleClose}/>
+                    </div>
                 </div>
                 <div className={styles.content}>
                     {children}

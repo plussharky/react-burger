@@ -1,0 +1,22 @@
+{
+    "success": true,
+    "name": "example order",
+    "order": {
+        "number": 111111,
+        "ingredients": [
+            "643d69a5c3f7b9001cfa093d",
+            "643d69a5c3f7b9001cfa0943",
+            "643d69a5c3f7b9001cfa0945",
+            "643d69a5c3f7b9001cfa0949",
+            "643d69a5c3f7b9001cfa0946",
+            "643d69a5c3f7b9001cfa0940",
+            "643d69a5c3f7b9001cfa094a",
+            "643d69a5c3f7b9001cfa093d"
+        ],
+        "name": "example order",
+        "_id": "672f1acfb27b06001c3e709d",
+        "status": "done",
+        "createdAt": "2024-11-09T08:18:23.839Z",
+        "updatedAt": "2024-11-09T08:18:24.699Z"
+    }
+}

@@ -66,17 +66,24 @@ export function BurgerConstructor() {
         const bunStyle = `${type === "top" ? styles.topBun : styles.bottomBun} 
             ${isDraggingBun ? !isOverIngredients ? styles.glow : `${styles.border} ${styles.glow}` : ""}`;
         return bun ? (
-                    <ConstructorElement
-                        key={bun.uniqueId}
-                        text={`${bun.name} ${type === "top" ? "(верх)" : "(низ)"}`}
-                        type={type}
-                        price={bun.price}
-                        thumbnail={bun.image}
-                        isLocked={true}
-                        extraClass={bunStyle}
-                    />
+                    <div 
+                        data-testId={`container-bun-${type}-full`}
+                    >
+                        <ConstructorElement
+                            key={bun.uniqueId}
+                            text={`${bun.name} ${type === "top" ? "(верх)" : "(низ)"}`}
+                            type={type}
+                            price={bun.price}
+                            thumbnail={bun.image}
+                            isLocked={true}
+                            extraClass={bunStyle} 
+                        />
+                    </div>
                 ) : (
-                    <div className={bunStyle}>
+                    <div 
+                        className={bunStyle}
+                        data-testId={`container-bun-${type}-empty`}
+                    >
                         <p>Перетащите булку в конструктор</p>
                     </div>
                 )
@@ -90,7 +97,10 @@ export function BurgerConstructor() {
                 : `${styles.border} ${styles.glow}` 
             : ""}`;
         return ingredients.length === 0 ? (
-                    <div className={`${styles.emptyIngredient} ${ingredientStyle}`}>
+                    <div 
+                        className={`${styles.emptyIngredient} ${ingredientStyle}`}
+                        data-testId={`container-ingredient-empty`}
+                    >
                         <p>Перетащите ингредиенты в конструктор</p>
                     </div>
                 ) : (
