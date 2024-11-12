@@ -29,19 +29,21 @@ export function IngredientCard ({ item }: { item: TIngredient}) {
             key={item._id}
             to={`/ingredients/${item._id}`}
             state={{ background: location }}
-            className={styles.link}
+            className={styles.card}
+            ref={dragRef}
+            data-testid="ingredient-card"
         >
-            <div 
-                className={styles.card} 
-                ref={dragRef}
-            >
                 {count > 0 ? <Counter count={count} size="default" extraClass={styles.counter}/> : null}
                 <img src={item.image} alt={item.name} className={styles.image} />
                 <div className={styles.price}>
                     <span>{item.price} </span>&nbsp;<CurrencyIcon type="primary" />
                 </div>
-                <p className={styles.name}>{item.name}</p>
-            </div>
+                <p 
+                    className={styles.name}
+                    data-testId={`ingredient-card-name`}
+                >
+                    {item.name}
+                </p>
         </Link>
     );
 };

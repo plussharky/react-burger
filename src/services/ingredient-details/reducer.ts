@@ -5,7 +5,7 @@ type TIngredientDetailsState = {
     item: TIngredient | null
 }
 
-const initialState: TIngredientDetailsState = {
+export const initialState: TIngredientDetailsState = {
     item: null
 };
 

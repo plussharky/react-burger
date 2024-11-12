@@ -16,8 +16,17 @@ export const IngredientCtegory = forwardRef<HTMLDivElement, TIngredientCtegoryPr
     );
 
     return (
-    <div className={styles.category} ref={ref}>
-        <h2 className={styles.title}>{translatedCategoryName}</h2>
+    <div 
+        className={styles.category} 
+        ref={ref}
+        data-testId={`category-${categoryName}`}
+    >
+        <h2 
+            className={styles.title}
+            data-testId="category-name"
+        >
+            {translatedCategoryName}
+        </h2>
         <div className={styles.cards}>
             {items.map((item) => (
                 <IngredientCard key={item._id} item={item} />
