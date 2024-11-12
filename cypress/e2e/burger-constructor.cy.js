@@ -64,6 +64,16 @@ describe("openning modals is correctly", function () {
     cy.contains("Детали ингредиента");
   });
 
+  it("should close modal with ingedient details after click close button", function () {
+    cy.get("[class^=ingredient-card_card]").first().as("product");
+    cy.get("@product").click();
+
+    cy.get("[data-testId=modal-close-button]").as("close-button");
+    cy.get("@close-button").click();
+    cy.contains("Детали ингредиента").should("not.exist");;
+  });
+
+
   it("should drag a bun to the top bun container", function () {
     dragBunToContainer("top");
   });
@@ -76,7 +86,7 @@ describe("openning modals is correctly", function () {
     dragIngredientToContainer();
   });
 
-  it("should redirect to login if user is unknown", function () {
+  it("should make order when burger is assembled", function () {
     dragBunToContainer();
     dragIngredientToContainer();
 
