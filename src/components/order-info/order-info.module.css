@@ -69,3 +69,11 @@
     justify-content: space-between;
     align-items: center;
 }
+
+.preloader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 33%;
+    min-height: 33%;
+}

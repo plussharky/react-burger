@@ -29,16 +29,19 @@
     border-radius: var(--common-border-radius-s);
     max-width: 530px;
     max-height: 80px;
+    margin-left: 32px;
 }
 
 .topBun {
     composes: burgerComponent;
     border-radius: var(--top-constructor-item-border-radius);
+    margin-left: 32px;
 }
 
 .bottomBun {
     composes: burgerComponent;
     border-radius: var(--bottom-constructor-item-border-radius);
+    margin-left: 32px;
 }
 
 .glow {
@@ -82,6 +85,12 @@
 
 .constructorElement {
     flex-grow: 0;
+}
+
+.ingredientRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 @media (max-width: 768px) {

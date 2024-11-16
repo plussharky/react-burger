@@ -3,6 +3,7 @@ import styles from './burger-ingredients.module.css';
 import { IngredientCtegory } from './ingredient-category/ingredient-category';
 import { Tabs } from './ingredient-tab/ingredient-tabs';
 import { useSelector } from "../../hooks/react-redux";
+import Preloader from '../preloader/preloader';
 
 export function BurgerIngredients() {
     const [activeTab, setActiveTab] = useState<string>("bun");
@@ -11,6 +12,8 @@ export function BurgerIngredients() {
     const bunsRef = useRef<HTMLDivElement>(null);
     const mainsRef = useRef<HTMLDivElement>(null);
     const saucesRef = useRef<HTMLDivElement>(null);
+    const ingredientsContainerRef = useRef<HTMLDivElement>(null);
+
 
     const categories = useMemo(() => {
         const getfiltredIngredients = (type: string) => ingredients.filter(item => item.type === type);
@@ -39,15 +42,27 @@ export function BurgerIngredients() {
 
     const handleOnClickTab = (tabName: string) => {
         const category = categories.find(c => c.name === tabName);
-        if (!category || !category.ref.current) {
+        if (!category || !category.ref.current || !ingredientsContainerRef.current) {
             return;
         }
-        category.ref.current.scrollIntoView({ behavior: 'smooth' });
+        const container = ingredientsContainerRef.current;
+        const categoryElement = category.ref.current;
+    
+        const containerTop = container.getBoundingClientRect().top;
+        const categoryTop = categoryElement.getBoundingClientRect().top;
+    
+        const scrollPosition = categoryTop - containerTop + container.scrollTop;
+    
+        container.scrollTo({
+            top: scrollPosition,
+            behavior: 'smooth'
+        });
+    
         setActiveTab(tabName);
     }
 
     if (loading) {
-        return (<h2>Загрузка...</h2>)
+        return (<div className={styles.preloader}><Preloader /></div>)
     }
 
     if (!loading && error) {
@@ -60,14 +75,18 @@ export function BurgerIngredients() {
 
     return (
         <div>
-            <p className={styles.title}>Соберите бургер</p>
+            <h2 className={styles.title}>Соберите бургер</h2>
             <Tabs
                 categories={categoryNames}
                 activeTab={activeTab}
                 handleOnClickTab={handleOnClickTab}
                 ref={tabsRef}
             />
-            <div className={styles.ingredientsContainer} onScroll={handleScroll}>
+            <div 
+                className={styles.ingredientsContainer} 
+                onScroll={handleScroll}
+                ref={ingredientsContainerRef}
+            >
                 {categories.map((category) => (
                     <IngredientCtegory
                         key={category.name}

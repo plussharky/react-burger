@@ -1,6 +1,6 @@
 import { useMemo, useState, useCallback } from 'react';
 import styles from './burger-constructor.module.css';
-import { CurrencyIcon, Button, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
+import { CurrencyIcon, Button, ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Modal } from '../modal/modal';
 import { OrderDetails } from '../order-details/order-details';
 import { useDispatch, useSelector } from '../../hooks/react-redux';
@@ -107,21 +107,27 @@ export function BurgerConstructor() {
                     <>
                         {
                         ingredients.map((item, index) => (
-                            <IngredientElement
-                                key={item.uniqueId}
-                                name={item.name}
-                                price={item.price}
-                                image={item.image}
-                                index={index}
-                            />
+                            <div className={styles.ingredientRow}>
+                                <DragIcon type="primary"/>
+                                <IngredientElement
+                                    key={item.uniqueId}
+                                    name={item.name}
+                                    price={item.price}
+                                    image={item.image}
+                                    index={index}
+                                />
+                            </div>
                         ))}
                         {isDraggingIngredient && isOverIngredients && 
-                            <ConstructorElement
-                                text={draggingIgredient.item.name}
-                                price={draggingIgredient.item.price}
-                                thumbnail={draggingIgredient.item.image}
-                                extraClass={`${ingredientStyle}`}
-                            />
+                            <div className={styles.ingredientRow}>
+                                <DragIcon type="primary"/>
+                                <ConstructorElement
+                                    text={draggingIgredient.item.name}
+                                    price={draggingIgredient.item.price}
+                                    thumbnail={draggingIgredient.item.image}
+                                    extraClass={`${ingredientStyle}`}
+                                />
+                            </div>
                         }
                     </>
                 )

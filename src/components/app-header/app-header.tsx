@@ -2,11 +2,14 @@ import { useCallback } from 'react';
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link, NavLink } from "react-router-dom";
 import styles from './app-header.module.css';
+import { useSelector } from '../../hooks/react-redux';
 
 function AppHeader() {
     const isActiveLink = useCallback((isActive: boolean): string => 
         isActive ? styles.activeButton : styles.inactiveButton
     , [])
+
+    const { user } = useSelector(store => store.auth)
 
     return (
          <header className={styles.header}>
@@ -22,7 +25,12 @@ function AppHeader() {
                 <Logo/>
             </Link>
             <NavLink to="/profile" className={({isActive}) => isActiveLink(isActive)}>
-                <ProfileIcon type="primary" /> Личный кабинет
+                <ProfileIcon type="primary" />
+                { 
+                    user 
+                    ? (<p className={styles.signIn}>{user.name}</p>)
+                    : (<p className={styles.signIn}>Войти</p>)
+                }
             </NavLink>
         </header>
     )

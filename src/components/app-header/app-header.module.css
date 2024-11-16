@@ -35,8 +35,8 @@ header {
   color: var(--text-inactive-color);
 }
 
-.logo {
-
+.signIn {
+  margin: 0px;
 }
 
 .account {

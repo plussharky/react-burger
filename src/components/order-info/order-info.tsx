@@ -53,7 +53,7 @@ export function OrderInfo() {
         [ingredientsObj]);
 
     if (loading || !isConnected || !orders) {
-        return (<Preloader />);
+        return (<div className={styles.preloader}><Preloader /></div>)
     }
 
     if (!order) {

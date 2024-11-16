@@ -32,3 +32,11 @@
     composes: text text_type_main-default from global;
     color: rgba(133, 133, 173, 1);
 }
+
+.preloader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 45vw;
+    min-height: 70vh;
+}

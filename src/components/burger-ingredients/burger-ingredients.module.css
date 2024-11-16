@@ -1,12 +1,20 @@
 .title {
-    composes: text text_type_main-large from global;
-    padding-top: 40px;
-    padding-bottom: 20px;
+    composes: text_type_main-large from global;
+    margin-top: 40px;
+    margin-bottom: 20px;
     text-align: start;
 }
 
 .ingredientsContainer {
     flex-grow: 1;
     overflow-y: auto;
-    height: 35%;
+    height: 70vh;
+}
+
+.preloader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 33%;
+    min-height: 33%;
 }
