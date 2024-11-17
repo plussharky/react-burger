@@ -1,5 +1,5 @@
 import { postOrder } from '../../utils/order-api'
-import { TIngredient, TOrderData } from '../../utils/types';
+import { TOrderData } from '../../utils/types';
 import { AppDispatch } from '../../types';
 import { clearBurgerConstructor } from '../burger-constructor/actions';
 

@@ -15,7 +15,6 @@ import { v4 as uuidv4 } from 'uuid';
 export function BurgerConstructor() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { number, loading, error } = useSelector(store => store.order);
     const { bun, ingredients } = useSelector(store => store.burgerConstructor);
 
     const [isShowOrderDetails, setShowOrderDetails] = useState<boolean>(false);
@@ -31,7 +30,7 @@ export function BurgerConstructor() {
             dispatch(orderCreateError(orderError));
             return;
         }
-        if (!loading && bun && ingredients.length > 0) {
+        if (bun && ingredients.length > 0) {
             const token = localStorage.getItem("accessToken");
             if (!token) {
                 navigate("/login");
@@ -40,7 +39,7 @@ export function BurgerConstructor() {
             const orderIngredients = [bun._id, ...ingredients.map(i => i._id), bun._id];
             dispatch(createOrder(orderIngredients, token!));
         }
-    }, [bun, ingredients, dispatch, loading, number]);
+    }, [bun, ingredients, dispatch, isCanOrder, navigate]);
 
     const [{isOverIngredients, draggingIgredient}, dropIngredientRef] = useDrop({
         accept: 'ingredient',
@@ -138,9 +137,7 @@ export function BurgerConstructor() {
         <div className={styles.burgerConstructor} ref={dropIngredientRef}>
             {isShowOrderDetails && (
                 <Modal onClose={toggleOrderDetails}>
-                    { error 
-                    ? <p>❌Ошибка! {error}</p>
-                    : <OrderDetails/>}
+                    <OrderDetails/>
                 </Modal>
             )}
             <div>

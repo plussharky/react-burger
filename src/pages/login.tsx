@@ -14,7 +14,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { values, handleChange, setValues } = useForm({
+  const { values, handleChange } = useForm({
     email: "",
     password: "",
   });

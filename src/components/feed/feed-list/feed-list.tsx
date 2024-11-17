@@ -1,6 +1,5 @@
 import styles from './feed-list.module.css'
 import { OrderCard } from './order-card/order-card';
-import { useSelector } from '../../../hooks/react-redux';
 import { TOrder } from '../../../utils/types';
 
 type TFeedList = {

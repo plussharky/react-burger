@@ -1,4 +1,4 @@
-import { FormEvent, useCallback, useState } from 'react'
+import { FormEvent, useCallback, useMemo, useState } from 'react'
 import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { NavLink } from "react-router-dom";
 import styles from './profile.module.css'
@@ -9,11 +9,11 @@ import { useForm } from '../hooks/use-form';
 export function Profile() {
     const dispatch = useDispatch();
     const { user } = useSelector(store => store.auth)
-    const initialForm = {
+    const initialForm = useMemo(() => ({
         name: user!.name,
         email: user!.email,
         password: "",
-    };
+    }), [user]);
 
     const { values, handleChange, setValues } = useForm(initialForm);
     const [isNameDisabled, setIsNameDisabled] = useState<boolean>(true);
@@ -57,11 +57,11 @@ export function Profile() {
                 const errorMsg = error.message || String(error);
                 setError(prev => prev + errorMsg);
             });
-    }, [dispatch, values]);
+    }, [dispatch, values, error]);
 
     const onCancel = useCallback(() => {
         setValues(initialForm);
-    }, [user]);
+    }, [initialForm, setValues]);
 
     const onLogout = useCallback(() => {
         dispatch(logout());

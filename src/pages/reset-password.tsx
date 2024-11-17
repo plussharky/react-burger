@@ -12,7 +12,7 @@ import { useForm } from "../hooks/use-form";
 const ResetPassword = () => {
   const navigate = useNavigate();
 
-  const { values, handleChange, setValues } = useForm({
+  const { values, handleChange } = useForm({
     password: "",
     code: ""
   });

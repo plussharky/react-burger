@@ -1,6 +1,6 @@
 import { BASE_URL } from './api-config'
 import { getResponse } from "./fetchUtils";
-import { TIngredient, TOrderData } from './types'
+import { TOrderData } from './types'
 
 const orderApiConfig = {
     baseUrl: BASE_URL + "/orders",

@@ -17,7 +17,7 @@ function Feed() {
     return () => {
       dispatch(wsDisconnect());
     }
-  }, [])
+  }, [dispatch])
 
   return (
     <main className={styles.main}>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-type TFormValues = {
+export type TFormValues = {
     [key: string]: any;
 }
 

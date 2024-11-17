@@ -21,7 +21,7 @@ export const Register = () => {
     password: "",
   };
 
-  const { values, handleChange, setValues } = useForm(initialForm);
+  const { values, handleChange } = useForm(initialForm);
   const [error, setError] = useState<string>("");
 
   const onRegister = (e: FormEvent<HTMLFormElement>) => {

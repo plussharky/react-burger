@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
 import { TIngredient } from '../../utils/types'
 
 export const ADD_INGREDIENT = "ADD_INGREDIENT";

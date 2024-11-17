@@ -1,5 +1,3 @@
-import { string } from "prop-types";
-
 const MILLISECONDS_IN_MINUTE = 1000 * 60;
 const MILLISECONDS_IN_HOUR = MILLISECONDS_IN_MINUTE * 60;
 const MILLISECONDS_IN_DAY = MILLISECONDS_IN_HOUR * 24;

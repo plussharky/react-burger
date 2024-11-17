@@ -1,4 +1,3 @@
-import { TIngredient } from '../../../../utils/types';
 import styles from './order-card.module.css'
 import { formatDate } from '../../../../utils/date-formatter';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -58,6 +57,7 @@ export function OrderCard({id, timestamp, name, ingredientIds, status}: TOrderCa
                             <img 
                                 className={styles.ingredientImg}
                                 src={ingredient.image_mobile} 
+                                alt=""
                             />
                         </div>
                     </div>)))
@@ -72,7 +72,8 @@ export function OrderCard({id, timestamp, name, ingredientIds, status}: TOrderCa
                             <div className={styles.iconGradient}>
                                 <img 
                                     className={styles.ingredientImgBlur}
-                                    src={ingredientsToHide[0].image_mobile} 
+                                    src={ingredientsToHide[0].image_mobile}
+                                    alt="" 
                                 />
                                 <p className={styles.ingredientsCount}>
                                     +{ingredientsToHide.length}
