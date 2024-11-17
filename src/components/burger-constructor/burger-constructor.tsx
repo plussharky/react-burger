@@ -35,6 +35,7 @@ export function BurgerConstructor() {
             const token = localStorage.getItem("accessToken");
             if (!token) {
                 navigate("/login");
+                return;
             }
             const orderIngredients = [bun._id, ...ingredients.map(i => i._id), bun._id];
             dispatch(createOrder(orderIngredients, token!));
